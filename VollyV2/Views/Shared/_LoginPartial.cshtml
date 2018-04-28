@@ -1,0 +1,54 @@
+@using Microsoft.AspNetCore.Identity
+@using VollyV2.Models
+
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+@if (SignInManager.IsSignedIn(User))
+{
+    <ul class="navbar-nav ml-auto">
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="adminActions" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Admin Actions
+            </a>
+            <div class="dropdown-menu" aria-labelledby="adminActions">
+                <a class="dropdown-item" asp-area="" asp-controller="Categories" asp-action="Index">Manage Categories</a>
+                <a class="dropdown-item" asp-area="" asp-controller="Causes" asp-action="Index">Manage Causes</a>
+                <a class="dropdown-item" asp-area="" asp-controller="Organizations" asp-action="Index">Manage Organizations</a>
+                <a class="dropdown-item" asp-area="" asp-controller="Opportunities" asp-action="Index">Manage Opportunities</a>
+                <a class="dropdown-item" asp-area="" asp-controller="Applications" asp-action="Index">Manage Applications</a>
+                <a class="dropdown-item" asp-area="" asp-controller="Import" asp-action="Index">Import Files</a>
+            </div>
+        </li>
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="superUserActions" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Super User Actions
+            </a>
+            <div class="dropdown-menu" aria-labelledby="superUserActions">
+                <a class="dropdown-item" asp-area="" asp-controller="Roles" asp-action="Index">Manage Roles</a>
+                <a class="dropdown-item" asp-area="" asp-controller="UserRoles" asp-action="Index">Manage User Roles</a>
+            </div>
+        </li>
+        <li class="dropdown-divider"></li>
+        <li class="nav-item">
+            <a class="btn btn-outline-info my-1" asp-area="" asp-controller="Manage" asp-action="Index">Manage Account</a>&nbsp;
+        </li>
+        <li class="nav-item">
+            <form asp-area="" asp-controller="Account" asp-action="Logout" method="post" id="logoutForm">
+                <button class="btn btn-outline-danger my-1" type="submit">Log out</button>
+            </form>
+        </li>
+    </ul>
+}
+else
+{
+    <ul class="navbar-nav ml-auto">
+        <li class="dropdown-divider"></li>
+        <li class="nav-item">
+            <a class="btn btn-outline-info my-1" asp-area="" asp-controller="Account" asp-action="Register">Register</a>&nbsp;
+        </li>
+        <li class="nav-item">
+            <a class="btn btn-outline-success my-1" asp-area="" asp-controller="Account" asp-action="Login">Log in</a>
+        </li>
+    </ul>
+}

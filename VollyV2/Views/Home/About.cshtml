@@ -1,0 +1,63 @@
+﻿@{
+    ViewData["Title"] = "About";
+}
+
+<div class="map" id="map"></div>
+
+
+<script src="~/js/gmaps.js"></script>
+
+<script>
+    var map;
+    function addOpportunityMarker(lat, lng, opportunityname, opportunitydesc, contentinfo, id) {
+        map.addMarker({
+            lat: lat,
+            lng: lng,
+            title: opportunityname,
+            infoWindow: { content: contentinfo },
+            click: function (e) {
+                $("#OpportunityId").val(id);
+                $("#OpportunityModalTitle").html(opportunityname);
+                $("#OpportunityModalBody").html(opportunitydesc);
+                $("#OpportunityModal").modal('show');
+            }
+        });
+    };
+
+    function getAllOpportunities() {
+        $.getJSON(
+            '@Url.Action("GetOpportunities", "OpportunitiesApi")',
+            function (opportunities) {
+                addOpportunityMarkers(opportunities);
+            });
+    };
+
+    function initMap() {
+        map = new GMaps({
+            div: '#map',
+            lat: 51.044308,
+            lng: -114.0652801,
+            zoom: 12
+        });
+        getAllOpportunities();
+    };
+
+    function addOpportunityMarkers(opportunities) {
+        for (var i = 0; i < opportunities.length; i++) {
+            var opportunity = opportunities[i];
+            if (!opportunity.location) {
+                continue;
+            }
+            addOpportunityMarker(opportunity.location.latitude,
+                opportunity.location.longitude,
+                opportunity.name,
+                opportunity.description,
+                opportunity.description,
+                opportunity.id
+            );
+        }
+    };
+</script>
+
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCi84qEblX_oHY4fLUW8pjliIsrXZJs3eI&callback=initMap"></script>
+

@@ -1,0 +1,71 @@
+﻿@model VollyV2.Models.Volly.OrganizationModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h2>Create</h2>
+
+<h4>Organization</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ContactEmail" class="control-label"></label>
+                <input asp-for="ContactEmail" class="form-control" />
+                <span asp-validation-for="ContactEmail" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PhoneNumber" class="control-label"></label>
+                <input asp-for="PhoneNumber" class="form-control" />
+                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Address" class="control-label"></label>
+                <input asp-for="Address" class="form-control" />
+                <span asp-validation-for="Address" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="WebsiteLink" class="control-label"></label>
+                <input asp-for="WebsiteLink" class="form-control" />
+                <span asp-validation-for="WebsiteLink" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MissionStatement" class="control-label"></label>
+                <input asp-for="MissionStatement" class="form-control" />
+                <span asp-validation-for="MissionStatement" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FullDescription" class="control-label"></label>
+                <input asp-for="FullDescription" class="form-control" />
+                <span asp-validation-for="FullDescription" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CauseId" class="control-label"></label>
+                <select asp-for="CauseId" class="form-control"
+                        asp-items="@Model?.Causes">
+                    <option value="">-- Select Cause --</option>
+                </select>
+                <span asp-validation-for="CauseId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

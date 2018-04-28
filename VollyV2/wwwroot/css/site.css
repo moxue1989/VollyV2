@@ -1,0 +1,29 @@
+﻿body {
+    padding-top: 50px;
+    padding-bottom: 20px;
+}
+
+.map {
+    width: 100%;
+    height: 600px;
+}
+
+
+img {
+    max-height: 100%;
+    max-width: 100%;
+}
+
+/* QR code generator */
+#qrCode {
+    margin: 15px;
+}
+
+.badgeSize {
+    font-size: 15px;
+}
+
+.card-body {
+    padding: 0.5rem;
+}
+
