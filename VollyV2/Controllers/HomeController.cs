@@ -62,8 +62,9 @@ namespace VollyV2.Controllers
                     "Application For: " + application.Opportunity.Name, 
                     applyModel.GetEmailMessage());
                 TempData["message"] = "Thank you for Applying!";
+                return Ok();
             }
-            return RedirectToAction("Index");
+            return Error();
         }
 
         public IActionResult About()

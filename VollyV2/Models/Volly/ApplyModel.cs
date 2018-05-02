@@ -15,6 +15,7 @@ namespace VollyV2.Models.Volly
         [Required]
         public string Name { get; set; }
         [Required]
+        [EmailAddress]
         public string Email { get; set; }
         [Required]
         public string Message { get; set; }
@@ -33,9 +34,9 @@ namespace VollyV2.Models.Volly
 
         public string GetEmailMessage()
         {
-            return "Applicant Name: " + Name + "</br>" +
-                   "Applicant Email: " + Email + "</br>" +
-                   "Message: " + Message;
+            return "<p>Applicant Name: " + Name + "<p/>" +
+                   "<p>Applicant Email: " + Email + "<p/>" +
+                   "<p>Message: " + Message + "<p/>";
         }
     }
 }

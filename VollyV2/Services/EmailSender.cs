@@ -28,7 +28,7 @@ namespace VollyV2.Services
             {
                 From = new EmailAddress(FromEmail, "Volly Team"),
                 Subject = subject,
-                HtmlContent = message
+                HtmlContent = message + "<strong>Contact Us!</strong>"
             };
 
             foreach (string email in emailList)

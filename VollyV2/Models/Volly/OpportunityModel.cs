@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -13,14 +14,22 @@ namespace VollyV2.Models.Volly
     public class OpportunityModel
     {
         public int Id { get; set; }
+        [Required]
         public string Name { get; set; }
         public string Description { get; set; }
+        [Required]
         public string Address { get; set; }
+        [Required]
+        [Display(Name = "Organization")]
         public int OrganizationId { get; set; }
+        [Required]
+        [Display(Name = "Category")]
         public int CategoryId { get; set; }
+        [Required]
         public DateTime DateTime { get; set; }
         public SelectList Organizations { get; set; }
         public SelectList Categories { get; set; }
+        [Url]
         public string ImageUrl { get; set; }
 
         public static OpportunityModel FromOpportunity(ApplicationDbContext dbContext, Opportunity opportunity)

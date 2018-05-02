@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -14,12 +15,20 @@ namespace VollyV2.Models.Volly
     {
         public int Id { get; set; }
         public string Name { get; set; }
+        [Required]
+        [EmailAddress]
         public string ContactEmail { get; set; }
+        [Phone]
+        [Display(Name = "Phone Number")]
         public string PhoneNumber { get; set; }
+        [Required]
         public string Address { get; set; }
+        [Url]
         public string WebsiteLink { get; set; }
         public string MissionStatement { get; set; }
         public string FullDescription { get; set; }
+        [Required]
+        [Display(Name = "Cause")]
         public int CauseId { get; set; }
         public SelectList Causes { get; set; }
 

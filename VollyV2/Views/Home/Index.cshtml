@@ -7,9 +7,9 @@
 
 <div class="container-fluid">
     <div class="row">
-        <div class="col-lg-8 col-md-6 col-sm-12">
+        <div class="col-lg-8 col-md-6 col-sm-12 order-lg-first order-md-first">
             <button data-toggle="collapse" class="btn btn-info btn-block" data-target="#filterPanel">Show/Hide Filter Panel</button>
-            <br /> 
+            <br />
             <div id="filterPanel" class="collapse">
                 <div class="row">
                     <div class="col-lg-4 col-md-6 col-sm-12">
@@ -58,8 +58,9 @@
             </div>
         </div>
 
-        <div class="col-lg-4 col-md-6 col-sm-12">
+        <div class="col-lg-4 col-md-6 col-sm-12 order-sm-first">
             <div class="map" id="map"></div>
+            <br />
         </div>
     </div>
     <br />
@@ -75,7 +76,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form asp-action="Apply">
+            <form asp-action="Apply" id="applyForm">
                 <div class="modal-body">
                     <h4 id="OpportunityModalOrganization"></h4>
                     <h5 class="text-warning" id="OpportunityModalAddress"></h5>
@@ -113,11 +114,50 @@
     </div>
 </div>
 
+<div class="modal fade" id="ApplyModal" tabindex="-1" role="dialog" aria-labelledby="ApplyModalTitle" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="ApplyModalTitle">Thanks for applying</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <h3>Thank you for applying! you will receive an email confirmation shortly!</h3>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script src="~/js/gmaps.js"></script>
 
 <script src="~/js/opportunities.js"></script>
 
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCi84qEblX_oHY4fLUW8pjliIsrXZJs3eI&callback=initMap"></script>
+
+<script>
+    $('#applyForm').submit(function (e) {
+        var $theForm = $(this);
+
+        $.ajax({
+            type: $theForm.attr('method'),
+            url: $theForm.attr('action'),
+            data: $theForm.serialize(),
+            success: function (data) {
+                $('#OpportunityModal').modal('hide');
+                $('#ApplyModal').modal('show');
+                $theForm.trigger("reset");
+            }
+        });
+        
+
+        return false;
+    });
+</script>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
