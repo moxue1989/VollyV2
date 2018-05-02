@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -47,7 +48,11 @@ namespace VollyV2
             // Add application services.
             services.AddTransient<IEmailSender, EmailSender>();
 
+            services.AddMemoryCache();
+
             services.AddMvc();
+
+            services.AddScoped<IAuthorizationHandler, OpportunityAuthorizationHandler>();
 
             services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
             {

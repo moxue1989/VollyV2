@@ -10,6 +10,20 @@
     <Compile Remove="Data\Migrations\20180415015028_BaseVollyClasses.Designer.cs" />
     <Compile Remove="Data\Migrations\20180427070458_Identity.cs" />
     <Compile Remove="Data\Migrations\20180427070458_Identity.Designer.cs" />
+    <Compile Remove="Data\Migrations\20180429153903_OpportunityCreated.cs" />
+    <Compile Remove="Data\Migrations\20180429153903_OpportunityCreated.Designer.cs" />
+    <Compile Remove="Data\Migrations\20180429154021_OpportunityCreated.cs" />
+    <Compile Remove="Data\Migrations\20180429154021_OpportunityCreated.Designer.cs" />
+    <Compile Remove="Data\Migrations\20180429154137_OpportunityCreated.cs" />
+    <Compile Remove="Data\Migrations\20180429154137_OpportunityCreated.Designer.cs" />
+    <Compile Remove="Data\Migrations\20180429154223_OpportunityCreated.cs" />
+    <Compile Remove="Data\Migrations\20180429154223_OpportunityCreated.Designer.cs" />
+    <Compile Remove="Data\Migrations\20180429154303_OpportunityCreated.cs" />
+    <Compile Remove="Data\Migrations\20180429154303_OpportunityCreated.Designer.cs" />
+    <Compile Remove="Data\Migrations\20180429154605_OpportunityUserId.cs" />
+    <Compile Remove="Data\Migrations\20180429154605_OpportunityUserId.Designer.cs" />
+    <Compile Remove="Data\Migrations\20180429154753_OpportunityUserId.cs" />
+    <Compile Remove="Data\Migrations\20180429154753_OpportunityUserId.Designer.cs" />
   </ItemGroup>
 
 
@@ -25,10 +39,6 @@
     <DotNetCliToolReference Include="Microsoft.EntityFrameworkCore.Tools.DotNet" Version="2.0.1" />
     <DotNetCliToolReference Include="Microsoft.Extensions.SecretManager.Tools" Version="2.0.0" />
     <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.2" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Pages\" />
   </ItemGroup>
 
 </Project>

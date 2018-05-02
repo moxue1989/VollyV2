@@ -1,10 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory;
 using VollyV2.Data;
 using VollyV2.Data.Volly;
 using VollyV2.Models.Volly;
@@ -16,19 +15,31 @@ namespace VollyV2.Controllers.Api
     public class OrganizationsApiController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly IMemoryCache _memoryCache;
 
-        public OrganizationsApiController(ApplicationDbContext context)
+        public OrganizationsApiController(ApplicationDbContext context,
+            IMemoryCache memoryCache)
         {
             _context = context;
+            _memoryCache = memoryCache;
         }
 
         // GET: api/Organizations
         [HttpGet]
-        public IEnumerable<Organization> GetOrganizations()
+        public async Task<IEnumerable<Organization>> GetOrganizations()
         {
-            return _context.Organizations
-                .Include(o => o.Cause)
-                .Include(o => o.Location);
+            return await GetAllOrganizations();
+        }
+
+        private async Task<List<Organization>> GetAllOrganizations()
+        {
+            return await _memoryCache.GetOrCreateAsync(VollyConstants.OrganizationCacheKey, entry =>
+            {
+                return _context.Organizations
+                    .Include(o => o.Cause)
+                    .Include(o => o.Location)
+                    .ToListAsync();
+            });
         }
 
         // GET: api/Organizations/5
@@ -40,10 +51,8 @@ namespace VollyV2.Controllers.Api
                 return BadRequest(ModelState);
             }
 
-            var organization = await _context.Organizations
-                .Include(o => o.Cause)
-                .Include(o => o.Location)
-                .SingleOrDefaultAsync(m => m.Id == id);
+            var organization = (await GetAllOrganizations())
+                .SingleOrDefault(m => m.Id == id);
 
             if (organization == null)
             {
@@ -62,12 +71,10 @@ namespace VollyV2.Controllers.Api
                 return BadRequest(ModelState);
             }
 
-          
-            var organizations = await _context.Organizations
-                .Include(o => o.Cause)
-                .Include(o => o.Location)
-                .Where(o => organizationSearch.CauseIds.Contains(0) || organizationSearch.CauseIds.Contains(o.Cause.Id))
-                             .ToListAsync();
+            List<Organization> organizations = (await GetAllOrganizations())
+                .Where(o => organizationSearch.CauseIds.Contains(0) ||
+                o.Cause != null && organizationSearch.CauseIds.Contains(o.Cause.Id))
+                             .ToList();
 
             return Ok(organizations);
         }

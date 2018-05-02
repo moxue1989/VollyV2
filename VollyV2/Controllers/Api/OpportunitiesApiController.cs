@@ -2,10 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
+using Microsoft.Extensions.Caching.Memory;
 using VollyV2.Data;
 using VollyV2.Data.Volly;
 using VollyV2.Models.Volly;
@@ -17,22 +16,40 @@ namespace VollyV2.Controllers.Api
     public class OpportunitiesApiController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly IMemoryCache _memoryCache;
 
-        public OpportunitiesApiController(ApplicationDbContext context)
+        public OpportunitiesApiController(ApplicationDbContext context,
+            IMemoryCache memoryCache)
         {
             _context = context;
+            _memoryCache = memoryCache;
         }
 
         // GET: api/Opportunities
         [HttpGet]
         public async Task<IActionResult> GetOpportunities()
         {
-            var opportunities = await _context.Opportunities
-                .Include(o => o.Category)
-                .Include(o => o.Organization)
-                .Include(o => o.Location)
-                .ToListAsync();
+            List<Opportunity> opportunities = await GetAllOpportunities();
+            
             return Ok(opportunities);
+        }
+
+        private async Task<List<Opportunity>> GetAllOpportunities()
+        {
+            return await _memoryCache.GetOrCreateAsync(VollyConstants.OpportunityCacheKey, async entry =>
+            {
+                entry.SlidingExpiration = TimeSpan.FromMinutes(10);
+                List<Opportunity> opportunities = await _context.Opportunities
+                    .Include(o => o.Category)
+                    .Include(o => o.Organization)
+                    .ThenInclude(o => o.Cause)
+                    .Include(o => o.Location)
+                    .ToListAsync();
+
+                opportunities.ForEach(o =>
+                    o.DateTime = TimeZoneInfo.ConvertTimeFromUtc(o.DateTime, VollyConstants.TimeZoneInfo));
+                return opportunities;
+            });
         }
 
         // GET: api/Opportunities/5
@@ -44,12 +61,8 @@ namespace VollyV2.Controllers.Api
                 return BadRequest(ModelState);
             }
 
-            var opportunity = await _context.Opportunities
-                .Include(o => o.Category)
-                .Include(o => o.Organization)
-                .ThenInclude(o => o.Cause)
-                .Include(o => o.Location)
-                .SingleOrDefaultAsync(m => m.Id == id);
+            Opportunity opportunity = (await GetAllOpportunities())
+                .SingleOrDefault(m => m.Id == id);
 
             if (opportunity == null)
             {
@@ -68,21 +81,12 @@ namespace VollyV2.Controllers.Api
                 return BadRequest(ModelState);
             }
 
-            DateTime startDate = TimeZoneInfo.ConvertTimeToUtc(opportunitySearch.StartDate, VollyConstants.TimeZoneInfo);
-            DateTime endDate = TimeZoneInfo.ConvertTimeToUtc(opportunitySearch.EndDate, VollyConstants.TimeZoneInfo);
-
-            var opportunities = await _context.Opportunities
-                .Include(o => o.Category)
-                .Include(o => o.Organization)
-                .ThenInclude(o => o.Cause)
-                .Include(o => o.Location)
-                .Where(o => (opportunitySearch.CauseIds.Contains(0) || opportunitySearch.CauseIds.Contains(o.Organization.Cause.Id)) &&
+            var opportunities = (await GetAllOpportunities())
+                .Where(o => (opportunitySearch.CauseIds.Contains(0) || o.Organization.Cause != null && opportunitySearch.CauseIds.Contains(o.Organization.Cause.Id)) &&
                 (opportunitySearch.CategoryIds.Contains(0) || opportunitySearch.CategoryIds.Contains(o.Category.Id)) &&
-                (opportunitySearch.StartDate == DateTime.MinValue || startDate.Date <= o.DateTime.Date) &&
-                (opportunitySearch.EndDate == DateTime.MinValue || endDate.Date >= o.DateTime.Date))
-                .ToListAsync();
-
-            opportunities.ForEach(o => o.DateTime = TimeZoneInfo.ConvertTimeFromUtc(o.DateTime, VollyConstants.TimeZoneInfo));
+                (opportunitySearch.StartDate == DateTime.MinValue || opportunitySearch.StartDate.Date <= o.DateTime.Date) &&
+                (opportunitySearch.EndDate == DateTime.MinValue || opportunitySearch.EndDate.Date >= o.DateTime.Date))
+                .ToList();
             
             return Ok(opportunities);
         }

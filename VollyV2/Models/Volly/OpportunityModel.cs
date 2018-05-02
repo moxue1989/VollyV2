@@ -46,18 +46,21 @@ namespace VollyV2.Models.Volly
 
         public Opportunity GetOpportunity(ApplicationDbContext context)
         {
-            return new Opportunity()
+            Opportunity opportunity = context.Opportunities.Find(Id);
+            if (opportunity == null)
             {
-                Id = Id,
-                Name = Name,
-                Description = Description,
-                Address = Address,
-                ImageUrl = ImageUrl,
-                Organization = context.Organizations.Find(OrganizationId),
-                Category = context.Categories.Find(CategoryId),
-                DateTime = TimeZoneInfo.ConvertTimeToUtc(DateTime, VollyConstants.TimeZoneInfo),
-                Location = GoogleLocator.GetLocationFromAddress(Address)
-            };
+                opportunity = new Opportunity();
+            }
+            opportunity.Name = Name;
+            opportunity.Description = Description;
+            opportunity.Address = Address;
+            opportunity.ImageUrl = ImageUrl;
+            opportunity.Organization = context.Organizations.Find(OrganizationId);
+            opportunity.Category = context.Categories.Find(CategoryId);
+            opportunity.DateTime = TimeZoneInfo.ConvertTimeToUtc(DateTime, VollyConstants.TimeZoneInfo);
+            opportunity.Location = GoogleLocator.GetLocationFromAddress(Address);
+
+            return opportunity;
         }
     }
 }
