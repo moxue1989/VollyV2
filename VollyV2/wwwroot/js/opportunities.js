@@ -24,15 +24,13 @@ function addOpportunityMarker(lat, lng, name, desc, dateTime, address, organizat
 };
 
 function appendOpportunityPanel(name, dateTime, address, organizationName, category, cause, imageUrl, id) {
-    $("#opportunityList").append('<div class="col-lg-4 col-md-6 col-sm-12">' +
+    $("#opportunityList").append('<div class="col-lg-4 col-md-6 col-sm-12 opportunity-card">' +
         '<img  src="' + imageUrl + '" />' +
         '<br/>' + name +
         '<br/>' + organizationName +
         '<br/>' + dateTime +
         '<br/>' + address +
         '<br/>' + category +
-        '<br/>' +
-        '<br/>' +
         '</div>');
 };
 

@@ -27,3 +27,48 @@ img {
     padding: 0.5rem;
 }
 
+.opportunity-card {
+    position: relative;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    min-width: 0;
+    word-wrap: break-word;
+    background-color: #fff;
+    background-clip: border-box;
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
+    -webkit-transition: all 0.25s;
+    transition: all 0.25s;
+}
+    .opportunity-card:after {
+        content: "";
+        position: absolute;
+        top: .25em;
+        left: .25em;
+        bottom: .25em;
+        right: .25em;
+        width: 100%;
+        height: 100%;
+        border: 1px solid rgba(0,0,0,.125);
+        border-radius: .25em;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        opacity: 0;
+        -webkit-transition: all 0.25s;
+        transition: all 0.25s;
+    }
+    .opportunity-card:hover {
+        position:relative;
+        z-index:1;
+        -webkit-transform: scale(1.025, 1.025);
+        transform: scale(1.025, 1.025);
+    }
+.opportunity-card:hover:after {
+    opacity: 1;
+    z-index:1;
+    position:absolute;
+}
