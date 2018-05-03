@@ -24,6 +24,8 @@
     <Compile Remove="Data\Migrations\20180429154605_OpportunityUserId.Designer.cs" />
     <Compile Remove="Data\Migrations\20180429154753_OpportunityUserId.cs" />
     <Compile Remove="Data\Migrations\20180429154753_OpportunityUserId.Designer.cs" />
+    <Compile Remove="Data\Migrations\20180503004724_moreopportunityfields.cs" />
+    <Compile Remove="Data\Migrations\20180503004724_moreopportunityfields.Designer.cs" />
   </ItemGroup>
 
 

@@ -18,7 +18,7 @@ using VollyV2.Services;
 
 namespace VollyV2.Controllers.Mvc
 {
-    [Authorize(Roles = "Admin, User")]
+    [Authorize(Roles = "Admin")]
     public class OpportunitiesController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -123,7 +123,7 @@ namespace VollyV2.Controllers.Mvc
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Description,Address,DateTime,CategoryId,OrganizationId,ImageUrl")] OpportunityModel model)
+        public async Task<IActionResult> Create([Bind("Id,Name,Description,Address,DateTime,EndDateTime,ApplicationDeadline,Openings,FamilyFriendly,CategoryId,OrganizationId,ImageUrl")] OpportunityModel model)
         {
             if (ModelState.IsValid)
             {
@@ -169,7 +169,7 @@ namespace VollyV2.Controllers.Mvc
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Description,Address,DateTime,CategoryId,OrganizationId,ImageUrl")] OpportunityModel opportunityModel)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Description,Address,DateTime,EndDateTime,ApplicationDeadline,Openings,FamilyFriendly,CategoryId,OrganizationId,ImageUrl")] OpportunityModel opportunityModel)
         {
             if (id != opportunityModel.Id)
             {

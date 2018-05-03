@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Rewrite;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -73,7 +67,12 @@ namespace VollyV2
             {
                 app.UseExceptionHandler("/Home/Error");
             }
-       
+
+            var options = new RewriteOptions()
+                .AddRedirectToHttpsPermanent();
+
+            app.UseRewriter(options);
+
             app.UseStaticFiles();
 
             app.UseAuthentication();

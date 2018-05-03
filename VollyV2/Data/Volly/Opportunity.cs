@@ -18,6 +18,10 @@ namespace VollyV2.Data.Volly
         public Category Category { get; set; }
         public Location Location { get; set; }
         public DateTime DateTime { get; set; }
+        public DateTime EndDateTime { get; set; }
+        public DateTime ApplicationDeadline { get; set; }
+        public int Openings { get; set; }
+        public bool FamilyFriendly { get; set; }
         public string ImageUrl { get; set; }
         public string CreatedByUserId { get; set; }
         public ApplicationUser CreatedByUser { get; set; }

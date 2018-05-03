@@ -29,8 +29,28 @@
             </div>
             <div class="form-group">
                 <label asp-for="DateTime" class="control-label"></label>
-                <input asp-for="DateTime" class="form-control" id="datepicker" />
+                <input asp-for="DateTime" class="form-control" class="datepicker" />
                 <span asp-validation-for="DateTime" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EndDateTime" class="control-label"></label>
+                <input asp-for="EndDateTime" class="form-control" class="datepicker" />
+                <span asp-validation-for="EndDateTime" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ApplicationDeadline" class="control-label"></label>
+                <input asp-for="ApplicationDeadline" class="form-control" class="datepicker" />
+                <span asp-validation-for="ApplicationDeadline" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Openings" class="control-label"></label>
+                <input asp-for="Openings" class="form-control" />
+                <span asp-validation-for="Openings" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FamilyFriendly" class="control-label"></label>
+                <input asp-for="FamilyFriendly" class="form-control" />
+                <span asp-validation-for="FamilyFriendly" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="CategoryId" class="control-label"></label>
@@ -65,7 +85,7 @@
 </div>
 
 <script>
-    $("#datepicker").val(new Date());
+    $(".datepicker").val(new Date());
 </script>
 
 @section Scripts {

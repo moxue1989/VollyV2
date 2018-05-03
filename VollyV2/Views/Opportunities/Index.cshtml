@@ -25,6 +25,18 @@
                     @Html.DisplayNameFor(model => model.DateTime)
                 </th>
                 <th>
+                    @Html.DisplayNameFor(model => model.EndDateTime)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ApplicationDeadline)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Openings)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.FamilyFriendly)
+                </th>
+                <th>
                     @Html.DisplayNameFor(model => model.Category)
                 </th>
                 <th>
@@ -50,6 +62,18 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.DateTime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EndDateTime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ApplicationDeadline)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Openings)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FamilyFriendly)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Category.Name)
