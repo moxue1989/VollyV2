@@ -8,23 +8,26 @@ function addOpportunityMarker(lat, lng, name, desc, dateTime, address, organizat
         title: name,
         infoWindow: { content: name },
         click: function (e) {
-            $("#OpportunityId").val(id);
-            $("#OpportunityModalTitle").html(name);
-            $("#OpportunityModalCategory").html(category);
-            $("#OpportunityModalCause").html(cause);
-            $("#OpportunityModalTime").html(dateTime);
-            $("#OpportunityModalOrganization").html(organizationName);
-            $("#OpportunityModalAddress").html(address);
-            $("#OpportunityModalDescription").html(desc);
-            $("#OpportunityModal").modal('show');
+            openOpportunityModal(name, desc, dateTime, address, organizationName, category, cause, id)
         }
     });
     markers.push(marker);
-    appendOpportunityPanel(name, dateTime, address, organizationName, category, cause, imageUrl, id);
+    appendOpportunityPanel(name, desc, dateTime, address, organizationName, category, cause, imageUrl, id);
 };
 
-function appendOpportunityPanel(name, dateTime, address, organizationName, category, cause, imageUrl, id) {
-    $("#opportunityList").append('<div class="col-lg-4 col-md-6 col-sm-12 opportunity-card">' +
+function openOpportunityModal(name, desc, dateTime, address, organizationName, category, cause, id) {
+    $("#OpportunityId").val(id);
+    $("#OpportunityModalTitle").html(name);
+    $("#OpportunityModalCategory").html(category);
+    $("#OpportunityModalCause").html(cause);
+    $("#OpportunityModalTime").html(dateTime);
+    $("#OpportunityModalOrganization").html(organizationName);
+    $("#OpportunityModalAddress").html(address);
+    $("#OpportunityModalDescription").html(desc);
+    $("#OpportunityModal").modal('show');
+}
+function appendOpportunityPanel(name, desc, dateTime, address, organizationName, category, cause, imageUrl, id) {
+    $("#opportunityList").append('<div id="opportunity-'+id+'" class="col-lg-4 col-md-6 col-sm-12 opportunity-card">' +
         '<img  src="' + imageUrl + '" />' +
         '<br/>' + name +
         '<br/>' + organizationName +
@@ -32,6 +35,9 @@ function appendOpportunityPanel(name, dateTime, address, organizationName, categ
         '<br/>' + address +
         '<br/>' + category +
         '</div>');
+    $("#opportunity-" + id).click(function (e) {
+        openOpportunityModal(name, desc, dateTime, address, organizationName, category, cause, id)
+    })
 };
 
 function initMap() {
