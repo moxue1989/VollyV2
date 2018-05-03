@@ -38,16 +38,19 @@ namespace VollyV2.Controllers.Api
         {
             return await _memoryCache.GetOrCreateAsync(VollyConstants.OpportunityCacheKey, async entry =>
             {
-                entry.SlidingExpiration = TimeSpan.FromMinutes(10);
+                entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(2);
                 List<Opportunity> opportunities = await _context.Opportunities
                     .Include(o => o.Category)
                     .Include(o => o.Organization)
                     .ThenInclude(o => o.Cause)
                     .Include(o => o.Location)
                     .ToListAsync();
-
-                opportunities.ForEach(o =>
-                    o.DateTime = TimeZoneInfo.ConvertTimeFromUtc(o.DateTime, VollyConstants.TimeZoneInfo));
+                foreach (var o in opportunities)
+                {
+                    o.DateTime = TimeZoneInfo.ConvertTimeFromUtc(o.DateTime, VollyConstants.TimeZoneInfo);
+                    o.EndDateTime = TimeZoneInfo.ConvertTimeFromUtc(o.EndDateTime, VollyConstants.TimeZoneInfo);
+                    o.ApplicationDeadline = TimeZoneInfo.ConvertTimeFromUtc(o.ApplicationDeadline, VollyConstants.TimeZoneInfo);
+                }
                 return opportunities;
             });
         }

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -35,6 +36,7 @@ namespace VollyV2.Controllers.Api
         {
             return await _memoryCache.GetOrCreateAsync(VollyConstants.OrganizationCacheKey, entry =>
             {
+                entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(2);
                 return _context.Organizations
                     .Include(o => o.Cause)
                     .Include(o => o.Location)
