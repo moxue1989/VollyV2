@@ -6,6 +6,7 @@ using System.Net.Mail;
 using System.Threading.Tasks;
 using SendGrid;
 using SendGrid.Helpers.Mail;
+using VollyV2.Controllers;
 using VollyV2.Data.Volly;
 
 namespace VollyV2.Services
@@ -54,7 +55,9 @@ namespace VollyV2.Services
             sendGridMessage.AddTo(new EmailAddress(application.Email, application.Name));
             sendGridMessage.AddCc(new EmailAddress("alicelam22@gmail.com", "Alice"));
 
-            sendGridMessage.AddSubstitution(":time", application.DateTime.ToShortDateString() + " " + application.DateTime.ToShortTimeString());
+            DateTime dateTime = TimeZoneInfo.ConvertTimeFromUtc(application.Opportunity.DateTime, VollyConstants.TimeZoneInfo);
+
+            sendGridMessage.AddSubstitution(":time", dateTime.ToShortDateString() + " " + dateTime.ToShortTimeString());
             sendGridMessage.AddSubstitution(":description", application.Opportunity.Description);
             sendGridMessage.AddSubstitution(":address", application.Opportunity.Address);
             sendGridMessage.AddSubstitution(":name", application.Opportunity.Name);

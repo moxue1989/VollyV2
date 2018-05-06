@@ -55,7 +55,6 @@ namespace VollyV2.Controllers
                 _dbContext.Applications.Add(application);
                 await _dbContext.SaveChangesAsync();
                 await _emailSender.SendApplicationConfirmAsync(application);
-
                 return Ok();
             }
             return Error();
