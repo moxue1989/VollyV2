@@ -27,7 +27,7 @@ img {
     padding: 0.5rem;
 }
 
-.opportunity-card {
+.result-card {
     position: relative;
     display: -webkit-box;
     display: -ms-flexbox;
@@ -45,7 +45,7 @@ img {
     -webkit-transition: all 0.25s;
     transition: all 0.25s;
 }
-    .opportunity-card:after {
+    .result-card:after {
         content: "";
         position: absolute;
         top: .25em;
@@ -61,17 +61,17 @@ img {
         -webkit-transition: all 0.25s;
         transition: all 0.25s;
     }
-    .opportunity-card:hover {
-        position:relative;
-        z-index:1;
+    .result-card:hover {
+        position: relative;
+        z-index: 1;
         -webkit-transform: scale(1.025, 1.025);
         transform: scale(1.025, 1.025);
     }
-.opportunity-card:hover:after {
-    opacity: 1;
-    z-index:1;
-    position:absolute;
-}
+        .result-card:hover:after {
+            opacity: 1;
+            z-index: 1;
+            position: absolute;
+        }
 
 .apply-opportunity-row{
     margin-left:1rem;

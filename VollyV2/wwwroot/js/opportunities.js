@@ -32,7 +32,7 @@ function openOpportunityModal(opportunity) {
 };
 
 function appendOpportunityPanel(opportunity) {
-    $("#opportunityList").append('<div id="opportunity-' + opportunity.id + '" class="col-lg-4 col-md-6 col-sm-12 opportunity-card">' +
+    $("#opportunityList").append('<div id="opportunity-' + opportunity.id + '" class="col-lg-4 col-md-6 col-sm-12 result-card">' +
         '<img  src="' + opportunity.imageUrl + '" />' +
         '<br/>' + opportunity.name +
         '<br/>' + opportunity.organization.name +
