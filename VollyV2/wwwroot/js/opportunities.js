@@ -1,37 +1,48 @@
 ﻿var map;
 var markers = [];
 
-function addOpportunityMarker(lat, lng, name, desc, dateTime, address, organizationName, category, cause, imageUrl, id) {
+function addOpportunityMarker(opportunity) {
     var marker = map.addMarker({
-        lat: lat,
-        lng: lng,
-        title: name,
-        infoWindow: { content: name },
+        lat: opportunity.location.latitude,
+        lng: opportunity.location.longitude,
+        title: opportunity.name,
+        infoWindow: { content: opportunity.name },
         click: function (e) {
-            $("#OpportunityId").val(id);
-            $("#OpportunityModalTitle").html(name);
-            $("#OpportunityModalCategory").html(category);
-            $("#OpportunityModalCause").html(cause);
-            $("#OpportunityModalTime").html(dateTime);
-            $("#OpportunityModalOrganization").html(organizationName);
-            $("#OpportunityModalAddress").html(address);
-            $("#OpportunityModalDescription").html(desc);
-            $("#OpportunityModal").modal('show');
+            openOpportunityModal(opportunity);
         }
     });
     markers.push(marker);
-    appendOpportunityPanel(name, dateTime, address, organizationName, category, cause, imageUrl, id);
 };
 
-function appendOpportunityPanel(name, dateTime, address, organizationName, category, cause, imageUrl, id) {
-    $("#opportunityList").append('<div class="col-lg-4 col-md-6 col-sm-12 opportunity-card">' +
-        '<img  src="' + imageUrl + '" />' +
-        '<br/>' + name +
-        '<br/>' + organizationName +
-        '<br/>' + dateTime +
-        '<br/>' + address +
-        '<br/>' + category +
+function openOpportunityModal(opportunity) {
+    var causename = "";
+    if (opportunity.organization.cause) {
+        causename = opportunity.organization.cause.name;
+    }
+    var date = new Date(opportunity.dateTime);
+    $("#OpportunityId").val(opportunity.id);
+    $("#OpportunityModalTitle").html(opportunity.name);
+    $("#OpportunityModalCategory").html(opportunity.category.name);
+    $("#OpportunityModalCause").html(causename);
+    $("#OpportunityModalTime").html(date.toDateString() + " " + date.toLocaleTimeString());
+    $("#OpportunityModalOrganization").html(opportunity.organization.name);
+    $("#OpportunityModalAddress").html(opportunity.address);
+    $("#OpportunityModalDescription").html(opportunity.description);
+    $("#OpportunityModal").modal('show');
+};
+
+function appendOpportunityPanel(opportunity) {
+    $("#opportunityList").append('<div id="opportunity-' + opportunity.id + '" class="col-lg-4 col-md-6 col-sm-12 opportunity-card">' +
+        '<img  src="' + opportunity.imageUrl + '" />' +
+        '<br/>' + opportunity.name +
+        '<br/>' + opportunity.organization.name +
+        '<br/>' + opportunity.dateTime +
+        '<br/>' + opportunity.address +
+        '<br/>' + opportunity.category.name +
         '</div>');
+    $("#opportunity-" + opportunity.id).click(function(e) {
+        openOpportunityModal(opportunity);
+    });
 };
 
 function initMap() {
@@ -63,25 +74,8 @@ function addOpportunityMarkers(opportunities) {
         if (!opportunity.location) {
             continue;
         }
-
-        var date = new Date(opportunity.dateTime);
-
-        var causename = "";
-        if (opportunity.organization.cause) {
-            causename = opportunity.organization.cause.name;
-        }
-        addOpportunityMarker(opportunity.location.latitude,
-            opportunity.location.longitude,
-            opportunity.name,
-            opportunity.description,
-            date.toDateString() + " " + date.toLocaleTimeString(),
-            opportunity.address,
-            opportunity.organization.name,
-            opportunity.category.name,
-            causename,
-            opportunity.imageUrl,
-            opportunity.id
-        );
+        addOpportunityMarker(opportunity);
+        appendOpportunityPanel(opportunity);
     }
 };
 
