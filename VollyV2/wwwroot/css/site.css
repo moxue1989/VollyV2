@@ -72,3 +72,11 @@ img {
     z-index:1;
     position:absolute;
 }
+
+.apply-opportunity-row{
+    margin-left:1rem;
+    margin-right:1rem;
+}
+.modal-header{
+    padding-bottom:0;
+}
