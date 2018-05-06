@@ -32,11 +32,12 @@ function openOpportunityModal(opportunity) {
 };
 
 function appendOpportunityPanel(opportunity) {
+    var date = new Date(opportunity.dateTime);
     $("#opportunityList").append('<div id="opportunity-' + opportunity.id + '" class="col-lg-4 col-md-6 col-sm-12 result-card">' +
         '<img  src="' + opportunity.imageUrl + '" />' +
         '<br/>' + opportunity.name +
         '<br/>' + opportunity.organization.name +
-        '<br/>' + opportunity.dateTime +
+        '<br/>' + date.toDateString() + " " + date.toLocaleTimeString() +
         '<br/>' + opportunity.address +
         '<br/>' + opportunity.category.name +
         '</div>');
