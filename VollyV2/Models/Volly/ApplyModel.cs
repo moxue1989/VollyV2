@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using VollyV2.Data;
 using VollyV2.Data.Volly;
 
@@ -30,13 +31,6 @@ namespace VollyV2.Models.Volly
                 DateTime = DateTime.Now.ToUniversalTime(),
                 Opportunity = context.Opportunities.Find(OpportunityId)
             };
-        }
-
-        public string GetEmailMessage()
-        {
-            return "<p>Applicant Name: " + Name + "<p/>" +
-                   "<p>Applicant Email: " + Email + "<p/>" +
-                   "<p>Message: " + Message + "<p/>";
         }
     }
 }

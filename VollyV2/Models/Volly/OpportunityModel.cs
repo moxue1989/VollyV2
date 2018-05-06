@@ -33,7 +33,6 @@ namespace VollyV2.Models.Volly
         public DateTime ApplicationDeadline { get; set; }
         [Required]
         public int Openings { get; set; }
-        public bool FamilyFriendly { get; set; }
         public SelectList Organizations { get; set; }
         public SelectList Categories { get; set; }
         [Url]
@@ -53,7 +52,6 @@ namespace VollyV2.Models.Volly
                 DateTime = TimeZoneInfo.ConvertTimeFromUtc(opportunity.DateTime, VollyConstants.TimeZoneInfo),
                 EndDateTime = TimeZoneInfo.ConvertTimeFromUtc(opportunity.EndDateTime, VollyConstants.TimeZoneInfo),
                 ApplicationDeadline = TimeZoneInfo.ConvertTimeFromUtc(opportunity.ApplicationDeadline, VollyConstants.TimeZoneInfo),
-                FamilyFriendly = opportunity.FamilyFriendly,
                 Openings = opportunity.Openings,
                 Categories = new SelectList(dbContext.Categories
                     .OrderBy(c => c.Name)
@@ -80,7 +78,6 @@ namespace VollyV2.Models.Volly
             opportunity.DateTime = TimeZoneInfo.ConvertTimeToUtc(DateTime, VollyConstants.TimeZoneInfo);
             opportunity.EndDateTime = TimeZoneInfo.ConvertTimeToUtc(EndDateTime, VollyConstants.TimeZoneInfo);
             opportunity.ApplicationDeadline = TimeZoneInfo.ConvertTimeToUtc(ApplicationDeadline, VollyConstants.TimeZoneInfo);
-            opportunity.FamilyFriendly = FamilyFriendly;
             opportunity.Openings = Openings;
             opportunity.Location = GoogleLocator.GetLocationFromAddress(Address);
 

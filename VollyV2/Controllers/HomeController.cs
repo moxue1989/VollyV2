@@ -54,14 +54,8 @@ namespace VollyV2.Controllers
                 Application application = applyModel.GetApplication(_dbContext);
                 _dbContext.Applications.Add(application);
                 await _dbContext.SaveChangesAsync();
-                await _emailSender.SendEmailsAsync(new List<string>()
-                    {
-                        applyModel.Email,
-                        "alicelam22@gmail.com"
-                    }, 
-                    "Application For: " + application.Opportunity.Name, 
-                    applyModel.GetEmailMessage());
-                TempData["message"] = "Thank you for Applying!";
+                await _emailSender.SendApplicationConfirmAsync(application);
+
                 return Ok();
             }
             return Error();

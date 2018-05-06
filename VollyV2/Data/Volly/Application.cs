@@ -13,5 +13,12 @@ namespace VollyV2.Data.Volly
         public string Email { get; set; }
         public string Message { get; set; }
         public DateTime DateTime { get; set; }
+
+        public string GetEmailMessage()
+        {
+            return "<p>Applicant Name: " + Name + "<p/>" +
+                   "<p>Applicant Email: " + Email + "<p/>" +
+                   "<p>Message: " + Message + "<p/>";
+        }
     }
 }

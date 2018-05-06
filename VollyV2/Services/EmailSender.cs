@@ -6,6 +6,7 @@ using System.Net.Mail;
 using System.Threading.Tasks;
 using SendGrid;
 using SendGrid.Helpers.Mail;
+using VollyV2.Data.Volly;
 
 namespace VollyV2.Services
 {
@@ -36,6 +37,30 @@ namespace VollyV2.Services
                 msg.AddTo(new EmailAddress(email));
             }
             await client.SendEmailAsync(msg);
+        }
+
+        public async Task SendApplicationConfirmAsync(Application application)
+        {
+            var client = new SendGridClient(SendgridApiKey);
+
+            SendGridMessage sendGridMessage = new SendGridMessage()
+            {
+                From = new EmailAddress(FromEmail, "Volly Team"),
+                Subject = "Application for:" + application.Opportunity.Name,
+                TemplateId = "e9713a19-2a9e-4d0f-8994-088633aaab25",
+                HtmlContent = application.GetEmailMessage(),
+                PlainTextContent = application.GetEmailMessage()
+            };
+            sendGridMessage.AddTo(new EmailAddress(application.Email, application.Name));
+            sendGridMessage.AddCc(new EmailAddress("alicelam22@gmail.com", "Alice"));
+
+            sendGridMessage.AddSubstitution(":time", application.DateTime.ToShortDateString() + " " + application.DateTime.ToShortTimeString());
+            sendGridMessage.AddSubstitution(":description", application.Opportunity.Description);
+            sendGridMessage.AddSubstitution(":address", application.Opportunity.Address);
+            sendGridMessage.AddSubstitution(":name", application.Opportunity.Name);
+            sendGridMessage.AddSubstitution(":image", application.Opportunity.ImageUrl);
+
+            await client.SendEmailAsync(sendGridMessage);
         }
     }
 }
