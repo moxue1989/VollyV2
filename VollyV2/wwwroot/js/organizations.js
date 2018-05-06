@@ -2,46 +2,45 @@
 var map;
 var markers = [];
 
-function addOrganizationMarker(lat, lng, name, address, fullDescription, missionStatement, contactEmail, websiteLink, causename, id) {
+function addOrganizationMarker(organization) {
     var icon = {
         url: "/images/Home.png"
-    };
+    }; 
     var marker = map.addMarker({
-        lat: lat,
-        lng: lng,
-        title: name,
+        lat: organization.location.latitude,
+        lng: organization.location.longitude,
+        title: organization.name,
         icon: icon,
-        infoWindow: { content: name },
+        infoWindow: { content: organization.name },
         click: function (e) {
-            $("#DisplayModalTitle").html(name);
-            $("#ModalAddress").html(address);
-            $("#ModalCause").html(causename);
-            $("#ModalDescription").html(fullDescription);
-            $("#DisplayModal").modal('show');
+            openOrganizationModal(organization);
         }
     });
     markers.push(marker);
-    appendOrganizationPanel(name, address, fullDescription, missionStatement, contactEmail, websiteLink, causename, id);
-};
+}
 
-function appendOrganizationPanel(name,
-    address,
-    fullDescription,
-    missionStatement,
-    contactEmail,
-    websiteLink,
-    causename,
-    id) {
-    $("#organizationList").append('<div class="col-lg-4 col-md-6 col-sm-12">' +
-        '<br/>' + name +
-        '<br/>' + address +
-        '<br/>' + contactEmail +
-        '<br/>' + websiteLink +
-        '<br/>' +
-        '<br/>' +
-        '<br/>' +
+function openOrganizationModal(organization) {
+    var causename = "";
+    if (organization.cause) {
+        causename = organization.cause.name;
+    }
+    $("#DisplayModalTitle").html(organization.name);
+    $("#ModalAddress").html(organization.address);
+    $("#ModalCause").html(causename);
+    $("#ModalDescription").html(organization.fullDescription);
+    $("#DisplayModal").modal('show');
+}
+function appendOrganizationPanel(organization) {
+    $("#organizationList").append('<div id="organization-' + organization.id + '" class="col-lg-4 col-md-6 col-sm-12 result-card">' +
+        '<br/>' + organization.name +
+        '<br/>' + organization.address +
+        '<br/>' + organization.contactEmail +
+        '<br/>' + organization.websiteLink +
         '</div>');
-};
+    $("#organization-" + organization.id).click(function (e) {
+        openOrganizationModal(organization);
+    });
+}
 
 function initMap() {
     map = new GMaps({
@@ -68,22 +67,8 @@ function addOrganizationMarkers(organizations) {
         if (!organization.location) {
             continue;
         }
-
-        var causename = "";
-        if (organization.cause) {
-            causename = organization.cause.name;
-        }
-        addOrganizationMarker(organization.location.latitude,
-            organization.location.longitude,
-            organization.name,
-            organization.address,
-            organization.fullDescription,
-            organization.missionStatement,
-            organization.contactEmail,
-            organization.websiteLink,
-            causename,
-            organization.id
-        );
+        addOrganizationMarker(organization);
+        appendOrganizationPanel(organization);
     }
 };
 

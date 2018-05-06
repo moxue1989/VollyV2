@@ -68,7 +68,7 @@
 
 
 <div class="modal fade" id="OpportunityModal" tabindex="-1" role="dialog" aria-labelledby="OpportunityModalTitle" aria-hidden="true">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title" id="OpportunityModalTitle"></h4>
@@ -86,22 +86,24 @@
                     <br />
                     <h4 id="OpportunityModalDescription"></h4>
                     <input asp-for="@Model.ApplyModel.OpportunityId" type="hidden" class="form-control" id="OpportunityId" />
-
                     <h3 class="modal-title"> Apply Now:</h3>
                     <br />
-                    <div class="form-group">
-                        <label asp-for="@Model.ApplyModel.Name" class="col-form-label">Name</label>
-                        <input asp-for="@Model.ApplyModel.Name" class="form-control" />
+                    <div class="form-group row apply-opportunity-row">
+                        <label asp-for="@Model.ApplyModel.Name" class="col-form-label col-sm-2">Name</label>
+                        <input asp-for="@Model.ApplyModel.Name" class="form-control col-sm-10" />
                         <span asp-validation-for="@Model.ApplyModel.Name" class="text-danger"></span>
                     </div>
-                    <div class="form-group">
-                        <label asp-for="@Model.ApplyModel.Email" class="col-form-label">Email</label>
-                        <input asp-for="@Model.ApplyModel.Email" class="form-control" />
+                    <div class="form-group row apply-opportunity-row">
+                        <label asp-for="@Model.ApplyModel.Email" class="col-form-label col-sm-2">Email</label>
+                        <input asp-for="@Model.ApplyModel.Email" class="form-control col-sm-10" />
                         <span asp-validation-for="@Model.ApplyModel.Email" class="text-danger"></span>
                     </div>
                     <div class="form-group">
-                        <label asp-for="@Model.ApplyModel.Message" class="col-form-label">Message</label>
-                        <textarea asp-for="@Model.ApplyModel.Message" class="form-control" rows="4"></textarea>
+                        <label asp-for="@Model.ApplyModel.Message" class="row apply-opportunity-row col-form-label col-sm-2">Message</label>
+                        <div class="row apply-opportunity-row">
+                            <div class="col-sm-2"></div>
+                            <textarea asp-for="@Model.ApplyModel.Message" class="form-control col-sm-10" rows="4"></textarea>
+                        </div>
                         <span asp-validation-for="@Model.ApplyModel.Message" class="text-danger"></span>
                     </div>
                 </div>
