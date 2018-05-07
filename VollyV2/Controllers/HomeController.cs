@@ -60,11 +60,30 @@ namespace VollyV2.Controllers
             return Error();
         }
 
-        public IActionResult About()
+        public IActionResult Contact()
         {
-            ViewData["Message"] = "Your application description page.";
-
+            ViewData["Message"] = TempData["Message"];
+            TempData.Clear();
             return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Contact([Bind("Name,Email,Message")] ContactUsModel contactUsModel)
+        {
+            if (ModelState.IsValid)
+            {
+                List<string> emails = new List<String>()
+                {
+                    VollyConstants.AliceEmail,
+                    VollyConstants.VollyAdminEmail,
+                    VollyConstants.MoEmail
+                };
+                await _emailSender.SendEmailsAsync(emails, "Message From: " + contactUsModel.Name, contactUsModel.GetEmailMessage());
+                TempData["Message"] = "Thank you, your message has been sent!";
+                return RedirectToAction("Contact");
+            }
+            return View(contactUsModel);
         }
 
         public IActionResult Organizations()

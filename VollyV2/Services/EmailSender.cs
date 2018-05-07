@@ -30,7 +30,8 @@ namespace VollyV2.Services
             {
                 From = new EmailAddress(FromEmail, "Volly Team"),
                 Subject = subject,
-                HtmlContent = message + "<strong>Contact Us!</strong>"
+                HtmlContent = message,
+                PlainTextContent = message
             };
 
             foreach (string email in emailList)
@@ -47,13 +48,13 @@ namespace VollyV2.Services
             SendGridMessage sendGridMessage = new SendGridMessage()
             {
                 From = new EmailAddress(FromEmail, "Volly Team"),
-                Subject = "Application for:" + application.Opportunity.Name,
+                Subject = "Application For: " + application.Opportunity.Name,
                 TemplateId = "e9713a19-2a9e-4d0f-8994-088633aaab25",
                 HtmlContent = application.GetEmailMessage(),
                 PlainTextContent = application.GetEmailMessage()
             };
             sendGridMessage.AddTo(new EmailAddress(application.Email, application.Name));
-            sendGridMessage.AddCc(new EmailAddress("alicelam22@gmail.com", "Alice"));
+            sendGridMessage.AddCc(new EmailAddress(VollyConstants.AliceEmail, "Alice"));
 
             DateTime dateTime = VollyConstants.ConvertFromUtc(application.Opportunity.DateTime);
 
