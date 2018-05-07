@@ -55,7 +55,7 @@ namespace VollyV2.Services
             sendGridMessage.AddTo(new EmailAddress(application.Email, application.Name));
             sendGridMessage.AddCc(new EmailAddress("alicelam22@gmail.com", "Alice"));
 
-            DateTime dateTime = TimeZoneInfo.ConvertTimeFromUtc(application.Opportunity.DateTime, VollyConstants.TimeZoneInfo);
+            DateTime dateTime = VollyConstants.ConvertFromUtc(application.Opportunity.DateTime);
 
             sendGridMessage.AddSubstitution(":time", dateTime.ToShortDateString() + " " + dateTime.ToShortTimeString());
             sendGridMessage.AddSubstitution(":description", application.Opportunity.Description);

@@ -49,9 +49,9 @@ namespace VollyV2.Models.Volly
                 OrganizationId = opportunity.Organization.Id,
                 CategoryId = opportunity.Category.Id,
                 ImageUrl = opportunity.ImageUrl,
-                DateTime = TimeZoneInfo.ConvertTimeFromUtc(opportunity.DateTime, VollyConstants.TimeZoneInfo),
-                EndDateTime = TimeZoneInfo.ConvertTimeFromUtc(opportunity.EndDateTime, VollyConstants.TimeZoneInfo),
-                ApplicationDeadline = TimeZoneInfo.ConvertTimeFromUtc(opportunity.ApplicationDeadline, VollyConstants.TimeZoneInfo),
+                DateTime = VollyConstants.ConvertFromUtc(opportunity.DateTime),
+                EndDateTime = VollyConstants.ConvertFromUtc(opportunity.EndDateTime),
+                ApplicationDeadline = VollyConstants.ConvertFromUtc(opportunity.ApplicationDeadline),
                 Openings = opportunity.Openings,
                 Categories = new SelectList(dbContext.Categories
                     .OrderBy(c => c.Name)
@@ -64,20 +64,16 @@ namespace VollyV2.Models.Volly
 
         public Opportunity GetOpportunity(ApplicationDbContext context)
         {
-            Opportunity opportunity = context.Opportunities.Find(Id);
-            if (opportunity == null)
-            {
-                opportunity = new Opportunity();
-            }
+            Opportunity opportunity = context.Opportunities.Find(Id) ?? new Opportunity();
             opportunity.Name = Name;
             opportunity.Description = Description;
             opportunity.Address = Address;
             opportunity.ImageUrl = ImageUrl;
             opportunity.Organization = context.Organizations.Find(OrganizationId);
             opportunity.Category = context.Categories.Find(CategoryId);
-            opportunity.DateTime = TimeZoneInfo.ConvertTimeToUtc(DateTime, VollyConstants.TimeZoneInfo);
-            opportunity.EndDateTime = TimeZoneInfo.ConvertTimeToUtc(EndDateTime, VollyConstants.TimeZoneInfo);
-            opportunity.ApplicationDeadline = TimeZoneInfo.ConvertTimeToUtc(ApplicationDeadline, VollyConstants.TimeZoneInfo);
+            opportunity.DateTime = VollyConstants.ConvertToUtc(DateTime);
+            opportunity.EndDateTime = VollyConstants.ConvertToUtc(EndDateTime);
+            opportunity.ApplicationDeadline = VollyConstants.ConvertToUtc(ApplicationDeadline);
             opportunity.Openings = Openings;
             opportunity.Location = GoogleLocator.GetLocationFromAddress(Address);
 

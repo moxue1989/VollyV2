@@ -28,7 +28,7 @@ namespace VollyV2.Models.Volly
                 Name = Name,
                 Email = Email,
                 Message = Message,
-                DateTime = DateTime.Now.ToUniversalTime(),
+                DateTime = DateTime.UtcNow,
                 Opportunity = context.Opportunities.Find(OpportunityId)
             };
         }

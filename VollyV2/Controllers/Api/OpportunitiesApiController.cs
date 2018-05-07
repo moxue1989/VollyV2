@@ -44,14 +44,10 @@ namespace VollyV2.Controllers.Api
                     .Include(o => o.Organization)
                     .ThenInclude(o => o.Cause)
                     .Include(o => o.Location)
+                    .Where(o => o.Applications.Count < o.Openings)
                     .ToListAsync();
-                foreach (var o in opportunities)
-                {
-                    o.DateTime = TimeZoneInfo.ConvertTimeFromUtc(o.DateTime, VollyConstants.TimeZoneInfo);
-                    o.EndDateTime = TimeZoneInfo.ConvertTimeFromUtc(o.EndDateTime, VollyConstants.TimeZoneInfo);
-                    o.ApplicationDeadline = TimeZoneInfo.ConvertTimeFromUtc(o.ApplicationDeadline, VollyConstants.TimeZoneInfo);
-                }
-                return opportunities;
+
+                return opportunities.Select(OpportunityTimeZoneConverter.ConvertFromUtc()).ToList();
             });
         }
 

@@ -28,12 +28,51 @@ namespace VollyV2.Controllers.Mvc
                 .Include(a => a.Opportunity)
                 .ToListAsync();
 
-            foreach (Application application in applications)
-            {
-                application.DateTime =
-                    TimeZoneInfo.ConvertTimeFromUtc(application.DateTime, VollyConstants.TimeZoneInfo);
-            }
+            applications = applications.Select(ConvertFromUtc());
             return View(applications);
+        }
+
+        private Func<Application, Application> ConvertFromUtc()
+        {
+            return delegate (Application application)
+            {
+                application.DateTime = VollyConstants.ConvertFromUtc(application.DateTime);
+                return application;
+            };
+        }
+
+        // GET: Applications/Delete/5
+        public async Task<IActionResult> Delete(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var application = await _context.Applications
+                .SingleOrDefaultAsync(m => m.Id == id);
+            if (application == null)
+            {
+                return NotFound();
+            }
+
+            return View(application);
+        }
+
+        // POST: Applications/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            var application = await _context.Applications.SingleOrDefaultAsync(m => m.Id == id);
+            _context.Applications.Remove(application);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
+
+        private bool ApplicationExists(int id)
+        {
+            return _context.Applications.Any(e => e.Id == id);
         }
     }
 }

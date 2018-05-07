@@ -56,7 +56,9 @@ namespace VollyV2.Controllers.Mvc
                     .ToListAsync();
             }
 
-            opportunities.ForEach(a => a.DateTime = TimeZoneInfo.ConvertTimeFromUtc(a.DateTime, VollyConstants.TimeZoneInfo));
+            opportunities = opportunities
+                .Select(OpportunityTimeZoneConverter.ConvertFromUtc())
+                .ToList();
 
             return View(opportunities);
         }
@@ -97,8 +99,9 @@ namespace VollyV2.Controllers.Mvc
             {
                 return new ForbidResult();
             }
-            opportunity.DateTime =
-                TimeZoneInfo.ConvertTimeFromUtc(opportunity.DateTime, VollyConstants.TimeZoneInfo);
+
+            opportunity = OpportunityTimeZoneConverter.ConvertFromUtc()
+                .Invoke(opportunity);
 
             return View(opportunity);
         }
@@ -228,8 +231,8 @@ namespace VollyV2.Controllers.Mvc
             {
                 return new ForbidResult();
             }
-            opportunity.DateTime = TimeZoneInfo.ConvertTimeFromUtc(opportunity.DateTime, VollyConstants.TimeZoneInfo);
-
+        
+            opportunity = OpportunityTimeZoneConverter.ConvertFromUtc().Invoke(opportunity);
             return View(opportunity);
         }
 
