@@ -28,6 +28,11 @@ namespace VollyV2.Controllers
 
         public IActionResult Index()
         {
+            return View();
+        }
+
+        public IActionResult Opportunities()
+        {
             MapModel mapModel = new MapModel
             {
                 CategoriesList = new SelectList(_dbContext.Categories
