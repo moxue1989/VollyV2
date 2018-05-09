@@ -1,0 +1,166 @@
+﻿@using VollyV2.Data.Volly
+@model VollyV2.Models.Volly.MapModel
+
+@{
+    ViewData["Title"] = "Opportunities";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-8 col-md-6 col-sm-12 order-lg-first order-md-first order-last">
+            <button data-toggle="collapse" class="btn btn-info btn-block" data-target="#filterPanel">Show/Hide Filter Panel</button>
+            <br />
+            <div id="filterPanel" class="collapse">
+                <div class="row">
+                    <div class="col-lg-4 col-md-6 col-sm-12">
+                        <div class="card border-light mb-3">
+                            <div class="card-header">Causes:</div>
+                            <div class="card-body">
+                                <select asp-for="Causes" class="form-control"
+                                        asp-items="@Model?.CausesList" id="CausesList">
+                                    <option value="0" selected="selected">-- All --</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-6 col-sm-12">
+                        <div class="card border-light mb-3">
+                            <div class="card-header">Categories:</div>
+                            <div class="card-body">
+                                <select asp-for="Categories" class="form-control" id="CategoryList"
+                                        asp-items="@Model?.CategoriesList">
+                                    <option value="0" selected="selected">-- All --</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-6 col-sm-12">
+                        <div class="card border-light mb-3">
+                            <div class="card-header">Date Range:</div>
+                            <div>Start Date: <input type="date" class="form-control" id="StartDate"></div>
+                            <div>End Date: <input type="date" class="form-control" id="EndDate"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-4 col-md-2 col-sm-12">
+                    </div>
+                    <div class="col-lg-4 col-md-8 col-sm-12">
+                        <button type="button" class="btn btn-success btn-sm btn-block" id="FilterOpportunities">Apply Filters</button>
+                        <br />
+                    </div>
+                    <div class="col-lg-4 col-md-2 col-sm-12">
+                    </div>
+                </div>
+            </div>
+
+            <div class="row" id="opportunityList">
+            </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6 col-sm-12 order-sm-first order-first">
+            <div class="map" id="map"></div>
+            <br />
+        </div>
+    </div>
+    <br />
+</div>
+
+
+<div class="modal fade" id="OpportunityModal" tabindex="-1" role="dialog" aria-labelledby="OpportunityModalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="OpportunityModalTitle"></h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form asp-action="Apply" id="applyForm">
+                <div class="modal-body">
+                    <h4 id="OpportunityModalOrganization"></h4>
+                    <h5 class="text-warning" id="OpportunityModalAddress"></h5>
+                    <span class="badge badge-success badgeSize" id="OpportunityModalCategory"></span>
+                    <span class="badge badge-warning badgeSize" id="OpportunityModalCause"></span>
+                    <span class="badge badge-info badgeSize" id="OpportunityModalTime"></span>
+                    <br />
+                    <h4 id="OpportunityModalDescription"></h4>
+                    <input asp-for="@Model.ApplyModel.OpportunityId" type="hidden" class="form-control" id="OpportunityId" />
+                    <h3 class="modal-title"> Apply Now:</h3>
+                    <br />
+                    <div class="form-group row apply-opportunity-row">
+                        <label asp-for="@Model.ApplyModel.Name" class="col-form-label col-sm-2">Name</label>
+                        <input asp-for="@Model.ApplyModel.Name" class="form-control col-sm-10" />
+                        <span asp-validation-for="@Model.ApplyModel.Name" class="text-danger"></span>
+                    </div>
+                    <div class="form-group row apply-opportunity-row">
+                        <label asp-for="@Model.ApplyModel.Email" class="col-form-label col-sm-2">Email</label>
+                        <input asp-for="@Model.ApplyModel.Email" class="form-control col-sm-10" />
+                        <span asp-validation-for="@Model.ApplyModel.Email" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="@Model.ApplyModel.Message" class="row apply-opportunity-row col-form-label col-sm-2">Message</label>
+                        <div class="row apply-opportunity-row">
+                            <div class="col-sm-2"></div>
+                            <textarea asp-for="@Model.ApplyModel.Message" class="form-control col-sm-10" rows="4"></textarea>
+                        </div>
+                        <span asp-validation-for="@Model.ApplyModel.Message" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Volunteer</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="ApplyModal" tabindex="-1" role="dialog" aria-labelledby="ApplyModalTitle" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="ApplyModalTitle">Thanks for applying</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <h3>Thank you for applying! you will receive an email confirmation shortly!</h3>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/js/gmaps.js"></script>
+
+<script src="~/js/opportunities.js"></script>
+
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCi84qEblX_oHY4fLUW8pjliIsrXZJs3eI&callback=initMap"></script>
+
+<script>
+    $('#applyForm').submit(function (e) {
+        var $theForm = $(this);
+
+        $.ajax({
+            type: $theForm.attr('method'),
+            url: $theForm.attr('action'),
+            data: $theForm.serialize(),
+            success: function (data) {
+                $('#OpportunityModal').modal('hide');
+                $('#ApplyModal').modal('show');
+                $theForm.trigger("reset");
+            }
+        });
+
+
+        return false;
+    });
+</script>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

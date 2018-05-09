@@ -80,3 +80,15 @@ img {
 .modal-header{
     padding-bottom:0;
 }
+.lead {
+    color: #6eb5ff;
+    font-weight: 600;
+    font: 2em "Raleway", sans-serif;
+}
+.index-subtitle{
+    font-weight:700;
+}
+.highlight-color {
+    color: #6eb5ff;
+    font-weight:700;
+}
