@@ -7,6 +7,9 @@
 @if (SignInManager.IsSignedIn(User))
 {
     <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Chat">Chat Beta</a>
+        </li>
         @if (User.IsInRole("Admin"))
         {
             <li class="nav-item dropdown">
