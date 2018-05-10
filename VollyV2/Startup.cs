@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Rewrite;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using VollyV2.Chat;
 using VollyV2.Data;
 using VollyV2.Models;
 using VollyV2.Services;
@@ -46,6 +47,8 @@ namespace VollyV2
 
             services.AddMvc();
 
+            services.AddSignalR();
+
             services.AddScoped<IAuthorizationHandler, OpportunityAuthorizationHandler>();
 
             services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
@@ -78,6 +81,11 @@ namespace VollyV2
             app.UseAuthentication();
 
             app.UseCors("MyPolicy");
+
+            app.UseSignalR(routes =>
+            {
+                routes.MapHub<ChatHub>("/chathub");
+            });
 
             app.UseMvc(routes =>
             {
