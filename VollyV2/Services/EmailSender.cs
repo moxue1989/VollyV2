@@ -15,11 +15,9 @@ namespace VollyV2.Services
     // For more details see https://go.microsoft.com/fwlink/?LinkID=532713
     public class EmailSender : IEmailSender
     {
-        //private static readonly string FromEmail = Environment.GetEnvironmentVariable("email_address");
-        private static readonly string FromEmail = "admin@vollyapp.com";
-        //private static readonly string SendgridApiKey = Environment.GetEnvironmentVariable("sendgrid_api");
-        private static readonly string SendgridApiKey = "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";
-
+        private static readonly string FromEmail = Environment.GetEnvironmentVariable("email_address");
+        private static readonly string SendgridApiKey = Environment.GetEnvironmentVariable("sendgrid_api");
+        
         public async Task SendEmailAsync(string email, string subject, string message)
         {
             await SendEmailsAsync(new List<string> { email }, subject, message);
