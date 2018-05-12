@@ -97,7 +97,11 @@ nav img.img-brand{
     color: #fff;
     background-color: #6db5ff;
 }
-.result-desc {
+.result-name {
     padding-left: 0.25rem;
     padding-right: 0.25rem;
+}
+.result-org-name {
+    padding-left: 0.25rem;
+    padding-right: 0.25rem;    
 }

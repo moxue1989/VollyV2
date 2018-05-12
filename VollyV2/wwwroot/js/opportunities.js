@@ -45,8 +45,8 @@ function appendOpportunityPanel(opportunity) {
         '<img  src="' + opportunity.imageUrl + '" />' +
         '<div class="result-details"><div class="result-datetime">' + dateTimeString + '</div>' +
         '<div class="result-address">' + opportunity.address + '</div>' +
-        '<div class="result-desc">' + opportunity.name +
-        '<br/>' + opportunity.organization.name + '</div>' +
+        '<div class="result-name">' + opportunity.name +'</div>'+
+        '<div class="result-org-name">' + opportunity.organization.name + '</div>' +
         '</div></div></div>');
     $("#opportunity-" + opportunity.id).click(function (e) {
         openOpportunityModal(opportunity);
