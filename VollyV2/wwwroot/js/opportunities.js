@@ -20,7 +20,7 @@ function openOpportunityModal(opportunity) {
         causename = opportunity.organization.cause.name;
     }
     var dateTime = new Date(opportunity.dateTime);
-    var dateTimeString = "";
+    var dateTimeString = "Coming soon!";
     if (dateTime.getFullYear() >= 1970) {
         dateTimeString = dateTime.toDateString() + " " + dateTime.toLocaleTimeString();
     }
@@ -37,7 +37,7 @@ function openOpportunityModal(opportunity) {
 
 function appendOpportunityPanel(opportunity) {
     var dateTime = new Date(opportunity.dateTime);
-    var dateTimeString = "";
+    var dateTimeString = "Coming soon!";
     if (dateTime.getFullYear() >= 1970) {
         dateTimeString = dateTime.toDateString() + " " + dateTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
     }
