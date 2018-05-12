@@ -45,6 +45,7 @@ namespace VollyV2.Controllers.Api
                     .ThenInclude(o => o.Cause)
                     .Include(o => o.Location)
                     .Where(o => o.Applications.Count < o.Openings)
+                    .OrderBy(o => o.ApplicationDeadline)
                     .ToListAsync();
 
                 return opportunities.Select(OpportunityTimeZoneConverter.ConvertFromUtc()).ToList();
