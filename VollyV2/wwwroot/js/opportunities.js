@@ -19,12 +19,16 @@ function openOpportunityModal(opportunity) {
     if (opportunity.organization.cause) {
         causename = opportunity.organization.cause.name;
     }
-    var date = new Date(opportunity.dateTime);
+    var dateTime = new Date(opportunity.dateTime);
+    var dateTimeString = "";
+    if (dateTime.getFullYear() >= 1970) {
+        dateTimeString = dateTime.toDateString() + " " + dateTime.toLocaleTimeString();
+    }
     $("#OpportunityId").val(opportunity.id);
     $("#OpportunityModalTitle").html(opportunity.name);
     $("#OpportunityModalCategory").html(opportunity.category.name);
     $("#OpportunityModalCause").html(causename);
-    $("#OpportunityModalTime").html(date.toDateString() + " " + date.toLocaleTimeString());
+    $("#OpportunityModalTime").html(dateTimeString);
     $("#OpportunityModalOrganization").html(opportunity.organization.name);
     $("#OpportunityModalAddress").html(opportunity.address);
     $("#OpportunityModalDescription").html(opportunity.description);
@@ -32,12 +36,16 @@ function openOpportunityModal(opportunity) {
 };
 
 function appendOpportunityPanel(opportunity) {
-    var date = new Date(opportunity.dateTime);
+    var dateTime = new Date(opportunity.dateTime);
+    var dateTimeString = "";
+    if (dateTime.getFullYear() >= 1970) {
+        dateTimeString = dateTime.toDateString() + " " + dateTime.toLocaleTimeString();
+    }
     $("#opportunityList").append('<div id="opportunity-' + opportunity.id + '" class="col-lg-4 col-md-6 col-sm-12 result-card">' +
         '<img  src="' + opportunity.imageUrl + '" />' +
         '<br/>' + opportunity.name +
         '<br/>' + opportunity.organization.name +
-        '<br/>' + date.toDateString() + " " + date.toLocaleTimeString() +
+        '<br/>' + dateTimeString +
         '<br/>' + opportunity.address +
         '<br/>' + opportunity.category.name +
         '</div>');
