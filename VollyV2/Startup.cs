@@ -43,6 +43,8 @@ namespace VollyV2
             // Add application services.
             services.AddTransient<IEmailSender, EmailSender>();
 
+            services.AddSingleton<IImageManager, ImageManager>();
+
             services.AddMemoryCache();
 
             services.AddMvc();

@@ -1,0 +1,17 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+}
+
+@ViewData["message"]
+
+<img src="@ViewData["message"]"/>
+
+<h2>Index</h2>
+
+@using (Html.BeginForm("Index", "Import", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <input type="file" name="postedFile" />
+    <input type="submit" value="Import" />
+}
+
