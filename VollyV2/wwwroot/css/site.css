@@ -40,39 +40,17 @@ img {
     word-wrap: break-word;
     background-color: #fff;
     background-clip: border-box;
-    padding-top: 1.5rem;
-    padding-bottom: 1.5rem;
+    padding-top: .5rem;
+    padding-bottom: .5rem;
     -webkit-transition: all 0.25s;
     transition: all 0.25s;
 }
-    .result-card:after {
-        content: "";
-        position: absolute;
-        top: .25em;
-        left: .25em;
-        bottom: .25em;
-        right: .25em;
-        width: 100%;
-        height: 100%;
-        border: 1px solid rgba(0,0,0,.125);
-        border-radius: .25em;
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-        opacity: 0;
-        -webkit-transition: all 0.25s;
-        transition: all 0.25s;
-    }
-    .result-card:hover {
-        position: relative;
-        z-index: 1;
-        -webkit-transform: scale(1.025, 1.025);
-        transform: scale(1.025, 1.025);
-    }
-        .result-card:hover:after {
-            opacity: 1;
-            z-index: 1;
-            position: absolute;
-        }
-
+.result-card:hover {
+    position: relative;
+    z-index: 1;
+    -webkit-transform: scale(1.025, 1.025);
+    transform: scale(1.025, 1.025);
+}
 .apply-opportunity-row{
     margin-left:1rem;
     margin-right:1rem;
@@ -94,4 +72,36 @@ img {
 }
 nav img.img-brand{
     height:2.5rem;
+}
+.result-card-inner {
+    height:100%;
+    width:100%;
+    border-radius:0.25rem;
+    border: 1px solid rgba(128,128,128,0.5);
+}
+.result-card-inner:hover {
+    border: 1px solid rgba(128,128,128,0.5);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+.result-details{
+    text-align:center;
+}
+.result-datetime{
+    display:inline-block;
+    font-size:0.8rem;
+    font-weight:700;
+}
+.result-address {
+    font-size:0.9rem;
+    min-height:2.5rem;
+    color: #fff;
+    background-color: #6db5ff;
+}
+.result-name {
+    padding-left: 0.25rem;
+    padding-right: 0.25rem;
+}
+.result-org-name {
+    padding-left: 0.25rem;
+    padding-right: 0.25rem;    
 }
