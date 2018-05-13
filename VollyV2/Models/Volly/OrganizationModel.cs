@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using VollyV2.Controllers;
 using VollyV2.Data;
@@ -30,6 +31,8 @@ namespace VollyV2.Models.Volly
         [Required]
         [Display(Name = "Cause")]
         public int CauseId { get; set; }
+        public string ImageUrl { get; set; }
+        public IFormFile ImageFile { get; set; }
         public SelectList Causes { get; set; }
 
         public static OrganizationModel FromOrganization(ApplicationDbContext dbContext, Organization organization)
@@ -45,27 +48,33 @@ namespace VollyV2.Models.Volly
                 MissionStatement = organization.MissionStatement,
                 FullDescription = organization.FullDescription,
                 CauseId = organization.Cause?.Id ?? 0,
+                ImageUrl = organization.ImageUrl,
                 Causes = new SelectList(dbContext.Causes
                     .OrderBy(c => c.Name)
                     .ToList(), "Id", "Name")
             };
         }
 
-        public Organization GetOrganization(ApplicationDbContext context)
+        public Organization GetOrganization(ApplicationDbContext context, IImageManager imageManager)
         {
-            return new Organization
+            string imageUrl = ImageFile == null ? null : imageManager.UploadImageAsync(ImageFile, "org" + Id + ImageFile.FileName).Result;
+         
+            Organization organization = context.Organizations.Find(Id) ?? new Organization();
+            organization.Id = Id;
+            organization.Name = Name;
+            organization.ContactEmail = ContactEmail;
+            organization.PhoneNumber = PhoneNumber;
+            organization.Address = Address;
+            organization.WebsiteLink = WebsiteLink;
+            organization.MissionStatement = MissionStatement;
+            organization.FullDescription = FullDescription;
+            organization.Cause = context.Causes.Find(CauseId);
+            organization.Location = GoogleLocator.GetLocationFromAddress(Address);
+            if (imageUrl != null)
             {
-                Id = Id,
-                Name = Name,
-                ContactEmail = ContactEmail,
-                PhoneNumber = PhoneNumber,
-                Address = Address,
-                WebsiteLink = WebsiteLink,
-                MissionStatement = MissionStatement,
-                FullDescription = FullDescription,
-                Cause = context.Causes.Find(CauseId),
-                Location = GoogleLocator.GetLocationFromAddress(Address)
-            };
+                organization.ImageUrl = imageUrl;
+            }
+            return organization;
         }
     }
 }

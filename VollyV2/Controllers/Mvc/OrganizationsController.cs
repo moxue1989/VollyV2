@@ -17,10 +17,13 @@ namespace VollyV2.Controllers.Mvc
     public class OrganizationsController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly IImageManager _imageManager;
 
-        public OrganizationsController(ApplicationDbContext context)
+        public OrganizationsController(ApplicationDbContext context,
+            IImageManager imageManager)
         {
             _context = context;
+            _imageManager = imageManager;
         }
 
         // GET: Organizations
@@ -67,11 +70,11 @@ namespace VollyV2.Controllers.Mvc
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,ContactEmail,PhoneNumber,Address,WebsiteLink,MissionStatement,FullDescription,CauseId")] OrganizationModel organizationModel)
+        public async Task<IActionResult> Create([Bind("Id,Name,ContactEmail,PhoneNumber,Address,WebsiteLink,MissionStatement,FullDescription,CauseId,ImageFile")] OrganizationModel organizationModel)
         {
             if (ModelState.IsValid)
             {
-                Organization organization = organizationModel.GetOrganization(_context);
+                Organization organization = organizationModel.GetOrganization(_context, _imageManager);
 
                 _context.Add(organization);
                 await _context.SaveChangesAsync();
@@ -105,7 +108,7 @@ namespace VollyV2.Controllers.Mvc
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,ContactEmail,PhoneNumber,Address,WebsiteLink,MissionStatement,FullDescription,CauseId")] OrganizationModel organizationModel)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,ContactEmail,PhoneNumber,Address,WebsiteLink,MissionStatement,FullDescription,CauseId,ImageFile")] OrganizationModel organizationModel)
         {
             if (id != organizationModel.Id)
             {
@@ -117,7 +120,7 @@ namespace VollyV2.Controllers.Mvc
                 Organization organization = new Organization();
                 try
                 {
-                    organization = organizationModel.GetOrganization(_context);
+                    organization = organizationModel.GetOrganization(_context, _imageManager);
                     _context.Update(organization);
                     await _context.SaveChangesAsync();
                 }
