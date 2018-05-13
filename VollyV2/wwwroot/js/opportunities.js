@@ -79,6 +79,7 @@ function clearOpportunities() {
 function initOpportunities(opportunities) {
     addOpportunityMarkers(opportunities);
     var categoryLookup = {};
+    var causeLookup = {};
     for (var opportunity, i = 0; opportunity = opportunities[i++];) {
         if (!(opportunity.category.id in categoryLookup)) {
             categoryLookup[opportunity.category.id] = 1;
@@ -89,7 +90,6 @@ function initOpportunities(opportunities) {
                 })
             );
         }
-        var causeLookup = {};
         if (!(opportunity.organization.cause.id in causeLookup)) {
             causeLookup[opportunity.organization.cause.id] = 1;
             $('#CausesList').append(
