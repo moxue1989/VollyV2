@@ -16,8 +16,7 @@
                         <div class="card border-light mb-3">
                             <div class="card-header">Causes:</div>
                             <div class="card-body">
-                                <select asp-for="Causes" class="form-control"
-                                        asp-items="@Model?.CausesList" id="CausesList">
+                                <select asp-for="Causes" class="form-control" id="CausesList">
                                     <option value="0" selected="selected">-- All --</option>
                                 </select>
                             </div>
@@ -27,8 +26,7 @@
                         <div class="card border-light mb-3">
                             <div class="card-header">Categories:</div>
                             <div class="card-body">
-                                <select asp-for="Categories" class="form-control" id="CategoryList"
-                                        asp-items="@Model?.CategoriesList">
+                                <select asp-for="Categories" class="form-control" id="CategoryList">
                                     <option value="0" selected="selected">-- All --</option>
                                 </select>
                             </div>

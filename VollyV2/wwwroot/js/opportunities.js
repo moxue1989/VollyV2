@@ -45,7 +45,7 @@ function appendOpportunityPanel(opportunity) {
         '<img  src="' + opportunity.imageUrl + '" />' +
         '<div class="result-details"><div class="result-datetime">' + dateTimeString + '</div>' +
         '<div class="result-address">' + opportunity.address + '</div>' +
-        '<div class="result-name">' + opportunity.name +'</div>'+
+        '<div class="result-name">' + opportunity.name + '</div>' +
         '<div class="result-org-name">' + opportunity.organization.name + '</div>' +
         '</div></div></div>');
     $("#opportunity-" + opportunity.id).click(function (e) {
@@ -67,7 +67,7 @@ function getAllOpportunities() {
     $.getJSON(
         '/api/Opportunities',
         function (opportunities) {
-            addOpportunityMarkers(opportunities);
+            initOpportunities(opportunities);
         });
 };
 
@@ -75,6 +75,32 @@ function clearOpportunities() {
     deleteMarkers();
     $("#opportunityList").empty();
 };
+
+function initOpportunities(opportunities) {
+    addOpportunityMarkers(opportunities);
+    var categoryLookup = {};
+    for (var opportunity, i = 0; opportunity = opportunities[i++];) {
+        if (!(opportunity.category.id in categoryLookup)) {
+            categoryLookup[opportunity.category.id] = 1;
+            $('#CategoryList').append(
+                $('<option>', {
+                    value: opportunity.category.id,
+                    text: opportunity.category.name
+                })
+            );
+        }
+        var causeLookup = {};
+        if (!(opportunity.organization.cause.id in causeLookup)) {
+            causeLookup[opportunity.organization.cause.id] = 1;
+            $('#CausesList').append(
+                $('<option>', {
+                    value: opportunity.organization.cause.id,
+                    text: opportunity.organization.cause.name
+                })
+            );
+        }
+    }
+}
 
 function addOpportunityMarkers(opportunities) {
     for (var i = 0; i < opportunities.length; i++) {
