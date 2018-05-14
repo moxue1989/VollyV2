@@ -38,7 +38,7 @@ $("#send").click(event => {
 
 connection.start()
     .then(() => {
-        const encodedMsg = "VollyBot: " + "Welcome to Volly! Let me help you find some opportunities!\n" +
+        const encodedMsg = "VollyBot: " + "Welcome to Volly! Let me help you find some opportunities! \n" +
             "Tell me a category or cause that you are interested in.";
         const div = document.createElement("div");
         div.textContent = encodedMsg;
