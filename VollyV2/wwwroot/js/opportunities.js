@@ -80,7 +80,8 @@ function initOpportunities(opportunities) {
     addOpportunityMarkers(opportunities);
     var categoryLookup = {};
     var causeLookup = {};
-    for (var opportunity, i = 0; opportunity = opportunities[i++];) {
+    for (var j = 0; j < opportunities.length; j++) {
+        var opportunity = opportunities[j];
         if (!(opportunity.category.id in categoryLookup)) {
             categoryLookup[opportunity.category.id] = 1;
             $('#CategoryList').append(

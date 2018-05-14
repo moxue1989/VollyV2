@@ -8,6 +8,7 @@ using Microsoft.Extensions.Caching.Memory;
 using VollyV2.Data;
 using VollyV2.Data.Volly;
 using VollyV2.Models.Volly;
+using VollyV2.Services;
 
 namespace VollyV2.Controllers.Api
 {
@@ -29,27 +30,9 @@ namespace VollyV2.Controllers.Api
         [HttpGet]
         public async Task<IActionResult> GetOpportunities()
         {
-            List<Opportunity> opportunities = await GetAllOpportunities();
+            List<Opportunity> opportunities = await VollyMemoryCache.GetAllOpportunities(_memoryCache, _context);
             
             return Ok(opportunities);
-        }
-
-        private async Task<List<Opportunity>> GetAllOpportunities()
-        {
-            return await _memoryCache.GetOrCreateAsync(VollyConstants.OpportunityCacheKey, async entry =>
-            {
-                entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(2);
-                List<Opportunity> opportunities = await _context.Opportunities
-                    .Include(o => o.Category)
-                    .Include(o => o.Organization)
-                    .ThenInclude(o => o.Cause)
-                    .Include(o => o.Location)
-                    .Where(o => o.Applications.Count < o.Openings)
-                    .OrderBy(o => o.ApplicationDeadline)
-                    .ToListAsync();
-
-                return opportunities.Select(OpportunityTimeZoneConverter.ConvertFromUtc()).ToList();
-            });
         }
 
         // GET: api/Opportunities/5
@@ -61,7 +44,7 @@ namespace VollyV2.Controllers.Api
                 return BadRequest(ModelState);
             }
 
-            Opportunity opportunity = (await GetAllOpportunities())
+            Opportunity opportunity = (await VollyMemoryCache.GetAllOpportunities(_memoryCache, _context))
                 .SingleOrDefault(m => m.Id == id);
 
             if (opportunity == null)
@@ -81,7 +64,7 @@ namespace VollyV2.Controllers.Api
                 return BadRequest(ModelState);
             }
 
-            var opportunities = (await GetAllOpportunities())
+            var opportunities = (await VollyMemoryCache.GetAllOpportunities(_memoryCache, _context))
                 .Where(o => (opportunitySearch.CauseIds.Contains(0) || o.Organization.Cause != null && opportunitySearch.CauseIds.Contains(o.Organization.Cause.Id)) &&
                 (opportunitySearch.CategoryIds.Contains(0) || opportunitySearch.CategoryIds.Contains(o.Category.Id)) &&
                 (opportunitySearch.StartDate == DateTime.MinValue || opportunitySearch.StartDate.Date <= o.DateTime.Date) &&

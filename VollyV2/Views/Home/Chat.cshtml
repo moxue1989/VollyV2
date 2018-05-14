@@ -5,27 +5,17 @@
 <h2>Chat</h2>
 
 <div class="container">
-    <div class="row">&nbsp;</div>
-    <div class="row">
-        <div class="col-6">&nbsp;</div>
-        <div class="col-6">
-            User..........<input type="text" id="userInput" />
+    <div style="border: solid; border-radius: 5px; border-color: black">
+        <div id="chatbox" style="height: 250px; background-color: whitesmoke; overflow: auto; word-wrap: break-word">
+            <span id="messages"></span>
             <br />
-            Message...<input type="text" id="messageInput" />
-            <input type="button" id="sendButton" value="Send Message" />
         </div>
     </div>
-    <div class="row">
-        <div class="col-12">
-            <hr />
-        </div>
+
+    <div class="input-group" id="msg">
+        <input class="form-control text-success" id="message" placeholder="Type Message Here" />
     </div>
-    <div class="row">
-        <div class="col-6">&nbsp;</div>
-        <div class="col-6">
-            <ul id="messagesList"></ul>
-        </div>
-    </div>
+    <button class="btn btn-primary btn-lg btn-block" id="send" type="button">Send Message</button>
 </div>
 <script src="~/lib/signalr/signalr.js"></script>
 <script src="~/js/chat.js"></script>
