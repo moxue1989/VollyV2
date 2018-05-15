@@ -26,6 +26,7 @@ namespace VollyV2.Controllers.Mvc
         {
             IEnumerable<Application> applications = await _context.Applications
                 .Include(a => a.Opportunity)
+                .Include(a => a.User)
                 .ToListAsync();
 
             applications = applications.Select(ConvertFromUtc());
