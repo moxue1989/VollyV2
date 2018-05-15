@@ -58,7 +58,7 @@ function initMap() {
         div: '#map',
         lat: 51.044308,
         lng: -114.0652801,
-        zoom: 12
+        zoom: 10
     });
     getAllOpportunities();
 };
