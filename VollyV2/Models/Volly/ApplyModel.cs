@@ -18,7 +18,6 @@ namespace VollyV2.Models.Volly
         [Required]
         [EmailAddress]
         public string Email { get; set; }
-        [Required]
         public string Message { get; set; }
 
         public Application GetApplication(ApplicationDbContext context)
