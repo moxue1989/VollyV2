@@ -103,7 +103,7 @@ namespace VollyV2.Controllers.Mvc
                 OpportunityId = opportunity.Id,
                 Opportunity = localOpportunity
             };
-            ViewData["message"] = Message;
+            ViewData["Message"] = Message;
             return View(applyModel);
         }
 

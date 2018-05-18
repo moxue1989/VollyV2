@@ -14,6 +14,14 @@ namespace VollyV2.Controllers
         public const string VollyAdminEmail = "admin@vollyapp.com";
         public const string MoEmail = "moxue2017@gmail.com";
 
+
+        public static readonly List<string> AllEmails = new List<String>()
+        {
+            VollyConstants.AliceEmail,
+            VollyConstants.VollyAdminEmail,
+            VollyConstants.MoEmail
+        };
+
         public static DateTime ConvertFromUtc(DateTime dateTime)
         {
             return TimeZoneInfo.ConvertTimeFromUtc(dateTime, TimeZoneInfo);

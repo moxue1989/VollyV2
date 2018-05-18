@@ -1,28 +1,20 @@
-﻿@model VollyV2.Models.Volly.ContactUsModel
+﻿@model VollyV2.Models.Volly.SuggestionModel
 
 @{
-    ViewData["Title"] = "Contact Us";
+    ViewData["Title"] = "Suggestion";
 }
 
-<h2>Contact Us:</h2>
-
-<h3>Is there a feature you would like us to add on this page? Have a volunteer opportunity to post? Is there a volunteer initiative you are dying to participate in that we can help plan? Fill out the form below and we will get back to you. </h3>
-
+<h2>Volly is still in Beta, we would love to have your feedback:</h2>
 <h4><a href="mailto:admin@vollyapp.com">admin@vollyapp.com</a></h4>
 
 <div class="row">
     <div class="col-md-6">
-        <form asp-action="Contact">
+        <form asp-action="Suggestion">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Name" class="col-form-label"></label>
                 <input asp-for="Name" class="form-control" />
                 <span asp-validation-for="Name" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Email" class="col-form-label"></label>
-                <input asp-for="Email" class="form-control" />
-                <span asp-validation-for="Email" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Message" class="col-form-label"></label>
