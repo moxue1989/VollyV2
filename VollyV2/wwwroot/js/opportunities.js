@@ -36,10 +36,9 @@ function openOpportunityModal(opportunity) {
 };
 
 function appendOpportunityPanel(opportunity) {
-    var dateTime = new Date(opportunity.dateTime);
     var dateTimeString = "Coming soon!";
-    if (dateTime.getFullYear() >= 1970) {
-        dateTimeString = dateTime.toDateString() + " " + dateTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    if (new Date(opportunity.dateTime).getFullYear() >= 1970) {
+        dateTimeString = moment(opportunity.dateTime).format('ddd MMM D YYYY h:mm a');
     }
     $("#opportunityList").append('<div id="opportunity-' + opportunity.id + '" class="col-lg-4 col-md-6 col-sm-12 result-card"><div class="result-card-inner">' +
         '<img  src="' + opportunity.imageUrl + '" />' +

@@ -45,12 +45,13 @@ img {
     -webkit-transition: all 0.25s;
     transition: all 0.25s;
 }
-.result-card:hover {
-    position: relative;
-    z-index: 1;
-    -webkit-transform: scale(1.025, 1.025);
-    transform: scale(1.025, 1.025);
-}
+    .result-card:hover {
+        position: relative;
+        z-index: 1;
+        cursor: pointer;
+        -webkit-transform: scale(1.025, 1.025);
+        transform: scale(1.025, 1.025);
+    }
 .apply-opportunity-row{
     margin-left:1rem;
     margin-right:1rem;
@@ -86,10 +87,21 @@ nav img.img-brand{
 .result-details{
     text-align:center;
 }
-.result-datetime{
-    display:inline-block;
-    font-size:0.8rem;
-    font-weight:700;
+.result-datetime {
+    position: absolute;
+    top: .5rem;
+    left: 0;
+    right: 0;
+    margin: auto;
+    display: inline-block;
+    font-size: 0.8rem;
+    font-weight: 700;
+    background-color: #6db5ff;
+    width: fit-content;
+    padding-left: .75rem;
+    padding-right: .75rem;
+    border-bottom-left-radius: .5rem;
+    border-bottom-right-radius: .5rem;
 }
 .result-address {
     font-size:0.9rem;
