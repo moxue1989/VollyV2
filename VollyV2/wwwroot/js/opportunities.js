@@ -36,8 +36,10 @@ function openOpportunityModal(opportunity) {
 };
 
 function appendOpportunityPanel(opportunity) {
+    console.log(opportunity.dateTime);
+    var dateTime = new Date(opportunity.dateTime);
     var dateTimeString = "Coming soon!";
-    if (new Date(opportunity.dateTime).getFullYear() >= 1970) {
+    if (dateTime.getFullYear() >= 1970) {
         dateTimeString = moment(opportunity.dateTime).format('ddd MMM D YYYY h:mm a');
     }
     $("#opportunityList").append('<div id="opportunity-' + opportunity.id + '" class="col-lg-4 col-md-6 col-sm-12 result-card"><div class="result-card-inner">' +
@@ -57,7 +59,7 @@ function initMap() {
         div: '#map',
         lat: 51.044308,
         lng: -114.0652801,
-        zoom: 10
+        zoom: 12
     });
     getAllOpportunities();
 };
@@ -79,8 +81,7 @@ function initOpportunities(opportunities) {
     addOpportunityMarkers(opportunities);
     var categoryLookup = {};
     var causeLookup = {};
-    for (var j = 0; j < opportunities.length; j++) {
-        var opportunity = opportunities[j];
+    for (var opportunity, i = 0; opportunity = opportunities[i++];) {
         if (!(opportunity.category.id in categoryLookup)) {
             categoryLookup[opportunity.category.id] = 1;
             $('#CategoryList').append(
