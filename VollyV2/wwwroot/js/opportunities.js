@@ -12,6 +12,7 @@ function addOpportunityMarker(opportunity) {
         }
     });
     markers.push(marker);
+    return marker;
 };
 
 function openOpportunityModal(opportunity) {
@@ -30,20 +31,20 @@ function openOpportunityModal(opportunity) {
     $("#OpportunityModalCause").html(causename);
     $("#OpportunityModalTime").html(dateTimeString);
     $("#OpportunityModalOrganization").html(opportunity.organization.name);
-    $("#OpportunityModalOrganizationUrl").attr("href",opportunity.organization.websiteLink);
+    $("#OpportunityModalOrganizationUrl").attr("href", opportunity.organization.websiteLink);
     $("#OpportunityModalAddress").html(opportunity.address);
     $("#OpportunityModalDescription").html(opportunity.description);
     $("#OpportunityModal").modal('show');
 };
 
-function appendOpportunityPanel(opportunity) {
+function appendOpportunityPanel(opportunity, marker) {
     var dateTime = new Date(opportunity.dateTime);
     var dateTimeString = "Coming soon!";
     if (dateTime.getFullYear() >= 1970) {
         dateTimeString = moment(opportunity.dateTime).format('ddd MMM D YYYY h:mm a');
     }
     $("#opportunityList").append('<div id="opportunity-' + opportunity.id + '" class="col-lg-4 col-md-6 col-sm-12 result-card"><div class="result-card-inner">' +
-        '<div class="wrap-center"><div class="result-datetime">' + dateTimeString + '</div></div>'+
+        '<div class="wrap-center"><div class="result-datetime">' + dateTimeString + '</div></div>' +
         '<img src="' + opportunity.imageUrl + '" />' +
         '<div class="result-details"><div class="result-address">' + opportunity.address + '</div>' +
         '<div class="result-org-name">' + opportunity.organization.name + '</div>' +
@@ -52,6 +53,12 @@ function appendOpportunityPanel(opportunity) {
     $("#opportunity-" + opportunity.id).click(function (e) {
         openOpportunityModal(opportunity);
     });
+    $("#opportunity-" + opportunity.id)
+        .hover(function (e) {
+            marker.setAnimation(google.maps.Animation.BOUNCE);
+        }, function (e) {
+            marker.setAnimation(null);
+        });
 };
 
 function initMap() {
@@ -109,8 +116,8 @@ function addOpportunityMarkers(opportunities) {
         if (!opportunity.location) {
             continue;
         }
-        addOpportunityMarker(opportunity);
-        appendOpportunityPanel(opportunity);
+        var marker = addOpportunityMarker(opportunity);
+        appendOpportunityPanel(opportunity, marker);
     }
 };
 
