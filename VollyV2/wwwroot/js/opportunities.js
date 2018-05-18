@@ -22,7 +22,7 @@ function openOpportunityModal(opportunity) {
     var dateTime = new Date(opportunity.dateTime);
     var dateTimeString = "Coming soon!";
     if (dateTime.getFullYear() >= 1970) {
-        dateTimeString = dateTime.toDateString() + " " + dateTime.toLocaleTimeString();
+        dateTimeString = moment(opportunity.dateTime).format('ddd MMM D YYYY h:mm a');
     }
     $("#OpportunityId").val(opportunity.id);
     $("#OpportunityModalTitle").html(opportunity.name);
@@ -30,13 +30,13 @@ function openOpportunityModal(opportunity) {
     $("#OpportunityModalCause").html(causename);
     $("#OpportunityModalTime").html(dateTimeString);
     $("#OpportunityModalOrganization").html(opportunity.organization.name);
+    $("#OpportunityModalOrganizationUrl").attr("href",opportunity.organization.websiteLink);
     $("#OpportunityModalAddress").html(opportunity.address);
     $("#OpportunityModalDescription").html(opportunity.description);
     $("#OpportunityModal").modal('show');
 };
 
 function appendOpportunityPanel(opportunity) {
-    console.log(opportunity.dateTime);
     var dateTime = new Date(opportunity.dateTime);
     var dateTimeString = "Coming soon!";
     if (dateTime.getFullYear() >= 1970) {
@@ -46,8 +46,8 @@ function appendOpportunityPanel(opportunity) {
         '<img  src="' + opportunity.imageUrl + '" />' +
         '<div class="result-details"><div class="result-datetime">' + dateTimeString + '</div>' +
         '<div class="result-address">' + opportunity.address + '</div>' +
-        '<div class="result-name">' + opportunity.name + '</div>' +
         '<div class="result-org-name">' + opportunity.organization.name + '</div>' +
+        '<div class="result-name">' + opportunity.name + '</div>' +
         '</div></div></div>');
     $("#opportunity-" + opportunity.id).click(function (e) {
         openOpportunityModal(opportunity);

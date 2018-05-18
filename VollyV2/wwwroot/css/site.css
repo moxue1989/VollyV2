@@ -115,5 +115,10 @@ nav img.img-brand{
 }
 .result-org-name {
     padding-left: 0.25rem;
-    padding-right: 0.25rem;    
+    padding-right: 0.25rem;
+    font-weight: 700;
+}
+
+#OpportunityModalOrganizationUrl {
+    text-decoration: none;
 }
