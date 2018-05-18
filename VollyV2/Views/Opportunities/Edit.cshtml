@@ -69,8 +69,17 @@
                 <input type="submit" value="Save" class="btn btn-default" />
             </div>
         </form>
+        <br/>
+        <form asp-action="Duplicate">
+            <input asp-for="Id" type="hidden" class="form-control" />
+            <div class="form-group">
+                <input type="submit" value="Duplicate" class="btn btn-default" />
+            </div>
+        </form>
     </div>
 </div>
+
+
 
 <div>
     <a asp-action="Index">Back to List</a>

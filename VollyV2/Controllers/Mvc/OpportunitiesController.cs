@@ -161,6 +161,30 @@ namespace VollyV2.Controllers.Mvc
             return View(model);
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Duplicate(int Id)
+        {
+            Opportunity opportunity = _context.Opportunities
+                .Include(o => o.Location)
+                .Include(o => o.Category)
+                .Include(o => o.Organization)
+                .FirstOrDefault(o => o.Id == Id);
+
+            if (opportunity == null)
+            {
+                return NotFound();
+            }
+
+            Opportunity clone = opportunity.Clone();
+            clone.CreatedByUser = await GetCurrentUser();
+
+            _context.Opportunities.Add(clone);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("Edit", new {id = clone.Id});
+        }
+
         // GET: Opportunities/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {

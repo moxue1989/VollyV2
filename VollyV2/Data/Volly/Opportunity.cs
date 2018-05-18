@@ -26,6 +26,29 @@ namespace VollyV2.Data.Volly
         public string ImageUrl { get; set; }
         public string CreatedByUserId { get; set; }
         public ApplicationUser CreatedByUser { get; set; }
+
+        public Opportunity Clone()
+        {
+            return new Opportunity()
+            {
+                Name = "copy of " + Name,
+                Description = Description,
+                Address = Address,
+                Organization = Organization,
+                Category = Category,
+                Location = new Location()
+                {
+                    Longitude = Location.Longitude,
+                    Latitude = Location.Latitude
+                },
+                DateTime = DateTime,
+                EndDateTime = EndDateTime,
+                ApplicationDeadline = ApplicationDeadline,
+                ImageUrl = ImageUrl
+            };
+        }
+
+
     }
 
     public static class OpportunityTimeZoneConverter
