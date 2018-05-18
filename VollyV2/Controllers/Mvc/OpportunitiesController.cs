@@ -21,14 +21,20 @@ namespace VollyV2.Controllers.Mvc
         private readonly ApplicationDbContext _context;
         private readonly IAuthorizationService _authorizationService;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IEmailSender _emailSender;
+
+        [TempData]
+        private string Message { get; set; }
 
         public OpportunitiesController(ApplicationDbContext context,
             UserManager<ApplicationUser> userManager,
-            IAuthorizationService authorizationService)
+            IAuthorizationService authorizationService,
+            IEmailSender emailSender)
         {
             _context = context;
             _userManager = userManager;
             _authorizationService = authorizationService;
+            _emailSender = emailSender;
         }
 
         // GET: Opportunities
@@ -90,22 +96,40 @@ namespace VollyV2.Controllers.Mvc
                 return NotFound();
             }
 
-            AuthorizationResult authorizationResult = await _authorizationService
-                .AuthorizeAsync(User, opportunity, new OpportunityCreatorRequirement());
+            Opportunity localOpportunity = OpportunityTimeZoneConverter.ConvertFromUtc().Invoke(opportunity);
 
-            if (!authorizationResult.Succeeded)
+            ApplyModel applyModel = new ApplyModel()
             {
-                return new ForbidResult();
-            }
-
-            opportunity = OpportunityTimeZoneConverter.ConvertFromUtc()
-                .Invoke(opportunity);
-
-            return View(opportunity);
+                OpportunityId = opportunity.Id,
+                Opportunity = localOpportunity
+            };
+            ViewData["message"] = Message;
+            return View(applyModel);
         }
 
-        // GET: Opportunities/Create
-        public IActionResult Create()
+        [AllowAnonymous]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Details(ApplyModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+            Application application = model.GetApplication(_context);
+            if (User.Identity.IsAuthenticated)
+            {
+                application.User = await _userManager.GetUserAsync(User);
+            }
+            _context.Applications.Add(application);
+            await _context.SaveChangesAsync();
+            await _emailSender.SendApplicationConfirmAsync(application);
+            Message = "Thank you for applying! Expect an email confirmation soon!";
+            return await Details(model.OpportunityId);
+        }
+
+            // GET: Opportunities/Create
+            public IActionResult Create()
         {
             OpportunityModel model = new OpportunityModel
             {

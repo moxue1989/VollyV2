@@ -11,6 +11,7 @@ namespace VollyV2.Models.Volly
 {
     public class ApplyModel
     {
+        public Opportunity Opportunity { get; set; }
         [Required]
         public int OpportunityId { get; set; }
         [Required]
