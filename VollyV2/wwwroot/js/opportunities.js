@@ -22,7 +22,7 @@ function openOpportunityModal(opportunity) {
     var dateTime = new Date(opportunity.dateTime);
     var dateTimeString = "Coming soon!";
     if (dateTime.getFullYear() >= 1970) {
-        dateTimeString = dateTime.toDateString() + " " + dateTime.toLocaleTimeString();
+        dateTimeString = moment(opportunity.dateTime).format('ddd MMM D YYYY h:mm a');
     }
     $("#OpportunityId").val(opportunity.id);
     $("#OpportunityModalTitle").html(opportunity.name);
@@ -30,6 +30,7 @@ function openOpportunityModal(opportunity) {
     $("#OpportunityModalCause").html(causename);
     $("#OpportunityModalTime").html(dateTimeString);
     $("#OpportunityModalOrganization").html(opportunity.organization.name);
+    $("#OpportunityModalOrganizationUrl").attr("href",opportunity.organization.websiteLink);
     $("#OpportunityModalAddress").html(opportunity.address);
     $("#OpportunityModalDescription").html(opportunity.description);
     $("#OpportunityModal").modal('show');
@@ -39,14 +40,14 @@ function appendOpportunityPanel(opportunity) {
     var dateTime = new Date(opportunity.dateTime);
     var dateTimeString = "Coming soon!";
     if (dateTime.getFullYear() >= 1970) {
-        dateTimeString = dateTime.toDateString() + " " + dateTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        dateTimeString = moment(opportunity.dateTime).format('ddd MMM D YYYY h:mm a');
     }
     $("#opportunityList").append('<div id="opportunity-' + opportunity.id + '" class="col-lg-4 col-md-6 col-sm-12 result-card"><div class="result-card-inner">' +
-        '<img  src="' + opportunity.imageUrl + '" />' +
+        '<img src="' + opportunity.imageUrl + '" />' +
         '<div class="result-details"><div class="result-datetime">' + dateTimeString + '</div>' +
         '<div class="result-address">' + opportunity.address + '</div>' +
-        '<div class="result-name">' + opportunity.name + '</div>' +
         '<div class="result-org-name">' + opportunity.organization.name + '</div>' +
+        '<div class="result-name">' + opportunity.name + '</div>' +
         '</div></div></div>');
     $("#opportunity-" + opportunity.id).click(function (e) {
         openOpportunityModal(opportunity);
@@ -58,7 +59,7 @@ function initMap() {
         div: '#map',
         lat: 51.044308,
         lng: -114.0652801,
-        zoom: 10
+        zoom: 12
     });
     getAllOpportunities();
 };
@@ -80,8 +81,7 @@ function initOpportunities(opportunities) {
     addOpportunityMarkers(opportunities);
     var categoryLookup = {};
     var causeLookup = {};
-    for (var j = 0; j < opportunities.length; j++) {
-        var opportunity = opportunities[j];
+    for (var opportunity, i = 0; opportunity = opportunities[i++];) {
         if (!(opportunity.category.id in categoryLookup)) {
             categoryLookup[opportunity.category.id] = 1;
             $('#CategoryList').append(

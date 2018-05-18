@@ -5,7 +5,7 @@ var markers = [];
 function addOrganizationMarker(organization) {
     var icon = {
         url: "/images/Home.png"
-    }; 
+    };
     var marker = map.addMarker({
         lat: organization.location.latitude,
         lng: organization.location.longitude,
@@ -28,15 +28,22 @@ function openOrganizationModal(organization) {
     $("#ModalAddress").html(organization.address);
     $("#ModalCause").html(causename);
     $("#ModalDescription").html(organization.fullDescription);
+    $("#ModalContactEmail").html(organization.contactEmail);
+    $("#ModalWebsiteLink").html(organization.websiteLink);
+    $("#AModalWebsiteLink").attr("href", organization.websiteLink);
+    $("#ModalContactEmail").html(organization.contactEmail);
+    $("#AModalContactEmail").attr("href", 'mailto:' + organization.contactEmail);
     $("#DisplayModal").modal('show');
 }
 function appendOrganizationPanel(organization) {
-    $("#organizationList").append('<div id="organization-' + organization.id + '" class="col-lg-4 col-md-6 col-sm-12 result-card">' +
-        '<br/>' + organization.name +
-        '<br/>' + organization.address +
-        '<br/>' + organization.contactEmail +
-        '<br/>' + organization.websiteLink +
-        '</div>');
+    var missionStatement = '';
+    if (organization.missionStatement) {
+        missionStatement = organization.missionStatement;
+    }
+    $("#organizationList").append('<div id="organization-' + organization.id + '" class="col-lg-4 col-md-6 col-sm-12 result-card"><div class="result-card-inner">' +
+        '<div class="result-org-name">' + organization.name + '</div>' +
+        '<div class="result-details">' + missionStatement + '</div>' +
+        '</div></div></div>');
     $("#organization-" + organization.id).click(function (e) {
         openOrganizationModal(organization);
     });
