@@ -43,7 +43,7 @@ function appendOpportunityPanel(opportunity) {
         dateTimeString = moment(opportunity.dateTime).format('ddd MMM D YYYY h:mm a');
     }
     $("#opportunityList").append('<div id="opportunity-' + opportunity.id + '" class="col-lg-4 col-md-6 col-sm-12 result-card"><div class="result-card-inner">' +
-        '<img  src="' + opportunity.imageUrl + '" />' +
+        '<img src="' + opportunity.imageUrl + '" />' +
         '<div class="result-details"><div class="result-datetime">' + dateTimeString + '</div>' +
         '<div class="result-address">' + opportunity.address + '</div>' +
         '<div class="result-org-name">' + opportunity.organization.name + '</div>' +
