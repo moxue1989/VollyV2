@@ -11,9 +11,10 @@ using VollyV2.Data;
 namespace VollyV2.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20180513040219_organizationImage")]
+    partial class organizationImage
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -143,13 +144,9 @@ namespace VollyV2.Data.Migrations
 
                     b.Property<int?>("OpportunityId");
 
-                    b.Property<string>("UserId");
-
                     b.HasKey("Id");
 
                     b.HasIndex("OpportunityId");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("Applications");
                 });
@@ -371,10 +368,6 @@ namespace VollyV2.Data.Migrations
                     b.HasOne("VollyV2.Data.Volly.Opportunity", "Opportunity")
                         .WithMany("Applications")
                         .HasForeignKey("OpportunityId");
-
-                    b.HasOne("VollyV2.Models.ApplicationUser", "User")
-                        .WithMany("Applications")
-                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("VollyV2.Data.Volly.Opportunity", b =>

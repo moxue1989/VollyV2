@@ -40,6 +40,7 @@ namespace VollyV2.Controllers.Api
                 return _context.Organizations
                     .Include(o => o.Cause)
                     .Include(o => o.Location)
+                    .AsNoTracking()
                     .ToListAsync();
             });
         }

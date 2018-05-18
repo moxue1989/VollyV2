@@ -17,5 +17,6 @@ namespace VollyV2.Data.Volly
         public string FullDescription { get; set; }
         public Cause Cause { get; set; }
         public Location Location { get; set; }
+        public string ImageUrl { get; set; }
     }
 }

@@ -2,7 +2,10 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -18,12 +21,18 @@ namespace VollyV2.Controllers
     {
         private readonly ApplicationDbContext _dbContext;
         private readonly IEmailSender _emailSender;
+        private readonly UserManager<ApplicationUser> _userManager;
+
+        [TempData]
+        public string Message { get; set; }
 
         public HomeController(ApplicationDbContext dbContext, 
-            IEmailSender emailSender)
+            IEmailSender emailSender,
+            UserManager<ApplicationUser> userManager)
         {
             _dbContext = dbContext;
             _emailSender = emailSender;
+            _userManager = userManager;
         }
 
         public IActionResult Index()
@@ -57,6 +66,10 @@ namespace VollyV2.Controllers
             {
                 ApplyModel applyModel = mapModel.ApplyModel;
                 Application application = applyModel.GetApplication(_dbContext);
+                if (User.Identity.IsAuthenticated)
+                {
+                    application.User = await _userManager.GetUserAsync(User);
+                }
                 _dbContext.Applications.Add(application);
                 await _dbContext.SaveChangesAsync();
                 await _emailSender.SendApplicationConfirmAsync(application);
@@ -67,8 +80,7 @@ namespace VollyV2.Controllers
 
         public IActionResult Contact()
         {
-            ViewData["Message"] = TempData["Message"];
-            TempData.Clear();
+            ViewData["Message"] = Message;
             return View();
         }
 
@@ -85,7 +97,7 @@ namespace VollyV2.Controllers
                     VollyConstants.MoEmail
                 };
                 await _emailSender.SendEmailsAsync(emails, "Message From: " + contactUsModel.Name, contactUsModel.GetEmailMessage());
-                TempData["Message"] = "Thank you, your message has been sent!";
+                Message = "Thank you, your message has been sent!";
                 return RedirectToAction("Contact");
             }
             return View(contactUsModel);

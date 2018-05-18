@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using VollyV2.Models;
 
 namespace VollyV2.Data.Volly
 {
@@ -13,6 +14,8 @@ namespace VollyV2.Data.Volly
         public string Email { get; set; }
         public string Message { get; set; }
         public DateTime DateTime { get; set; }
+        public string UserId { get; set; }
+        public ApplicationUser User { get; set; }
 
         public string GetEmailMessage()
         {

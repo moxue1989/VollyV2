@@ -53,6 +53,12 @@
             @Html.DisplayFor(model => model.FullDescription)
         </dd>
         <dt>
+            @Html.DisplayNameFor(model => model.ImageUrl)
+        </dt>
+        <dd>
+            <img src="@Model.ImageUrl" />
+        </dd>
+        <dt>
             @Html.DisplayNameFor(model => model.Cause)
         </dt>
         <dd>

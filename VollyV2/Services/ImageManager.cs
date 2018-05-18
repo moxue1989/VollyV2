@@ -12,8 +12,7 @@ namespace VollyV2.Services
     public class ImageManager : IImageManager
     {
         private static readonly string StorageName = "vollyblobstorage";
-        //private static readonly string StorageApiKey = Environment.GetEnvironmentVariable("storage_api");
-        private static readonly string StorageApiKey = "fCx1KBlvcR/dS6GhpMpBzEDeImt7tYOPuCJGaH/z/fxQyARj1ycZWLXZQ04tPSKLucwBLrE+35CObcyu4EGW6w==";
+        private static readonly string StorageApiKey = Environment.GetEnvironmentVariable("storage_api");
 
         public async Task<string> UploadImageAsync(IFormFile image, string imageName)
         {
