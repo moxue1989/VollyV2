@@ -82,22 +82,16 @@ nav img.img-brand{
 }
 .result-card-inner:hover {
     border: 1px solid rgba(128,128,128,0.5);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.8);
 }
 .result-details{
     text-align:center;
 }
 .result-datetime {
-    position: absolute;
-    top: .5rem;
-    left: 0;
-    right: 0;
-    margin: auto;
     display: inline-block;
     font-size: 0.8rem;
     font-weight: 700;
     background-color: #6db5ff;
-    width: fit-content;
     padding-left: .75rem;
     padding-right: .75rem;
     border-bottom-left-radius: .5rem;
@@ -119,7 +113,14 @@ nav img.img-brand{
     font-weight: 700;
     text-align:center;
 }
-
 #OpportunityModalOrganizationUrl {
     text-decoration: none;
+}
+.wrap-center {
+    position: absolute;
+    top: .25rem;
+    left: 0;
+    right: 0;
+    margin: auto;
+    text-align: center;
 }
