@@ -11,6 +11,7 @@ namespace VollyV2.Models.Volly
 {
     public class ApplyModel
     {
+        public Opportunity Opportunity { get; set; }
         [Required]
         public int OpportunityId { get; set; }
         [Required]
@@ -18,7 +19,6 @@ namespace VollyV2.Models.Volly
         [Required]
         [EmailAddress]
         public string Email { get; set; }
-        [Required]
         public string Message { get; set; }
 
         public Application GetApplication(ApplicationDbContext context)

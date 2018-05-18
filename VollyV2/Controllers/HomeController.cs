@@ -26,7 +26,7 @@ namespace VollyV2.Controllers
         [TempData]
         public string Message { get; set; }
 
-        public HomeController(ApplicationDbContext dbContext, 
+        public HomeController(ApplicationDbContext dbContext,
             IEmailSender emailSender,
             UserManager<ApplicationUser> userManager)
         {
@@ -90,17 +90,32 @@ namespace VollyV2.Controllers
         {
             if (ModelState.IsValid)
             {
-                List<string> emails = new List<String>()
-                {
-                    VollyConstants.AliceEmail,
-                    VollyConstants.VollyAdminEmail,
-                    VollyConstants.MoEmail
-                };
-                await _emailSender.SendEmailsAsync(emails, "Message From: " + contactUsModel.Name, contactUsModel.GetEmailMessage());
+                await _emailSender.SendEmailsAsync(VollyConstants.AllEmails, "Message From: " + contactUsModel.Name, contactUsModel.GetEmailMessage());
                 Message = "Thank you, your message has been sent!";
                 return RedirectToAction("Contact");
             }
             return View(contactUsModel);
+        }
+
+        public IActionResult Suggestion()
+        {
+            ViewData["Message"] = Message;
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Suggestion([Bind("Name,Message")] SuggestionModel suggestionModel)
+        {
+            if (ModelState.IsValid)
+            {
+                var suggestionModelName = suggestionModel.Name ?? "annonomous";
+                await _emailSender.SendEmailsAsync(VollyConstants.AllEmails, "Suggestion from " + suggestionModelName,
+                    suggestionModel.GetEmailMessage());
+                Message = "Thank you, your message has been sent!";
+                return RedirectToAction("Suggestion");
+            }
+            return View(suggestionModel);
         }
 
         public IActionResult Organizations()

@@ -34,6 +34,7 @@ function openOpportunityModal(opportunity) {
     $("#OpportunityModalOrganizationUrl").attr("href", opportunity.organization.websiteLink);
     $("#OpportunityModalAddress").html(opportunity.address);
     $("#OpportunityModalDescription").html(opportunity.description);
+    $("#OpportunityModalSpotsRemaining").html(opportunity.openings + ' spots remaining');
     $("#OpportunityModal").modal('show');
 };
 
