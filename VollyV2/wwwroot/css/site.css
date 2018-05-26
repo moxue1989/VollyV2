@@ -191,3 +191,7 @@ nav img.img-brand{
 #details-img{
     max-width:50%;
 }
+.vertical-margin-auto {
+    margin-bottom: auto;
+    margin-top: auto;
+}
