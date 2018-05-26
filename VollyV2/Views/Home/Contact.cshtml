@@ -3,40 +3,45 @@
 @{
     ViewData["Title"] = "Contact Us";
 }
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 vertical-margin-auto">
+            <h3>Contact Us:</h3>
+            <ul>
+                <li>Is there a feature you would like us to add on this page?</li>
+                <li>Have a volunteer opportunity to post?</li>
+                <li>Is there a volunteer initiative you are dying to participate in that we can help plan?</li>
+                <li>Have a question about a particular opportunity?</li>
+            </ul>
+            <h4>Fill out this form and we will get back to you.</h4>
+            <h4>Or reach us directly at <a href="mailto:admin@vollyapp.com">admin@vollyapp.com</a></h4>
+        </div>
+        <div class="col-md-6">
+            <form asp-action="Contact">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="Name" class="col-form-label"></label>
+                    <input asp-for="Name" class="form-control" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Email" class="col-form-label"></label>
+                    <input asp-for="Email" class="form-control" />
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Message" class="col-form-label"></label>
+                    <textarea asp-for="Message" class="form-control" rows="4"></textarea>
+                    <span asp-validation-for="Message" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Send Message" class="btn btn-default" />
+                </div>
+            </form>
 
-<h2>Contact Us:</h2>
-
-<h3>Is there a feature you would like us to add on this page? Have a volunteer opportunity to post? Is there a volunteer initiative you are dying to participate in that we can help plan? Fill out the form below and we will get back to you. </h3>
-
-<h4><a href="mailto:admin@vollyapp.com">admin@vollyapp.com</a></h4>
-
-<div class="row">
-    <div class="col-md-6">
-        <form asp-action="Contact">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Name" class="col-form-label"></label>
-                <input asp-for="Name" class="form-control" />
-                <span asp-validation-for="Name" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Email" class="col-form-label"></label>
-                <input asp-for="Email" class="form-control" />
-                <span asp-validation-for="Email" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Message" class="col-form-label"></label>
-                <textarea asp-for="Message" class="form-control" rows="4"></textarea>
-                <span asp-validation-for="Message" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Send Message" class="btn btn-default" />
-            </div>
-        </form>
-
+        </div>
     </div>
 </div>
-
 <h2>@ViewData["Message"]</h2>
 
 
