@@ -11,7 +11,7 @@
 </p>
 <input class="form-control" id="searchInput" type="text" placeholder="Search..">
 
-<table class="table table-bordered table-striped" id="OrganizationTable" style="font-size: 10px;">
+<table class="table table-bordered table-striped table-text" id="OrganizationTable" >
     <thead>
         <tr>
                 <th>
@@ -48,7 +48,7 @@
                 @Html.DisplayFor(modelItem => item.Cause.Name)
             </td>
             <td>
-                <img class="img-fluid" style="width: 2.5rem" src="@item.ImageUrl"/>
+                <img class="img-fluid thumbnail-img" src="@item.ImageUrl"/>
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
@@ -60,7 +60,7 @@
     </tbody>
 </table>
 
-<script>
+<script>    
     $(document).ready(function () {
         $("#searchInput").on("keyup", function () {
             var value = $(this).val().toLowerCase();

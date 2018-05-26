@@ -124,3 +124,11 @@ nav img.img-brand{
     margin: auto;
     text-align: center;
 }
+
+.thumbnail-img {
+    width: 2.5rem;
+}
+
+.table-text {
+    font-size: 10px;
+}

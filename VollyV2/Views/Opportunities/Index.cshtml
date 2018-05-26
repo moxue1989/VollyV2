@@ -9,65 +9,36 @@
 <p>
     <a asp-action="Create">Create New</a>
 </p>
-<table class="table">
+<input class="form-control" id="searchInput" type="text" placeholder="Search..">
+<table class="table table-bordered table-striped table-text" id="opportunityList">
     <thead>
-        <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.Name)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Description)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Address)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.DateTime)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.EndDateTime)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.ApplicationDeadline)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Openings)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Category)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Organization)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.ImageUrl)
-                </th>
-            <th></th>
-        </tr>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DateTime)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Category)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Organization)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ImageUrl)
+        </th>
+        <th></th>
+    </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+    @foreach (var item in Model) {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Name)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Address)
-            </td>
-            <td>
                 @Html.DisplayFor(modelItem => item.DateTime)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.EndDateTime)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ApplicationDeadline)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Openings)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Category.Name)
@@ -76,7 +47,7 @@
                 @Html.DisplayFor(modelItem => item.Organization.Name)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.ImageUrl)
+                <img class="img-fluid thumbnail-img" src="@item.ImageUrl"/>
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
@@ -84,6 +55,17 @@
                 <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
             </td>
         </tr>
-}
+    }
     </tbody>
 </table>
+
+<script>
+    $(document).ready(function () {
+        $("#searchInput").on("keyup", function () {
+            var value = $(this).val().toLowerCase();
+            $("#opportunityList tbody tr").filter(function () {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
+            });
+        });
+    });
+</script>
