@@ -79,7 +79,8 @@ function initMap() {
 function enableDickPicker() {
     $('#dateSelect').datepicker({
         multidate: true,
-        clearBtn: true
+        clearBtn: true,
+        todayHighlight: true
     });
 }
 
