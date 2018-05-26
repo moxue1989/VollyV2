@@ -13,42 +13,42 @@
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
+                <label asp-for="Name" class="col-form-label"></label>
                 <input asp-for="Name" class="form-control" />
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Description" class="control-label"></label>
+                <label asp-for="Description" class="col-form-label"></label>
                 <textarea asp-for="Description" class="form-control" rows="4"></textarea>
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Address" class="control-label"></label>
+                <label asp-for="Address" class="col-form-label"></label>
                 <input asp-for="Address" class="form-control" />
                 <span asp-validation-for="Address" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="DateTime" class="control-label"></label>
-                <input asp-for="DateTime" class="form-control" class="datepicker" />
+                <label asp-for="DateTime" class="col-form-label"></label>
+                <input asp-for="DateTime" class="form-control" />
                 <span asp-validation-for="DateTime" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="EndDateTime" class="control-label"></label>
-                <input asp-for="EndDateTime" class="form-control" class="datepicker" />
+                <label asp-for="EndDateTime" class="col-form-label"></label>
+                <input asp-for="EndDateTime" class="form-control" />
                 <span asp-validation-for="EndDateTime" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="ApplicationDeadline" class="control-label"></label>
-                <input asp-for="ApplicationDeadline" class="form-control" class="datepicker" />
+                <label asp-for="ApplicationDeadline" class="col-form-label"></label>
+                <input asp-for="ApplicationDeadline" class="form-control"/>
                 <span asp-validation-for="ApplicationDeadline" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Openings" class="control-label"></label>
+                <label asp-for="Openings" class="col-form-label"></label>
                 <input asp-for="Openings" class="form-control" />
                 <span asp-validation-for="Openings" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="CategoryId" class="control-label"></label>
+                <label asp-for="CategoryId" class="col-form-label"></label>
                 <select asp-for="CategoryId" class="form-control"
                         asp-items="@Model?.Categories">
                     <option value="">-- Select Category --</option>
@@ -56,7 +56,7 @@
                 <span asp-validation-for="CategoryId" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="OrganizationId" class="control-label"></label>
+                <label asp-for="OrganizationId" class="col-form-label"></label>
                 <select asp-for="OrganizationId" class="form-control"
                         asp-items="@Model?.Organizations">
                     <option value="">-- Select Organization --</option>
@@ -64,7 +64,7 @@
                 <span asp-validation-for="OrganizationId" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="ImageFile" class="control-label"></label>
+                <label asp-for="ImageFile" class="col-form-label"></label>
                 <input asp-for="ImageFile" class="form-control" />
                 <span asp-validation-for="ImageFile" class="text-danger"></span>
             </div>
@@ -78,10 +78,6 @@
 <div>
     <a asp-action="Index">Back to List</a>
 </div>
-
-<script>
-    $(".datepicker").val(new Date());
-</script>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

@@ -64,11 +64,15 @@ namespace VollyV2.Controllers.Api
                 return BadRequest(ModelState);
             }
 
+            List<DateTime> dates = opportunitySearch
+                .Dates
+                .Select(datetime => datetime.Date)
+                .ToList();
+
             var opportunities = (await VollyMemoryCache.GetAllOpportunities(_memoryCache, _context))
                 .Where(o => (opportunitySearch.CauseIds.Contains(0) || o.Organization.Cause != null && opportunitySearch.CauseIds.Contains(o.Organization.Cause.Id)) &&
                 (opportunitySearch.CategoryIds.Contains(0) || opportunitySearch.CategoryIds.Contains(o.Category.Id)) &&
-                (opportunitySearch.StartDate == DateTime.MinValue || opportunitySearch.StartDate.Date <= o.DateTime.Date) &&
-                (opportunitySearch.EndDate == DateTime.MinValue || opportunitySearch.EndDate.Date >= o.DateTime.Date))
+                (dates.Count == 0 || dates.Contains(o.DateTime.Date)))
                 .ToList();
             
             return Ok(opportunities);

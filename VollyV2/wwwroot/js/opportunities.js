@@ -72,14 +72,23 @@ function initMap() {
         lng: -114.0652801,
         zoom: 10
     });
+    $('#nothingFoundAlert').hide();
     getAllOpportunities();
+    enableDickPicker();
 };
+
+function enableDickPicker() {
+    $('#dateSelect').datepicker({
+        multidate: true,
+        clearBtn: true
+    });
+}
 
 function getAllOpportunities() {
     $.getJSON(
         '/api/Opportunities',
         function (opportunities) {
-            initOpportunities(opportunities);
+            addOpportunityMarkers(opportunities);
         });
 };
 
@@ -87,34 +96,6 @@ function clearOpportunities() {
     deleteMarkers();
     $("#opportunityList").empty();
 };
-
-function initOpportunities(opportunities) {
-    addOpportunityMarkers(opportunities);
-    var categoryLookup = {};
-    var causeLookup = {};
-    for (var opportunity, i = 0; opportunity = opportunities[i++];) {
-        if (!(opportunity.category.id in categoryLookup)) {
-            categoryLookup[opportunity.category.id] = 1;
-            $('#CategoryList').append(
-                $('<option>', {
-                    value: opportunity.category.id,
-                    text: opportunity.category.name
-                })
-            );
-        }
-        if (opportunity.organization.cause) {
-            if (!(opportunity.organization.cause.id in causeLookup)) {
-                causeLookup[opportunity.organization.cause.id] = 1;
-                $('#CausesList').append(
-                    $('<option>', {
-                        value: opportunity.organization.cause.id,
-                        text: opportunity.organization.cause.name
-                    })
-                );
-            }
-        }
-    }
-}
 
 function addOpportunityMarkers(opportunities) {
     for (var i = 0; i < opportunities.length; i++) {
@@ -145,22 +126,12 @@ function setMapOnAll(map) {
 $("#FilterOpportunities").click(function () {
     var categoryIds = $("#CategoryList").val();
     var causeIds = $("#CausesList").val();
-    var startDate = $("#StartDate").val();
-    var endDate = $("#EndDate").val();
-
-    if (!startDate) {
-        startDate = undefined;
-    }
-
-    if (!endDate) {
-        endDate = undefined;
-    }
+    var dates = $('#dateSelect').datepicker("getDates");
 
     var data = {
         "CategoryIds": categoryIds,
         "CauseIds": causeIds,
-        "StartDate": startDate,
-        "EndDate": endDate
+        "Dates": dates
     };
 
     $.ajax({
@@ -171,7 +142,12 @@ $("#FilterOpportunities").click(function () {
         dataType: "json",
         success: function (opportunities) {
             clearOpportunities();
-            addOpportunityMarkers(opportunities);
+            if (opportunities.length === 0) {
+                $('#nothingFoundAlert').show();
+            } else {
+                $('#nothingFoundAlert').hide();
+                addOpportunityMarkers(opportunities);
+            }
         }
     });
 });
