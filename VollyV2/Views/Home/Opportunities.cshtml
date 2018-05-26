@@ -4,7 +4,6 @@
 @{
     ViewData["Title"] = "Opportunities";
 }
-
 <div class="container-fluid">
     <div class="row">
         <div class="col-lg-8 col-md-6 col-sm-12 order-lg-first order-md-first order-last">
@@ -82,6 +81,18 @@
             <form asp-action="Apply" id="applyForm">
                 <div class="modal-body">
                     <a target="resource window" id="OpportunityModalOrganizationUrl"><h4 id="OpportunityModalOrganization"></h4></a>
+                    <div id="fb-share-wrap">
+                        <a target="resource window" id="fb-share">
+                            <img src="~/images/assets/fb-logo.png" />
+                            Share
+                        </a>
+                    </div>
+                    <div id="tw-share-wrap">
+                        <a target="resource window" id="tw-share">
+                            <img src="~/images/assets/tw-logo.png" />
+                            Tweet
+                        </a>
+                    </div>
                     <h5 class="text-warning" id="OpportunityModalAddress"></h5>
                     <span class="badge badge-success badgeSize" id="OpportunityModalCategory"></span>
                     <span class="badge badge-warning badgeSize" id="OpportunityModalCause"></span>

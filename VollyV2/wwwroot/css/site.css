@@ -124,6 +124,38 @@ nav img.img-brand{
     margin: auto;
     text-align: center;
 }
+#map img {
+    max-width: inherit !important;
+    max-height: inherit !important;
+}
+#fb-share{
+    text-decoration: none;
+    color: #fff;
+    padding-right: 0.5rem;
+    height:1.5rem;
+}
+#fb-share-wrap {
+    display: inline-block;
+    background-color: #3b5998;
+    border-radius: 0.5rem;
+}
+#fb-share img{
+    height:1.5rem;
+}
+#tw-share img {
+    height: 1.5rem;
+}
+#tw-share-wrap {
+    display: inline-block;
+    background-color: #2aaae0;
+    border-radius: 0.5rem;
+}
+#tw-share {
+    text-decoration: none;
+    color: #fff;
+    padding-right: 0.5rem;
+    height: 1.5rem;
+}
 
 .thumbnail-img {
     width: 2.5rem;
