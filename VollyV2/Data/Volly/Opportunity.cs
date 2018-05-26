@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
@@ -18,8 +20,12 @@ namespace VollyV2.Data.Volly
         public Organization Organization { get; set; }
         public Category Category { get; set; }
         public Location Location { get; set; }
+        [DisplayFormat(DataFormatString = "{0:ddd MMM d yyyy h:mm tt}")]
         public DateTime DateTime { get; set; }
+        [DisplayFormat(DataFormatString = "{0:ddd MMM d yyyy h:mm tt}")]
         public DateTime EndDateTime { get; set; }
+        [DisplayName("Application deadline")]
+        [DisplayFormat(DataFormatString = "{0:ddd MMM d yyyy h:mm tt}")]
         public DateTime ApplicationDeadline { get; set; }
         public int Openings { get; set; }
         public List<Application> Applications { get; set; }

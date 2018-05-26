@@ -16,6 +16,7 @@ function addOpportunityMarker(opportunity) {
 };
 
 function openOpportunityModal(opportunity) {
+    var baseUrl = "https%3A%2F%2Fvolly.azurewebsites.net%2FOpportunities%2FDetails%2F";
     var causename = "";
     if (opportunity.organization.cause) {
         causename = opportunity.organization.cause.name;
@@ -35,8 +36,8 @@ function openOpportunityModal(opportunity) {
     $("#OpportunityModalAddress").html(opportunity.address);
     $("#OpportunityModalDescription").html(opportunity.description);
     $("#OpportunityModalSpotsRemaining").html(opportunity.openings + ' spots remaining');
-    $("#fb-share").attr("href", "https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fvolly.azurewebsites.net%2FOpportunities%2FDetails%2F" + opportunity.id)
-    $("#tw-share").attr("href", "https://twitter.com/share?url=https%3A%2F%2Fvolly.azurewebsites.net%2FOpportunities%2FDetails%2F" + opportunity.id + "&text=Volly - " + opportunity.name);
+    $("#fb-share").attr("href", "https://www.facebook.com/sharer/sharer.php?u=" + baseUrl + opportunity.id);
+    $("#tw-share").attr("href", "https://twitter.com/share?url=" + baseUrl + opportunity.id + "&text=Volly - " + opportunity.name);
     $("#OpportunityModal").modal('show');
 };
 
