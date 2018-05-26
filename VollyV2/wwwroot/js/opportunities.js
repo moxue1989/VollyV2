@@ -69,8 +69,17 @@ function initMap() {
         lng: -114.0652801,
         zoom: 12
     });
+    $('#nothingFoundAlert').hide();
     getAllOpportunities();
+    enableDickPicker();
 };
+
+function enableDickPicker() {
+    $('#dateSelect').datepicker({
+        multidate: true,
+        clearBtn: true
+    });
+}
 
 function getAllOpportunities() {
     $.getJSON(
@@ -130,7 +139,12 @@ $("#FilterOpportunities").click(function () {
         dataType: "json",
         success: function (opportunities) {
             clearOpportunities();
-            addOpportunityMarkers(opportunities);
+            if (opportunities.length === 0) {
+                $('#nothingFoundAlert').show();
+            } else {
+                $('#nothingFoundAlert').hide();
+                addOpportunityMarkers(opportunities);
+            }
         }
     });
 });
