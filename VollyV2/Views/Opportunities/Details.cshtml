@@ -1,7 +1,7 @@
 ﻿@model VollyV2.Models.Volly.ApplyModel
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = Html.DisplayFor(model => model.Opportunity.Name);
 }
 
 <h3>@ViewData["Message"]</h3>
