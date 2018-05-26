@@ -10,13 +10,14 @@
         <div class="col-lg-8 col-md-6 col-sm-12 order-lg-first order-md-first order-last">
             <button data-toggle="collapse" class="btn btn-info btn-block" data-target="#filterPanel">Show/Hide Filter Panel</button>
             <br />
-            <div id="filterPanel" class="collapse">
+            <div id="filterPanel" class="collapse show">
                 <div class="row">
                     <div class="col-lg-4 col-md-6 col-sm-12">
                         <div class="card border-light mb-3">
                             <div class="card-header">Causes:</div>
                             <div class="card-body">
-                                <select asp-for="Causes" class="form-control" id="CausesList">
+                                <select asp-for="Causes" class="form-control" id="CausesList"
+                                        asp-items="@Model.CausesList" size="8">
                                     <option value="0" selected="selected">-- All --</option>
                                 </select>
                             </div>
@@ -26,7 +27,8 @@
                         <div class="card border-light mb-3">
                             <div class="card-header">Categories:</div>
                             <div class="card-body">
-                                <select asp-for="Categories" class="form-control" id="CategoryList">
+                                <select asp-for="Categories" class="form-control" id="CategoryList" ,
+                                        asp-items="@Model.CategoriesList" size="8">
                                     <option value="0" selected="selected">-- All --</option>
                                 </select>
                             </div>
@@ -34,9 +36,7 @@
                     </div>
                     <div class="col-lg-4 col-md-6 col-sm-12">
                         <div class="card border-light mb-3">
-                            <div class="card-header">Date Range:</div>
-                            <div>Start Date: <input type="date" class="form-control" id="StartDate"></div>
-                            <div>End Date: <input type="date" class="form-control" id="EndDate"></div>
+                            <div id="dateSelect"></div>
                         </div>
                     </div>
                 </div>
@@ -140,7 +140,15 @@
 
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCi84qEblX_oHY4fLUW8pjliIsrXZJs3eI&callback=initMap"></script>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/js/bootstrap-datepicker.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/css/bootstrap-datepicker.css" />
+
 <script>
+    $('#dateSelect').datepicker({
+        multidate: true,
+        clearBtn: true
+    });
+
     $('#applyForm').submit(function (e) {
         var $theForm = $(this);
 
@@ -154,8 +162,6 @@
                 $theForm.trigger("reset");
             }
         });
-
-
         return false;
     });
 </script>
@@ -163,3 +169,4 @@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
+

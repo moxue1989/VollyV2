@@ -15,6 +15,7 @@ namespace VollyV2.Models.Volly
     public class OrganizationModel
     {
         public int Id { get; set; }
+        [Required]
         public string Name { get; set; }
         [Required]
         [EmailAddress]
