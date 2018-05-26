@@ -124,3 +124,16 @@ nav img.img-brand{
     margin: auto;
     text-align: center;
 }
+#map img {
+    max-width: inherit !important;
+    max-height: inherit !important;
+}
+#fb-share-button span, #fb-share-button iframe{
+    height: auto !important;
+    width: auto !important;
+}
+#fb-share-button iframe{
+    position:unset !important;
+    height: 20px !important;
+    width: 59px !important;
+}

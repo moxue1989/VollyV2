@@ -4,7 +4,15 @@
 @{
     ViewData["Title"] = "Opportunities";
 }
-
+<div id="fb-root"></div>
+<script>
+    (function (d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) return;
+        js = d.createElement(s); js.id = id;
+        js.src = "https://connect.facebook.net/en_US/sdk.js";
+        fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));</script>
 <div class="container-fluid">
     <div class="row">
         <div class="col-lg-8 col-md-6 col-sm-12 order-lg-first order-md-first order-last">
@@ -77,6 +85,14 @@
             <form asp-action="Apply" id="applyForm">
                 <div class="modal-body">
                     <a target="resource window" id="OpportunityModalOrganizationUrl"><h4 id="OpportunityModalOrganization"></h4></a>
+                    <div id="fb-share-button"
+                         class="fb-share-button"
+                         data-href=""
+                         data-layout="button"
+                         data-size="small"
+                         data-mobile-iframe="false">
+                        <a target="_blank" href="" class="fb-xfbml-parse-ignore">Share</a>
+                    </div>
                     <h5 class="text-warning" id="OpportunityModalAddress"></h5>
                     <span class="badge badge-success badgeSize" id="OpportunityModalCategory"></span>
                     <span class="badge badge-warning badgeSize" id="OpportunityModalCause"></span>
