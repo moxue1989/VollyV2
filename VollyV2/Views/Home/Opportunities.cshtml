@@ -17,7 +17,7 @@
                             <div class="card-header">Causes:</div>
                             <div class="card-body">
                                 <select asp-for="Causes" class="form-control" id="CausesList"
-                                        asp-items="@Model.CausesList" size="8">
+                                        asp-items="@Model.CausesList" size="6">
                                     <option value="0" selected="selected">-- All --</option>
                                 </select>
                             </div>
@@ -28,16 +28,14 @@
                             <div class="card-header">Categories:</div>
                             <div class="card-body">
                                 <select asp-for="Categories" class="form-control" id="CategoryList" ,
-                                        asp-items="@Model.CategoriesList" size="8">
+                                        asp-items="@Model.CategoriesList" size="6">
                                     <option value="0" selected="selected">-- All --</option>
                                 </select>
                             </div>
                         </div>
                     </div>
                     <div class="col-lg-4 col-md-6 col-sm-12">
-                        <div class="card border-light mb-3">
-                            <div id="dateSelect"></div>
-                        </div>
+                         <div class="d-flex justify-content-center" id="dateSelect"></div>
                     </div>
                 </div>
                 <div class="row">
