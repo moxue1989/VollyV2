@@ -128,12 +128,31 @@ nav img.img-brand{
     max-width: inherit !important;
     max-height: inherit !important;
 }
-#fb-share-button span, #fb-share-button iframe{
-    height: auto !important;
-    width: auto !important;
+#fb-share{
+    text-decoration: none;
+    color: #fff;
+    padding-right: 0.5rem;
+    height:1.5rem;
 }
-#fb-share-button iframe{
-    position:unset !important;
-    height: 20px !important;
-    width: 59px !important;
+#fb-share-wrap {
+    display: inline-block;
+    background-color: #3b5998;
+    border-radius: 0.5rem;
+}
+#fb-share img{
+    height:1.5rem;
+}
+#tw-share img {
+    height: 1.5rem;
+}
+#tw-share-wrap {
+    display: inline-block;
+    background-color: #2aaae0;
+    border-radius: 0.5rem;
+}
+#tw-share {
+    text-decoration: none;
+    color: #fff;
+    padding-right: 0.5rem;
+    height: 1.5rem;
 }

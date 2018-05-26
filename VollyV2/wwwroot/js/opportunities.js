@@ -35,8 +35,8 @@ function openOpportunityModal(opportunity) {
     $("#OpportunityModalAddress").html(opportunity.address);
     $("#OpportunityModalDescription").html(opportunity.description);
     $("#OpportunityModalSpotsRemaining").html(opportunity.openings + ' spots remaining');
-    $("#fb-share-button").attr("data-href", '/Opportunities/Details/' + opportunity.id)
-    $("#fb-share-button a").attr("href", 'https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fvolly.azurewebsites.net%2FOpportunities%2FDetails%2F' + opportunity.id + '&amp;src=sdkpreparse')
+    $("#fb-share").attr("href", "https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fvolly.azurewebsites.net%2FOpportunities%2FDetails%2F" + opportunity.id)
+    $("#tw-share").attr("href", "https://twitter.com/share?url=https%3A%2F%2Fvolly.azurewebsites.net%2FOpportunities%2FDetails%2F" + opportunity.id + "&text=Volly - " + opportunity.name);
     $("#OpportunityModal").modal('show');
 };
 
