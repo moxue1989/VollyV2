@@ -68,36 +68,35 @@
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title" id="OpportunityModalTitle"></h4>
+                <h5 class="modal-title" id="OpportunityModalTitle"></h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <form asp-action="Apply" id="applyForm">
                 <div class="modal-body">
-                    <a target="resource window" id="OpportunityModalOrganizationUrl"><h4 id="OpportunityModalOrganization"></h4></a>
-                    <div id="fb-share-wrap">
+                    <a target="resource window" id="OpportunityModalOrganizationUrl"><div id="OpportunityModalOrganization"></div></a>
+                    <div id="fb-share-wrap" class="share-wrap">
                         <a target="resource window" id="fb-share">
                             <img src="~/images/assets/fb-logo.png" />
                             Share
                         </a>
                     </div>
-                    <div id="tw-share-wrap">
+                    <div id="tw-share-wrap" class="share-wrap">
                         <a target="resource window" id="tw-share">
                             <img src="~/images/assets/tw-logo.png" />
                             Tweet
                         </a>
                     </div>
-                    <h5 class="text-warning" id="OpportunityModalAddress"></h5>
-                    <span class="badge badge-success badgeSize" id="OpportunityModalCategory"></span>
-                    <span class="badge badge-warning badgeSize" id="OpportunityModalCause"></span>
-                    <span class="badge badge-info badgeSize" id="OpportunityModalTime"></span>
-                    <span class="badge badge-danger badgeSize" id="OpportunityModalSpotsRemaining"></span>
+                    <div class="text-warning" id="OpportunityModalAddress"></div>
+                    <span class="badge badge-success" id="OpportunityModalCategory"></span>
+                    <span class="badge badge-warning" id="OpportunityModalCause"></span>
+                    <span class="badge badge-info" id="OpportunityModalTime"></span>
+                    <span class="badge badge-danger" id="OpportunityModalSpotsRemaining"></span>
                     <br />
-                    <h4 id="OpportunityModalDescription"></h4>
+                    <div id="OpportunityModalDescription"></div>
                     <input asp-for="@Model.ApplyModel.OpportunityId" type="hidden" class="form-control" id="OpportunityId" />
-                    <h3 class="modal-title"> Apply Now:</h3>
-                    <br />
+                    <div id="apply-now"> Apply Now:</div>
                     <div class="form-group row apply-opportunity-row">
                         <label asp-for="@Model.ApplyModel.Name" class="col-form-label col-sm-2">Name</label>
                         <input asp-for="@Model.ApplyModel.Name" class="form-control col-sm-10" />

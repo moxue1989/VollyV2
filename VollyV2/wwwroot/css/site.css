@@ -59,6 +59,9 @@ img {
 .modal-header{
     padding-bottom:0;
 }
+.modal-body {
+    padding-top: 0 !important;
+}
 .lead {
     color: #6eb5ff;
     font-weight: 600;
@@ -132,29 +135,28 @@ nav img.img-brand{
     text-decoration: none;
     color: #fff;
     padding-right: 0.5rem;
-    height:1.5rem;
 }
 #fb-share-wrap {
-    display: inline-block;
     background-color: #3b5998;
-    border-radius: 0.5rem;
 }
 #fb-share img{
-    height:1.5rem;
+    height:1rem;
 }
 #tw-share img {
-    height: 1.5rem;
+    height: 1rem;
+}
+.share-wrap {
+    font-size: 0.75rem;
+    display: inline-block;
+    border-radius: 0.5rem;
 }
 #tw-share-wrap {
-    display: inline-block;
     background-color: #2aaae0;
-    border-radius: 0.5rem;
 }
 #tw-share {
     text-decoration: none;
     color: #fff;
     padding-right: 0.5rem;
-    height: 1.5rem;
 }
 
 .thumbnail-img {
@@ -163,4 +165,21 @@ nav img.img-brand{
 
 .table-text {
     font-size: 10px;
+}
+#OpportunityModalOrganization{
+    font-size:1.5rem;
+}
+#OpportunityModalAddress{
+    font-size:1rem;
+    font-weight:500;
+}
+#OpportunityModalDescription {
+    border: 1px solid;
+    padding: 1rem;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    border-radius: 0.5rem;
+}
+#apply-now{
+    font-weight:500;
 }
