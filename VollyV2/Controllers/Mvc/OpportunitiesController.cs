@@ -22,6 +22,7 @@ namespace VollyV2.Controllers.Mvc
         private readonly IAuthorizationService _authorizationService;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IEmailSender _emailSender;
+        private readonly IImageManager _imageManager;
 
         [TempData]
         private string Message { get; set; }
@@ -29,12 +30,14 @@ namespace VollyV2.Controllers.Mvc
         public OpportunitiesController(ApplicationDbContext context,
             UserManager<ApplicationUser> userManager,
             IAuthorizationService authorizationService,
-            IEmailSender emailSender)
+            IEmailSender emailSender,
+            IImageManager imageManager)
         {
             _context = context;
             _userManager = userManager;
             _authorizationService = authorizationService;
             _emailSender = emailSender;
+            _imageManager = imageManager;
         }
 
         // GET: Opportunities
@@ -148,11 +151,11 @@ namespace VollyV2.Controllers.Mvc
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Description,Address,DateTime,EndDateTime,ApplicationDeadline,Openings,CategoryId,OrganizationId,ImageUrl")] OpportunityModel model)
+        public async Task<IActionResult> Create([Bind("Id,Name,Description,Address,DateTime,EndDateTime,ApplicationDeadline,Openings,CategoryId,OrganizationId,ImageFile")] OpportunityModel model)
         {
             if (ModelState.IsValid)
             {
-                Opportunity opportunity = model.GetOpportunity(_context);
+                Opportunity opportunity = model.GetOpportunity(_context, _imageManager);
                 opportunity.CreatedByUser = await GetCurrentUser();
                 _context.Add(opportunity);
                 await _context.SaveChangesAsync();
@@ -218,7 +221,7 @@ namespace VollyV2.Controllers.Mvc
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Description,Address,DateTime,EndDateTime,ApplicationDeadline,Openings,CategoryId,OrganizationId,ImageUrl")] OpportunityModel opportunityModel)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Description,Address,DateTime,EndDateTime,ApplicationDeadline,Openings,CategoryId,OrganizationId,ImageFile")] OpportunityModel opportunityModel)
         {
             if (id != opportunityModel.Id)
             {
@@ -229,7 +232,7 @@ namespace VollyV2.Controllers.Mvc
             {
                 try
                 {
-                    Opportunity opportunity = opportunityModel.GetOpportunity(_context);
+                    Opportunity opportunity = opportunityModel.GetOpportunity(_context, _imageManager);
                     AuthorizationResult authorizationResult = await _authorizationService
                         .AuthorizeAsync(User, opportunity, new OpportunityCreatorRequirement());
 

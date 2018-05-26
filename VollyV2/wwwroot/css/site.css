@@ -156,3 +156,11 @@ nav img.img-brand{
     padding-right: 0.5rem;
     height: 1.5rem;
 }
+
+.thumbnail-img {
+    width: 2.5rem;
+}
+
+.table-text {
+    font-size: 10px;
+}

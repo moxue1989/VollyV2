@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using VollyV2.Controllers;
 using VollyV2.Data;
@@ -35,8 +36,8 @@ namespace VollyV2.Models.Volly
         public int Openings { get; set; }
         public SelectList Organizations { get; set; }
         public SelectList Categories { get; set; }
-        [Url]
         public string ImageUrl { get; set; }
+        public IFormFile ImageFile { get; set; }
 
         public static OpportunityModel FromOpportunity(ApplicationDbContext dbContext, Opportunity opportunity)
         {
@@ -62,13 +63,15 @@ namespace VollyV2.Models.Volly
             };
         }
 
-        public Opportunity GetOpportunity(ApplicationDbContext context)
+        public Opportunity GetOpportunity(ApplicationDbContext context, IImageManager imageManager)
         {
+            string imageUrl = ImageFile == null ? null : imageManager.UploadImageAsync(ImageFile, "opp" + Id + ImageFile.FileName).Result;
+
             Opportunity opportunity = context.Opportunities.Find(Id) ?? new Opportunity();
             opportunity.Name = Name;
             opportunity.Description = Description;
             opportunity.Address = Address;
-            opportunity.ImageUrl = ImageUrl;
+            opportunity.ImageUrl = imageUrl;
             opportunity.Organization = context.Organizations.Find(OrganizationId);
             opportunity.Category = context.Categories.Find(CategoryId);
             opportunity.DateTime = VollyConstants.ConvertToUtc(DateTime);
