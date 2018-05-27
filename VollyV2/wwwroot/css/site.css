@@ -195,3 +195,7 @@ nav img.img-brand{
     margin-bottom: auto;
     margin-top: auto;
 }
+
+.sticky-top {
+    top: 70px;
+}
