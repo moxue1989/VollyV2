@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -92,6 +93,7 @@ namespace VollyV2.Controllers.Mvc
             var opportunity = await _context.Opportunities
                 .Include(o => o.Category)
                 .Include(o => o.Organization)
+                .Include(o => o.OpportunityImages)
                 .SingleOrDefaultAsync(m => m.Id == id);
 
             if (opportunity == null)
@@ -131,8 +133,8 @@ namespace VollyV2.Controllers.Mvc
             return await Details(model.OpportunityId);
         }
 
-            // GET: Opportunities/Create
-            public IActionResult Create()
+        // GET: Opportunities/Create
+        public IActionResult Create()
         {
             OpportunityModel model = new OpportunityModel
             {
@@ -166,13 +168,13 @@ namespace VollyV2.Controllers.Mvc
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Duplicate(int Id)
+        public async Task<IActionResult> Duplicate(int id)
         {
             Opportunity opportunity = _context.Opportunities
                 .Include(o => o.Location)
                 .Include(o => o.Category)
                 .Include(o => o.Organization)
-                .FirstOrDefault(o => o.Id == Id);
+                .FirstOrDefault(o => o.Id == id);
 
             if (opportunity == null)
             {
@@ -185,7 +187,29 @@ namespace VollyV2.Controllers.Mvc
             _context.Opportunities.Add(clone);
             await _context.SaveChangesAsync();
 
-            return RedirectToAction("Edit", new {id = clone.Id});
+            return RedirectToAction("Edit", new { id = clone.Id });
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> UploadImages(int? id, List<IFormFile> images)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                Opportunity opportunity = await _context.Opportunities.FindAsync(id);
+                List<OpportunityImage> opportunityImages = new List<OpportunityImage>();
+                foreach (IFormFile image in images)
+                {
+                    opportunityImages.Add(await opportunity.UploadImage(_imageManager, _context, image));
+                }
+            }
+
+            return RedirectToAction("Details", new {id});
         }
 
         // GET: Opportunities/Edit/5
@@ -280,7 +304,7 @@ namespace VollyV2.Controllers.Mvc
             {
                 return new ForbidResult();
             }
-        
+
             opportunity = OpportunityTimeZoneConverter.ConvertFromUtc().Invoke(opportunity);
             return View(opportunity);
         }
