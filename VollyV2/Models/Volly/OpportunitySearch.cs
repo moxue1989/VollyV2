@@ -9,6 +9,7 @@ namespace VollyV2.Models.Volly
     {
         public List<int> CauseIds { get; set; }
         public List<int> CategoryIds { get; set; }
+        public List<int> OrganizationIds { get; set; }
         public List<DateTime> Dates { get; set; }
     }
 }

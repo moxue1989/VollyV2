@@ -72,6 +72,7 @@ namespace VollyV2.Controllers.Api
             var opportunities = (await VollyMemoryCache.GetAllOpportunities(_memoryCache, _context))
                 .Where(o => (opportunitySearch.CauseIds.Contains(0) || o.Organization.Cause != null && opportunitySearch.CauseIds.Contains(o.Organization.Cause.Id)) &&
                 (opportunitySearch.CategoryIds.Contains(0) || opportunitySearch.CategoryIds.Contains(o.Category.Id)) &&
+                (opportunitySearch.OrganizationIds.Contains(0) || opportunitySearch.OrganizationIds.Contains(o.Organization.Id)) &&
                 (dates.Count == 0 || dates.Contains(o.DateTime.Date)))
                 .ToList();
             
