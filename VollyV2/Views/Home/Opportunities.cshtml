@@ -30,19 +30,16 @@
                             <div id="causesFilter" class="container tab-pane active">
                                 <select asp-for="Causes" class="form-control" id="CausesList"
                                         asp-items="@Model.CausesList" size="7">
-                                    <option value="0" selected="selected">-- All --</option>
                                 </select>
                             </div>
                             <div id="categoryFilter" class="container tab-pane fade">
                                 <select asp-for="Categories" class="form-control" id="CategoryList" ,
                                         asp-items="@Model.CategoriesList" size="7">
-                                    <option value="0" selected="selected">-- All --</option>
                                 </select>
                             </div>
                             <div id="organizationFilter" class="container tab-pane fade">
                                 <select asp-for="Organizations" class="form-control" id="OrganizationList" ,
                                         asp-items="@Model.OrganizationList" size="7">
-                                    <option value="0" selected="selected">-- All --</option>
                                 </select>
                             </div>
                         </div>

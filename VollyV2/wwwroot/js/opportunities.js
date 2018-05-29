@@ -125,9 +125,9 @@ function setMapOnAll(map) {
 };
 
 $("#ClearFilters").click(function() {
-    $("#CategoryList").val("0");
-    $("#CausesList").val("0");
-    $("#OrganizationList").val("0");
+    $("#CategoryList").val("");
+    $("#CausesList").val("");
+    $("#OrganizationList").val("");
     $('#dateSelect').val("").datepicker("update");
     filterOpportunities();
 });
