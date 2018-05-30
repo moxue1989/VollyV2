@@ -24,7 +24,7 @@ namespace VollyV2.Services
                     .Include(o => o.Location)
                     .AsNoTracking()
                     .Where(o => o.Applications.Count < o.Openings)
-                    .OrderBy(o => o.ApplicationDeadline)
+                    .OrderBy(o => o.DateTime)
                     .ToListAsync();
 
                 return opportunities.Select(OpportunityTimeZoneConverter.ConvertFromUtc()).ToList();
