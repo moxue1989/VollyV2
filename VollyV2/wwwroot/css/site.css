@@ -214,3 +214,6 @@ nav img.img-brand{
     cursor: pointer;
     border:2px solid green;
 }
+.sticky-top{
+    top:70px;
+}
