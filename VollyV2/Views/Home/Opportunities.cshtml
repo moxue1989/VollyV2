@@ -8,49 +8,60 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-lg-8 col-md-6 col-sm-12 order-lg-first order-md-first order-last">
-            <button data-toggle="collapse" class="btn btn-info btn-block" data-target="#filterPanel">Show/Hide Filter Panel</button>
-            <br />
-            <div id="filterPanel" class="collapse show">
-                <div class="row">
-                    <div class="col-lg-4 col-md-6 col-sm-12">
-                        <div class="card border-light mb-3">
-                            <div class="card-header">Causes:</div>
-                            <div class="card-body">
+
+            <div class="row">
+                <div class="col-lg-8 col-md-12 col-sm-12">
+                    <div class="card border-light mb-3">
+                        <ul class="nav nav-tabs" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link active" data-toggle="tab" href="#causesFilter">Causes</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-toggle="tab" href="#categoryFilter">Categories</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-toggle="tab" href="#organizationFilter">Organizations</a>
+                            </li>
+                        </ul>
+
+                        <!-- Tab panes -->
+                        <div class="tab-content">
+                            <br />
+                            <div id="causesFilter" class="container tab-pane active">
                                 <select asp-for="Causes" class="form-control" id="CausesList"
-                                        asp-items="@Model.CausesList" size="8">
-                                    <option value="0">-- All --</option>
+                                        asp-items="@Model.CausesList" size="7">
                                 </select>
                             </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 col-md-6 col-sm-12">
-                        <div class="card border-light mb-3">
-                            <div class="card-header">Categories:</div>
-                            <div class="card-body">
+                            <div id="categoryFilter" class="container tab-pane fade">
                                 <select asp-for="Categories" class="form-control" id="CategoryList" ,
-                                        asp-items="@Model.CategoriesList" size="8">
-                                    <option value="0">-- All --</option>
+                                        asp-items="@Model.CategoriesList" size="7">
                                 </select>
                             </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 col-md-6 col-sm-12">
-                        <div class="card border-light mb-3">
-                            <div id="dateSelect"></div>
+                            <div id="organizationFilter" class="container tab-pane fade">
+                                <select asp-for="Organizations" class="form-control" id="OrganizationList" ,
+                                        asp-items="@Model.OrganizationList" size="7">
+                                </select>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-lg-4 col-md-2 col-sm-12">
-                    </div>
-                    <div class="col-lg-4 col-md-8 col-sm-12">
-                        <button type="button" class="btn btn-success btn-sm btn-block" id="FilterOpportunities">Apply Filters</button>
-                        <br />
-                    </div>
-                    <div class="col-lg-4 col-md-2 col-sm-12">
+                <div class="col-lg-4 col-md-12 col-sm-12">
+                    <div class="card border-light mb-3">
+                        <div id="dateSelect" class="d-flex justify-content-center"></div>
                     </div>
                 </div>
             </div>
+            <div class="row">
+                <div class="col-6">
+                    <button type="button" class="btn btn-danger btn-sm btn-block" id="ClearFilters">Clear Filters</button>&nbsp;
+                </div>
+                <div class="col-6">
+                    <button type="button" class="btn btn-success btn-sm btn-block" id="FilterOpportunities">Apply Filters</button>
+                </div>
+                <br />
+                <br />
+            </div>
+            
             <div class="alert alert-success" id="nothingFoundAlert">
                 <h4 class="alert-heading">Sorry! Nothing found!</h4>
                 <p>Please change your search criteria to browse available opportunities</p>
@@ -62,8 +73,10 @@
         </div>
 
         <div class="col-lg-4 col-md-6 col-sm-12 order-sm-first order-first">
-            <div class="map" id="map"></div>
-            <br />
+            <div class="sticky-top">
+                <div class="map" id="map"></div>
+                <br />
+            </div>
         </div>
     </div>
     <br />

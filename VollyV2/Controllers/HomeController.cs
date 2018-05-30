@@ -52,6 +52,12 @@ namespace VollyV2.Controllers
                     .OrderBy(c => c.Name)
                     .ToList(), "Id", "Name"),
 
+                OrganizationList = new SelectList(_dbContext.Organizations
+                    .Where(o => o.Opportunities.Count > 0)
+                    .OrderBy(c => c.Name)
+                    .AsNoTracking()
+                    .ToList(), "Id", "Name"),
+
                 ApplyModel = new ApplyModel()
             };
 

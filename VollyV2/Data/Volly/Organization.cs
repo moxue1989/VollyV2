@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace VollyV2.Data.Volly
 {
@@ -18,5 +19,7 @@ namespace VollyV2.Data.Volly
         public Cause Cause { get; set; }
         public Location Location { get; set; }
         public string ImageUrl { get; set; }
+        [JsonIgnore]
+        public List<Opportunity> Opportunities { get; set; }
     }
 }

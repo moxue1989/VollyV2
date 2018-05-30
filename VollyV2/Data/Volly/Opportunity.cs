@@ -4,10 +4,12 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 using VollyV2.Controllers;
 using VollyV2.Models;
 using VollyV2.Models.Volly;
+using VollyV2.Services;
 
 namespace VollyV2.Data.Volly
 {
@@ -32,6 +34,7 @@ namespace VollyV2.Data.Volly
         public string ImageUrl { get; set; }
         public string CreatedByUserId { get; set; }
         public ApplicationUser CreatedByUser { get; set; }
+        public List<OpportunityImage> OpportunityImages { get; set; }
 
         public Opportunity Clone()
         {
@@ -54,7 +57,25 @@ namespace VollyV2.Data.Volly
             };
         }
 
+        public async Task<OpportunityImage> UploadImage(IImageManager imageManager, ApplicationDbContext context, IFormFile imageFile)
+        {
+            string imageUrl = await imageManager.UploadImageAsync(imageFile, GetImageFileName(imageFile.FileName));
+            OpportunityImage image = new OpportunityImage()
+            {
+                OpportunityId = Id,
+                ImageUrl = imageUrl
 
+            };
+            context.OpportunityImages.Add(image);
+            await context.SaveChangesAsync();
+
+            return image;
+        }
+
+        private string GetImageFileName(string fileName)
+        {
+            return "oppimage" + Id + fileName;
+        }
     }
 
     public static class OpportunityTimeZoneConverter

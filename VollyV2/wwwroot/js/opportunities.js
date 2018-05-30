@@ -124,14 +124,26 @@ function setMapOnAll(map) {
     }
 };
 
-$("#FilterOpportunities").click(function () {
+$("#ClearFilters").click(function() {
+    $("#CategoryList").val("");
+    $("#CausesList").val("");
+    $("#OrganizationList").val("");
+    $('#dateSelect').val("").datepicker("update");
+    filterOpportunities();
+});
+
+$("#FilterOpportunities").click(filterOpportunities);
+
+function filterOpportunities() {
     var categoryIds = $("#CategoryList").val();
     var causeIds = $("#CausesList").val();
+    var organizationIds = $("#OrganizationList").val();
     var dates = $('#dateSelect').datepicker("getDates");
 
     var data = {
         "CategoryIds": categoryIds,
         "CauseIds": causeIds,
+        "OrganizationIds": organizationIds,
         "Dates": dates
     };
 
@@ -151,4 +163,4 @@ $("#FilterOpportunities").click(function () {
             }
         }
     });
-});
+}
