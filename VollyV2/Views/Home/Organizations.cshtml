@@ -35,14 +35,30 @@
                     </div>
                 </div>
             </div>
-
-            <div class="row" id="organizationList">
+            <input class="form-control" id="searchInput" type="text" placeholder="Search..">
+            <br />
+            <div class="row">
+                <table class="table table-bordered table-striped table-hover" id="OrganizationTable">
+                    <thead>
+                        <tr>
+                            <th>
+                                Name
+                            </th>
+                            <th>
+                                Cause
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
             </div>
         </div>
 
         <div class="col-lg-4 col-md-6 col-sm-12 order-sm-first order-first">
-            <div class="map" id="map"></div>
-            <br/>
+            <div class="sticky-top">
+                <div class="map" id="map"></div>
+            </div>
+            <br />
         </div>
     </div>
     <br />
@@ -52,19 +68,25 @@
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h3 class="modal-title" id="DisplayModalTitle"></h3>
+                <h5 class="modal-title" id="DisplayModalTitle"></h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <h4 id="ModalOrganization"></h4>
-                <h5 class="text-warning" id="ModalAddress"></h5>
-                <span class="badge badge-warning badgeSize" id="ModalCause"></span>
-                <br />
-                <a target="resource window" id="AModalWebsiteLink"><h5 id="ModalWebsiteLink"></h5></a>
-                <a id="AModalContactEmail"><h5 id="ModalContactEmail"></h5></a>
-                <h4 id="ModalDescription"></h4>
+                <div class="row">
+                    <div class="col-lg-6 col-md-6 col-sm-6">
+                        <h5 class="text-warning" id="ModalAddress"></h5>
+                        <span class="badge badge-warning" id="ModalCause"></span>
+                        <br />
+                        <a target="resource window" id="AModalWebsiteLink"><h5 id="ModalWebsiteLink"></h5></a>
+                        <a id="AModalContactEmail"><h5 id="ModalContactEmail"></h5></a>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6">
+                        <img id="img-organization" />
+                    </div>
+                </div>
+                <div id="ModalDescription"></div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -78,3 +100,13 @@
 <script src="/js/organizations.js"></script>
 
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCi84qEblX_oHY4fLUW8pjliIsrXZJs3eI&callback=initMap"></script>
+<script>
+    $(document).ready(function () {
+        $("#searchInput").on("keyup", function () {
+            var value = $(this).val().toLowerCase();
+            $("#OrganizationTable tbody tr").filter(function () {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
+            });
+        });
+    });
+</script>

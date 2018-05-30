@@ -169,11 +169,11 @@ nav img.img-brand{
 #OpportunityModalOrganization{
     font-size:1.5rem;
 }
-#OpportunityModalAddress{
+#ModalAddress{
     font-size:1rem;
     font-weight:500;
 }
-#OpportunityModalDescription {
+#ModalDescription {
     border: 1px solid;
     padding: 1rem;
     margin-top: 1rem;
@@ -194,4 +194,23 @@ nav img.img-brand{
 .vertical-margin-auto {
     margin-bottom: auto;
     margin-top: auto;
+}
+.row-org-name{
+    display:inline-block;
+    font-weight:700;
+}
+.row-org-link{
+    display:inline-block;
+}
+.result-row {
+    position: relative;
+    min-width: 0;
+    padding-top: .5rem;
+    padding-bottom: .5rem;
+}
+.result-row:hover {
+    position: relative;
+    z-index: 1;
+    cursor: pointer;
+    border:2px solid green;
 }

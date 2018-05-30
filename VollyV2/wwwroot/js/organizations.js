@@ -13,39 +13,42 @@ function addOrganizationMarker(organization) {
         icon: icon,
         infoWindow: { content: organization.name },
         click: function (e) {
-            openOrganizationModal(organization);
+            openOrganizationModal(organization.id);
         }
     });
     markers.push(marker);
 }
 
-function openOrganizationModal(organization) {
+function openOrganizationModal(id) {
+    $.getJSON('/api/Organizations/' + id)
+        .then(function (organization) {
+            var causename = "";
+            if (organization.cause) {
+                causename = organization.cause.name;
+            }
+            $("#DisplayModalTitle").html(organization.name);
+            $("#ModalAddress").html(organization.address);
+            $("#ModalCause").html(causename);
+            $("#ModalDescription").html(organization.fullDescription);
+            $("#ModalContactEmail").html(organization.contactEmail);
+            $("#ModalWebsiteLink").html(organization.websiteLink);
+            $("#AModalWebsiteLink").attr("href", organization.websiteLink);
+            $("#ModalContactEmail").html(organization.contactEmail);
+            $("#AModalContactEmail").attr("href", 'mailto:' + organization.contactEmail);
+            $("#img-organization").attr("src", organization.imageUrl);
+            $("#DisplayModal").modal('show');
+        });
+}
+function appendOrganizationPanel(organization) {
     var causename = "";
     if (organization.cause) {
         causename = organization.cause.name;
     }
-    $("#DisplayModalTitle").html(organization.name);
-    $("#ModalAddress").html(organization.address);
-    $("#ModalCause").html(causename);
-    $("#ModalDescription").html(organization.fullDescription);
-    $("#ModalContactEmail").html(organization.contactEmail);
-    $("#ModalWebsiteLink").html(organization.websiteLink);
-    $("#AModalWebsiteLink").attr("href", organization.websiteLink);
-    $("#ModalContactEmail").html(organization.contactEmail);
-    $("#AModalContactEmail").attr("href", 'mailto:' + organization.contactEmail);
-    $("#DisplayModal").modal('show');
-}
-function appendOrganizationPanel(organization) {
-    var missionStatement = '';
-    if (organization.missionStatement) {
-        missionStatement = organization.missionStatement;
-    }
-    $("#organizationList").append('<div id="organization-' + organization.id + '" class="col-lg-4 col-md-6 col-sm-12 result-card"><div class="result-card-inner">' +
-        '<div class="result-org-name">' + organization.name + '</div>' +
-        '<div class="result-details">' + missionStatement + '</div>' +
-        '</div></div></div>');
+    $("#OrganizationTable tbody").append('<tr id="organization-' + organization.id + '"><td>' +
+        organization.name + '</td><td>' +
+        causename + '</td></tr>');
     $("#organization-" + organization.id).click(function (e) {
-        openOrganizationModal(organization);
+        openOrganizationModal(organization.id);
     });
 }
 
@@ -63,11 +66,9 @@ function getAllOrganizations() {
     $.getJSON(
         '/api/Organizations',
         function (organizations) {
-            clearOrganizations();
             addOrganizationMarkers(organizations);
         });
 };
-
 function addOrganizationMarkers(organizations) {
     for (var i = 0; i < organizations.length; i++) {
         var organization = organizations[i];
@@ -101,7 +102,7 @@ $("#FilterOrganizations").click(function () {
 
 function clearOrganizations() {
     deleteMarkers();
-    $("#organizationList").empty();
+    $("#OrganizationTable tbody").empty();
 };
 
 function deleteMarkers() {
