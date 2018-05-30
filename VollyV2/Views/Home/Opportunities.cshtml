@@ -29,28 +29,43 @@
                             <br />
                             <div id="causesFilter" class="container tab-pane active">
                                 <select asp-for="Causes" class="form-control" id="CausesList"
-                                        asp-items="@Model.CausesList" size="7">
-                                </select>
+                                        asp-items="@Model.CausesList" size="7"></select>
                             </div>
                             <div id="categoryFilter" class="container tab-pane fade">
                                 <select asp-for="Categories" class="form-control" id="CategoryList" ,
-                                        asp-items="@Model.CategoriesList" size="7">
-                                </select>
+                                        asp-items="@Model.CategoriesList" size="7"></select>
                             </div>
                             <div id="organizationFilter" class="container tab-pane fade">
                                 <select asp-for="Organizations" class="form-control" id="OrganizationList" ,
-                                        asp-items="@Model.OrganizationList" size="7">
-                                </select>
+                                        asp-items="@Model.OrganizationList" size="7"></select>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-4 col-md-12 col-sm-12">
-                    <div class="card border-light mb-3">
-                        <div id="dateSelect" class="d-flex justify-content-center"></div>
-                    </div>
+                <div class="col-lg-4 col-md-12 col-sm-12 card border-light mb-3">
+
+                    <div id="dateSelect" class="d-flex justify-content-center"></div>
                 </div>
             </div>
+            <div class="form-group row card-header" id="SortCategory">
+                <div class="custom-control custom-radio col-lg-3 col-6">
+                    <input type="radio" id="EventSort" value="1" name="sortRadio" class="custom-control-input" checked>
+                    <label class="custom-control-label" for="EventSort">Event Date</label>
+                </div>
+                <div class="custom-control custom-radio col-lg-3 col-6">
+                    <input type="radio" id="OrganizationSort" value="2" name="sortRadio" class="custom-control-input">
+                    <label class="custom-control-label" for="OrganizationSort">Organization</label>
+                </div>
+                <div class="custom-control custom-radio col-lg-3 col-6">
+                    <input type="radio" id="OpeningsSort" value="3" name="sortRadio" class="custom-control-input">
+                    <label class="custom-control-label" for="OpeningsSort">Openings</label>
+                </div>
+                <div class="custom-control custom-radio col-lg-3 col-6">
+                    <input type="radio" id="DurationSort" value="4" name="sortRadio" class="custom-control-input">
+                    <label class="custom-control-label" for="DurationSort">Duration</label>
+                </div>
+            </div>
+            <br />
             <div class="row">
                 <div class="col-6">
                     <button type="button" class="btn btn-danger btn-sm btn-block" id="ClearFilters">Clear Filters</button>&nbsp;
@@ -61,7 +76,6 @@
                 <br />
                 <br />
             </div>
-            
             <div class="alert alert-success" id="nothingFoundAlert">
                 <h4 class="alert-heading">Sorry! Nothing found!</h4>
                 <p>Please change your search criteria to browse available opportunities</p>

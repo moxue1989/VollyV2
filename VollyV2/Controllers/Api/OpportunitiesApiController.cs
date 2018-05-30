@@ -31,7 +31,7 @@ namespace VollyV2.Controllers.Api
         public async Task<IActionResult> GetOpportunities()
         {
             List<Opportunity> opportunities = await VollyMemoryCache.GetAllOpportunities(_memoryCache, _context);
-            
+
             return Ok(opportunities);
         }
 
@@ -75,8 +75,25 @@ namespace VollyV2.Controllers.Api
                 (opportunitySearch.OrganizationIds == null || opportunitySearch.OrganizationIds.Contains(o.Organization.Id)) &&
                 (dates.Count == 0 || dates.Contains(o.DateTime.Date)))
                 .ToList();
-            
-            return Ok(opportunities);
+
+            return Ok(Sort(opportunities, opportunitySearch.Sort));
+        }
+
+        private List<Opportunity> Sort(List<Opportunity> opportunities, int sort)
+        {
+            switch (sort)
+            {
+                case 1:
+                    return opportunities.OrderBy(o => o.DateTime).ToList();
+                case 2:
+                    return opportunities.OrderBy(o => o.Organization.Name).ToList();
+                case 3:
+                    return opportunities.OrderBy(o => o.Openings).ToList();
+                case 4:
+                    return opportunities.OrderBy(o => o.EndDateTime.Subtract(o.DateTime)).ToList();
+                default:
+                    return opportunities;
+            }
         }
 
         //// PUT: api/Opportunities/5
