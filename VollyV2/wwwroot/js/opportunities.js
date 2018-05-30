@@ -33,8 +33,8 @@ function openOpportunityModal(opportunity) {
     $("#OpportunityModalTime").html(dateTimeString);
     $("#OpportunityModalOrganization").html(opportunity.organization.name);
     $("#OpportunityModalOrganizationUrl").attr("href", opportunity.organization.websiteLink);
-    $("#OpportunityModalAddress").html(opportunity.address);
-    $("#OpportunityModalDescription").html(opportunity.description);
+    $("#ModalAddress").html(opportunity.address);
+    $("#ModalDescription").html(opportunity.description);
     $("#OpportunityModalSpotsRemaining").html(opportunity.openings + ' spots remaining');
     $("#fb-share").attr("href", "https://www.facebook.com/sharer/sharer.php?u=" + baseUrl + opportunity.id);
     $("#tw-share").attr("href", "https://twitter.com/share?url=" + baseUrl + opportunity.id + "&text=Volly - " + opportunity.name);
