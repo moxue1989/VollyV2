@@ -71,7 +71,10 @@ namespace VollyV2.Models.Volly
             opportunity.Name = Name;
             opportunity.Description = Description;
             opportunity.Address = Address;
-            opportunity.ImageUrl = imageUrl;
+            if (imageUrl != null)
+            {
+                opportunity.ImageUrl = imageUrl;
+            }
             opportunity.Organization = context.Organizations.Find(OrganizationId);
             opportunity.Category = context.Categories.Find(CategoryId);
             opportunity.DateTime = VollyConstants.ConvertToUtc(DateTime);
