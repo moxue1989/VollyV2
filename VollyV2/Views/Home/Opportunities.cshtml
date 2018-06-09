@@ -148,7 +148,7 @@
                         <label asp-for="@Model.ApplyModel.Message" class="row apply-opportunity-row col-form-label col-sm-2">Message</label>
                         <div class="row apply-opportunity-row">
                             <div class="col-sm-2"></div>
-                            <textarea asp-for="@Model.ApplyModel.Message" class="form-control col-sm-10" rows="4"></textarea>
+                            <textarea asp-for="@Model.ApplyModel.Message" class="form-control col-sm-10" rows="4" placeholder="Please state your availability if you cannot help out the whole time"></textarea>
                         </div>
                         <span asp-validation-for="@Model.ApplyModel.Message" class="text-danger"></span>
                     </div>
