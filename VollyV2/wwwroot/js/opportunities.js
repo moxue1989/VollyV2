@@ -183,18 +183,3 @@ function filterOpportunities() {
         }
     });
 }
-
-$("#toggle-map").click(function () {
-    $("#map").animate({
-        width:"toggle",
-        height: "toggle"
-    }, 500, function () {
-    });
-});
-(function () {
-    $("#map").animate({
-        width: "toggle",
-        height: "toggle"
-    }, 100, function () {
-    })
-})();
