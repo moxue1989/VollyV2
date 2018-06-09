@@ -37,7 +37,13 @@ namespace VollyV2.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            var images = _dbContext.OpportunityImages
+                .AsNoTracking()
+                .OrderByDescending(o=>o.Id)
+                .Take(10)
+                .ToList();
+            CarouselModel model = new CarouselModel() { opportunityImages = images };
+            return View(model);
         }
 
         public IActionResult Opportunities()

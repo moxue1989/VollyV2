@@ -99,6 +99,8 @@ nav img.img-brand{
     padding-right: .75rem;
     border-bottom-left-radius: .5rem;
     border-bottom-right-radius: .5rem;
+    margin-left: 15px;
+    margin-right: 15px;
 }
 .result-address {
     font-size:0.9rem;
@@ -109,11 +111,11 @@ nav img.img-brand{
 .result-name {
     padding-left: 0.25rem;
     padding-right: 0.25rem;
+    font-weight: 700;
 }
 .result-org-name {
     padding-left: 0.25rem;
     padding-right: 0.25rem;
-    font-weight: 700;
     text-align:center;
 }
 #OpportunityModalOrganizationUrl {
@@ -197,7 +199,6 @@ nav img.img-brand{
 }
 .row-org-name{
     display:inline-block;
-    font-weight:700;
 }
 .row-org-link{
     display:inline-block;
@@ -216,4 +217,7 @@ nav img.img-brand{
 }
 .sticky-top{
     top:70px;
+}
+.img-opp{
+    text-align:center;
 }
