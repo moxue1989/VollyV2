@@ -144,6 +144,7 @@ $("#ClearFilters").click(function () {
     $("#CategoryList").val("");
     $("#CausesList").val("");
     $("#OrganizationList").val("");
+    $("#EventSort").prop("checked", true);
     $('#dateSelect').val("").datepicker("update");
     filterOpportunities();
 });
@@ -155,12 +156,14 @@ function filterOpportunities() {
     var causeIds = $("#CausesList").val();
     var organizationIds = $("#OrganizationList").val();
     var dates = $('#dateSelect').datepicker("getDates");
+    var sortBy = $('input[name="sortRadio"]:checked').val();
 
     var data = {
         "CategoryIds": categoryIds,
         "CauseIds": causeIds,
         "OrganizationIds": organizationIds,
-        "Dates": dates
+        "Dates": dates,
+        "Sort": sortBy
     };
 
     $.ajax({
