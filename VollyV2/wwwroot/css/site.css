@@ -4,8 +4,9 @@
 }
 
 .map {
+    float: right;
     width: 100%;
-    height: 600px;
+    height: 85vh;
 }
 
 
@@ -45,51 +46,62 @@ img {
     -webkit-transition: all 0.25s;
     transition: all 0.25s;
 }
+
     .result-card:hover {
         position: relative;
-        z-index: 1;
         cursor: pointer;
         -webkit-transform: scale(1.025, 1.025);
         transform: scale(1.025, 1.025);
     }
-.apply-opportunity-row{
-    margin-left:1rem;
-    margin-right:1rem;
+
+.apply-opportunity-row {
+    margin-left: 1rem;
+    margin-right: 1rem;
 }
-.modal-header{
-    padding-bottom:0;
+
+.modal-header {
+    padding-bottom: 0;
 }
+
 .modal-body {
     padding-top: 0 !important;
 }
+
 .lead {
     color: #6eb5ff;
     font-weight: 600;
     font: 2em "Raleway", sans-serif;
 }
-.index-subtitle{
-    font-weight:700;
+
+.index-subtitle {
+    font-weight: 700;
 }
+
 .highlight-color {
     color: #6eb5ff;
-    font-weight:700;
+    font-weight: 700;
 }
-nav img.img-brand{
-    height:2.5rem;
+
+nav img.img-brand {
+    height: 2.5rem;
 }
+
 .result-card-inner {
-    height:100%;
-    width:100%;
-    border-radius:0.25rem;
+    height: 100%;
+    width: 100%;
+    border-radius: 0.25rem;
     border: 1px solid rgba(128,128,128,0.5);
 }
-.result-card-inner:hover {
-    border: 1px solid rgba(128,128,128,0.5);
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.8);
+
+    .result-card-inner:hover {
+        border: 1px solid rgba(128,128,128,0.5);
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.8);
+    }
+
+.result-details {
+    text-align: center;
 }
-.result-details{
-    text-align:center;
-}
+
 .result-datetime {
     display: inline-block;
     font-size: 0.8rem;
@@ -102,25 +114,30 @@ nav img.img-brand{
     margin-left: 15px;
     margin-right: 15px;
 }
+
 .result-address {
-    font-size:0.9rem;
-    min-height:2.5rem;
+    font-size: 0.9rem;
+    min-height: 2.5rem;
     color: #fff;
     background-color: #6db5ff;
 }
+
 .result-name {
     padding-left: 0.25rem;
     padding-right: 0.25rem;
     font-weight: 700;
 }
+
 .result-org-name {
     padding-left: 0.25rem;
     padding-right: 0.25rem;
-    text-align:center;
+    text-align: center;
 }
+
 #OpportunityModalOrganizationUrl {
     text-decoration: none;
 }
+
 .wrap-center {
     position: absolute;
     top: .25rem;
@@ -129,32 +146,40 @@ nav img.img-brand{
     margin: auto;
     text-align: center;
 }
+
 #map img {
     max-width: inherit !important;
     max-height: inherit !important;
 }
-#fb-share{
+
+#fb-share {
     text-decoration: none;
     color: #fff;
     padding-right: 0.5rem;
 }
+
 #fb-share-wrap {
     background-color: #3b5998;
 }
-#fb-share img{
-    height:1rem;
+
+#fb-share img {
+    height: 1rem;
 }
+
 #tw-share img {
     height: 1rem;
 }
+
 .share-wrap {
     font-size: 0.75rem;
     display: inline-block;
     border-radius: 0.5rem;
 }
+
 #tw-share-wrap {
     background-color: #2aaae0;
 }
+
 #tw-share {
     text-decoration: none;
     color: #fff;
@@ -168,13 +193,16 @@ nav img.img-brand{
 .table-text {
     font-size: 10px;
 }
-#OpportunityModalOrganization{
-    font-size:1.5rem;
+
+#OpportunityModalOrganization {
+    font-size: 1.5rem;
 }
-#ModalAddress{
-    font-size:1rem;
-    font-weight:500;
+
+#ModalAddress {
+    font-size: 1rem;
+    font-weight: 500;
 }
+
 #ModalDescription {
     border: 1px solid;
     padding: 1rem;
@@ -182,42 +210,86 @@ nav img.img-brand{
     margin-bottom: 1rem;
     border-radius: 0.5rem;
 }
-#apply-now{
-    font-weight:500;
+
+#apply-now {
+    font-weight: 500;
 }
-.text-title{
-    font-size:1.75rem;
-    font-weight:700;
-    margin-bottom:1rem;
+
+.text-title {
+    font-size: 1.75rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
 }
-#details-img{
-    max-width:50%;
+
+#details-img {
+    max-width: 50%;
 }
+
 .vertical-margin-auto {
     margin-bottom: auto;
     margin-top: auto;
 }
-.row-org-name{
-    display:inline-block;
+
+.row-org-name {
+    display: inline-block;
 }
-.row-org-link{
-    display:inline-block;
+
+.row-org-link {
+    display: inline-block;
 }
+
 .result-row {
     position: relative;
     min-width: 0;
     padding-top: .5rem;
     padding-bottom: .5rem;
 }
-.result-row:hover {
-    position: relative;
-    z-index: 1;
-    cursor: pointer;
-    border:2px solid green;
+
+    .result-row:hover {
+        position: relative;
+        z-index: 1;
+        cursor: pointer;
+        border: 2px solid green;
+    }
+
+.sticky-top {
+    top: 70px;
 }
-.sticky-top{
-    top:70px;
+
+.img-opp {
+    text-align: center;
 }
-.img-opp{
-    text-align:center;
+
+.wrap-map {
+    position: fixed;
+    right: 0;
+}
+
+@media (max-width:768px) {
+    .wrap-map {
+        position: relative !important;
+    }
+
+    .map {
+        float: unset;
+    }
+
+    .wrap-toggle {
+        right: unset;
+        left: 0;
+        position: absolute !important;
+        margin-bottom: 15px;
+    }
+    .wrap-main {
+        margin-top: 15px;
+    }
+}
+
+.wrap-toggle {
+    text-align: center;
+    visibility: visible;
+    position: fixed;
+    right: 0;
+    z-index: 100;
+    margin-right: 15px;
 }
