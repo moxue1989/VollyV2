@@ -152,6 +152,10 @@ nav img.img-brand {
     max-height: inherit !important;
 }
 
+#map {
+    overflow: hidden;
+}
+
 #fb-share {
     text-decoration: none;
     color: #fff;
@@ -280,6 +284,7 @@ nav img.img-brand {
         position: absolute !important;
         margin-bottom: 15px;
     }
+
     #wrap-main {
         margin-top: 15px;
     }
