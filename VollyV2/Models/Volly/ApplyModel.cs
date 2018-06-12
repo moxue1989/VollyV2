@@ -15,6 +15,8 @@ namespace VollyV2.Models.Volly
         [Required]
         public int OpportunityId { get; set; }
         [Required]
+        public List<int> OccurrenceIds { get; set; }
+        [Required]
         public string Name { get; set; }
         [Required]
         [EmailAddress]

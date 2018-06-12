@@ -11,9 +11,10 @@ using VollyV2.Data;
 namespace VollyV2.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20180612000137_OccurenceTable")]
+    partial class OccurenceTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -205,7 +206,7 @@ namespace VollyV2.Data.Migrations
 
                     b.Property<int>("Openings");
 
-                    b.Property<int>("OpportunityId");
+                    b.Property<int?>("OpportunityId");
 
                     b.Property<DateTime>("StartTime");
 
@@ -419,8 +420,7 @@ namespace VollyV2.Data.Migrations
                 {
                     b.HasOne("VollyV2.Data.Volly.Opportunity", "Opportunity")
                         .WithMany("Occurrences")
-                        .HasForeignKey("OpportunityId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("OpportunityId");
                 });
 
             modelBuilder.Entity("VollyV2.Data.Volly.Opportunity", b =>

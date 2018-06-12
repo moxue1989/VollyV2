@@ -1,0 +1,58 @@
+﻿@model IEnumerable<VollyV2.Data.Volly.Occurrence>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table table-bordered table-striped table-text">
+    <thead>
+        <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.StartTime)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.EndTime)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ApplicationDeadline)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Openings)
+                </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Opportunity)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.StartTime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EndTime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ApplicationDeadline)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Openings)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Opportunity.Name)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

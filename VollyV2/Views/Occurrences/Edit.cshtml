@@ -1,0 +1,51 @@
+﻿@model VollyV2.Data.Volly.Occurrence
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h2>Edit</h2>
+
+<h4>Occurrence</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <label asp-for="OpportunityId" class="col-form-label"></label>
+                <select asp-for="OpportunityId" class="form-control" asp-items="ViewBag.OpportunityId"></select>
+                <span asp-validation-for="OpportunityId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="StartTime" class="col-form-label"></label>
+                <input asp-for="StartTime" class="form-control" />
+                <span asp-validation-for="StartTime" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EndTime" class="col-form-label"></label>
+                <input asp-for="EndTime" class="form-control" />
+                <span asp-validation-for="EndTime" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ApplicationDeadline" class="col-form-label"></label>
+                <input asp-for="ApplicationDeadline" class="form-control" />
+                <span asp-validation-for="ApplicationDeadline" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Openings" class="col-form-label"></label>
+                <input asp-for="Openings" class="form-control" />
+                <span asp-validation-for="Openings" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+

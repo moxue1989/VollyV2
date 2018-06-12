@@ -63,10 +63,6 @@ namespace VollyV2.Controllers.Mvc
                     .ToListAsync();
             }
 
-            opportunities = opportunities
-                .Select(OpportunityTimeZoneConverter.ConvertFromUtc())
-                .ToList();
-
             return View(opportunities);
         }
 
@@ -101,12 +97,10 @@ namespace VollyV2.Controllers.Mvc
                 return NotFound();
             }
 
-            Opportunity localOpportunity = OpportunityTimeZoneConverter.ConvertFromUtc().Invoke(opportunity);
-
             ApplyModel applyModel = new ApplyModel()
             {
                 OpportunityId = opportunity.Id,
-                Opportunity = localOpportunity
+                Opportunity = opportunity
             };
             ViewData["Message"] = Message;
             return View(applyModel);
@@ -304,8 +298,6 @@ namespace VollyV2.Controllers.Mvc
             {
                 return new ForbidResult();
             }
-
-            opportunity = OpportunityTimeZoneConverter.ConvertFromUtc().Invoke(opportunity);
             return View(opportunity);
         }
 

@@ -17,17 +17,24 @@ namespace VollyV2.Services
             return await memoryCache.GetOrCreateAsync(VollyConstants.OpportunityCacheKey, async entry =>
             {
                 entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(2);
+
+                HashSet<int> availableOpportunities = context.Occurrences
+                    .Where(o => o.Openings > o.Applications.Count)
+                    .OrderBy(o => o.StartTime)
+                    .AsNoTracking()
+                    .Select(o => o.OpportunityId)
+                    .ToHashSet();
+
                 List<Opportunity> opportunities = await context.Opportunities
                     .Include(o => o.Category)
                     .Include(o => o.Organization)
                     .ThenInclude(o => o.Cause)
                     .Include(o => o.Location)
+                    .Where(o => availableOpportunities.Contains(o.Id))
                     .AsNoTracking()
-                    .Where(o => o.Applications.Count < o.Openings)
-                    .OrderBy(o => o.DateTime)
                     .ToListAsync();
 
-                return opportunities.Select(OpportunityTimeZoneConverter.ConvertFromUtc()).ToList();
+                return opportunities;
             });
         }
     }

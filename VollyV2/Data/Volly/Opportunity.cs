@@ -35,6 +35,7 @@ namespace VollyV2.Data.Volly
         public string CreatedByUserId { get; set; }
         public ApplicationUser CreatedByUser { get; set; }
         public List<OpportunityImage> OpportunityImages { get; set; }
+        public List<Occurrence> Occurrences { get; set; }
 
         public Opportunity Clone()
         {
@@ -75,31 +76,6 @@ namespace VollyV2.Data.Volly
         private string GetImageFileName(string fileName)
         {
             return "oppimage" + Id + fileName;
-        }
-    }
-
-    public static class OpportunityTimeZoneConverter
-    {
-        public static Func<Opportunity, Opportunity> ConvertFromUtc()
-        {
-            return delegate (Opportunity opportunity)
-            {
-                opportunity.DateTime = VollyConstants.ConvertFromUtc(opportunity.DateTime);
-                opportunity.EndDateTime = VollyConstants.ConvertFromUtc(opportunity.EndDateTime);
-                opportunity.ApplicationDeadline = VollyConstants.ConvertFromUtc(opportunity.ApplicationDeadline);
-                return opportunity;
-            };
-        }
-
-        public static Func<Opportunity, Opportunity> ConvertToUtc()
-        {
-            return delegate (Opportunity opportunity)
-            {
-                opportunity.DateTime = VollyConstants.ConvertToUtc(opportunity.DateTime);
-                opportunity.EndDateTime = VollyConstants.ConvertToUtc(opportunity.EndDateTime);
-                opportunity.ApplicationDeadline = VollyConstants.ConvertToUtc(opportunity.ApplicationDeadline);
-                return opportunity;
-            };
         }
     }
 }
