@@ -46,6 +46,7 @@
                     <div id="dateSelect" class="d-flex justify-content-center"></div>
                 </div>
             </div>
+            <label for="SortCategory">Sort By:</label>
             <div class="form-group row card-header" id="SortCategory">
                 <div class="custom-control custom-radio col-lg-3 col-6">
                     <input type="radio" id="EventSort" value="1" name="sortRadio" class="custom-control-input" checked>
@@ -133,7 +134,7 @@
                     <input asp-for="@Model.ApplyModel.OpportunityId" type="hidden" class="form-control" id="OpportunityId" />
                     <div>
                         Have a question before applying?
-                        <a asp-controller="Home" asp-action="Contact">Contact us</a>
+                        <a asp-controller="Home" asp-action="Contact">Contact Volly</a>
                     </div>
                     <div id="apply-now"> Apply Now:</div>
                     <div class="form-group row apply-opportunity-row">
