@@ -37,8 +37,8 @@ function openOpportunityModal(opportunity) {
 };
 
 function prettyFormatDateTimes(d1, d2, breakline) {
-    var dateTime = new Date(d1);
-    var endDateTime = new Date(d2);
+    var dateTime = new Date(d1 +"-06:00");
+    var endDateTime = new Date(d2 + "-06:00");
     var dateTimeString = "Coming soon!";
     if (dateTime.getFullYear() >= 1970) {
         if (endDateTime.getFullYear() >= 1970) {
@@ -193,24 +193,24 @@ $("#toggle-map").click(function () {
             $("#toggle-map").attr('value', 'Hide Map');
             $("#toggle-map").attr('data-show', '1');
             $("#wrap-main").removeClass('col-lg-12');
-            $("#wrap-main").addClass('col-lg-6');
+            $("#wrap-main").addClass('col-lg-8');
             $("#wrap-main").removeClass('col-md-12');
-            $("#wrap-main").addClass('col-md-6');
+            $("#wrap-main").addClass('col-md-8');
             $(".result-card").each(function () {
                 $(this).removeClass('col-lg-3');
-                $(this).addClass('col-lg-6');
+                $(this).addClass('col-lg-4');
                 $(this).removeClass('col-md-4');
                 $(this).addClass('col-md-6');
             });
         } else {
             $("#toggle-map").attr('value', 'Show Map');
             $("#toggle-map").attr('data-show', '0');
-            $("#wrap-main").removeClass('col-lg-6');
+            $("#wrap-main").removeClass('col-lg-8');
             $("#wrap-main").addClass('col-lg-12');
-            $("#wrap-main").removeClass('col-md-6');
+            $("#wrap-main").removeClass('col-md-8');
             $("#wrap-main").addClass('col-md-12');
             $(".result-card").each(function () {
-                $(this).removeClass('col-lg-6');
+                $(this).removeClass('col-lg-4');
                 $(this).addClass('col-lg-3');
                 $(this).removeClass('col-md-6');
                 $(this).addClass('col-md-4');
