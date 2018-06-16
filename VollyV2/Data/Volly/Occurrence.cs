@@ -23,8 +23,15 @@ namespace VollyV2.Data.Volly
         [JsonIgnore]
         [Required]
         public int OpportunityId { get; set; }
+        [JsonIgnore]
         public Opportunity Opportunity { get; set; }
-        public List<Application> Applications { get; set; }
+        [JsonIgnore]
+        public List<ApplicationOccurrence> Applications { get; set; }
+
+        public override string ToString()
+        {
+            return "Start: " + StartTime + " End: " + EndTime;
+        }
     }
 
     public static class OccurrenceTimeZoneConverter

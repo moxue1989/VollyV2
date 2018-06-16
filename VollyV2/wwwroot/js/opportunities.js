@@ -25,20 +25,19 @@ function openOpportunityModal(opportunity) {
     $("#OpportunityModalTitle").html(opportunity.name);
     $("#OpportunityModalCategory").html(opportunity.category.name);
     $("#OpportunityModalCause").html(causename);
-    $("#OpportunityModalTime").html(prettyFormatDateTimes(opportunity.dateTime, opportunity.endDateTime));
     $("#OpportunityModalOrganization").html(opportunity.organization.name);
     $("#OpportunityModalOrganizationUrl").attr("href", opportunity.organization.websiteLink);
     $("#ModalAddress").html(opportunity.address);
     $("#ModalDescription").html(opportunity.description);
-    $("#OpportunityModalSpotsRemaining").html(opportunity.openings + ' spots remaining');
+    $("#occurrencesInput").html(getOccurrenceSelectors(opportunity.fOccurrences));
     $("#fb-share").attr("href", "https://www.facebook.com/sharer/sharer.php?u=" + baseUrl + opportunity.id);
     $("#tw-share").attr("href", "https://twitter.com/share?url=" + baseUrl + opportunity.id + "&text=Volly - " + opportunity.name);
     $("#OpportunityModal").modal('show');
 };
 
 function prettyFormatDateTimes(d1, d2, breakline) {
-    var dateTime = new Date(d1 +"-06:00");
-    var endDateTime = new Date(d2 + "-06:00");
+    var dateTime = new Date(d1);
+    var endDateTime = new Date(d2);
     var dateTimeString = "Coming soon!";
     if (dateTime.getFullYear() >= 1970) {
         if (endDateTime.getFullYear() >= 1970) {
@@ -64,8 +63,9 @@ function getSplit(breakline) {
 }
 
 function appendOpportunityPanel(opportunity, marker) {
+    var firstOccurrence = opportunity.fOccurrences[0];
     $("#opportunityList").append('<div id="opportunity-' + opportunity.id + '" class="col-xl-3 col-lg-4 col-md-6 col-sm-12 result-card"><div class="result-card-inner">' +
-        '<div class="wrap-center"><div class="result-datetime">' + prettyFormatDateTimes(opportunity.dateTime, opportunity.endDateTime, true) + '</div></div>' +
+        '<div class="wrap-center"><div class="result-datetime">' + prettyFormatDateTimes(firstOccurrence.startTime, firstOccurrence.endtime, true) + '</div></div>' +
         '<div class="img-opp"><img src="' + opportunity.imageUrl + '" /></div>' +
         '<div class="result-details"><div class="result-address">' + opportunity.address + '</div>' +
         '<div class="result-org-name">' + opportunity.organization.name + '</div>' +
@@ -81,6 +81,15 @@ function appendOpportunityPanel(opportunity, marker) {
             marker.setAnimation(null);
         });
 };
+
+function getOccurrenceSelectors(occurrences) {
+    var element = "";
+    for (var i = 0; i < occurrences.length; i++) {
+        var occurrence = occurrences[i];
+        element = element + "<option value='" + occurrence.id + "'>" + prettyFormatDateTimes(occurrence.startTime, occurrence.endTime, false) + "</option>";
+    }
+    return element;
+}
 
 function initMap() {
     map = new GMaps({

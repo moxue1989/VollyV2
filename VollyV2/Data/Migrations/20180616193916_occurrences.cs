@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace VollyV2.Data.Migrations
 {
-    public partial class OccurenceTable : Migration
+    public partial class occurrences : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -18,7 +18,7 @@ namespace VollyV2.Data.Migrations
                     ApplicationDeadline = table.Column<DateTime>(nullable: false),
                     EndTime = table.Column<DateTime>(nullable: false),
                     Openings = table.Column<int>(nullable: false),
-                    OpportunityId = table.Column<int>(nullable: true),
+                    OpportunityId = table.Column<int>(nullable: false),
                     StartTime = table.Column<DateTime>(nullable: false)
                 },
                 constraints: table =>
@@ -29,8 +29,37 @@ namespace VollyV2.Data.Migrations
                         column: x => x.OpportunityId,
                         principalTable: "Opportunities",
                         principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "OccurrenceApplications",
+                columns: table => new
+                {
+                    ApplicationId = table.Column<int>(nullable: false),
+                    OccurrenceId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_OccurrenceApplications", x => new { x.ApplicationId, x.OccurrenceId });
+                    table.ForeignKey(
+                        name: "FK_OccurrenceApplications_Applications_ApplicationId",
+                        column: x => x.ApplicationId,
+                        principalTable: "Applications",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_OccurrenceApplications_Occurrences_OccurrenceId",
+                        column: x => x.OccurrenceId,
+                        principalTable: "Occurrences",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_OccurrenceApplications_OccurrenceId",
+                table: "OccurrenceApplications",
+                column: "OccurrenceId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Occurrences_OpportunityId",
@@ -40,6 +69,9 @@ namespace VollyV2.Data.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "OccurrenceApplications");
+
             migrationBuilder.DropTable(
                 name: "Occurrences");
         }

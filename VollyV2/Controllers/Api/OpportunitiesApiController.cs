@@ -31,8 +31,11 @@ namespace VollyV2.Controllers.Api
         public async Task<IActionResult> GetOpportunities()
         {
             List<Opportunity> opportunities = await VollyMemoryCache.GetAllOpportunities(_memoryCache, _context);
-
-            return Ok(opportunities);
+            foreach (var opportunity in opportunities)
+            {
+                opportunity.FOccurrences = opportunity.Occurrences;
+            }
+            return Ok(Sort(opportunities, 1));
         }
 
         // GET: api/Opportunities/5
@@ -57,7 +60,7 @@ namespace VollyV2.Controllers.Api
 
         [HttpPost]
         [Route("/api/Opportunities/Search")]
-        public async Task<IActionResult> Search([FromBody]OpportunitySearch opportunitySearch)
+        public async Task<IActionResult> Search([FromBody] OpportunitySearch opportunitySearch)
         {
             if (!ModelState.IsValid)
             {
@@ -69,11 +72,29 @@ namespace VollyV2.Controllers.Api
                 .Select(datetime => datetime.Date)
                 .ToList();
 
-            var opportunities = (await VollyMemoryCache.GetAllOpportunities(_memoryCache, _context))
-                .Where(o => (opportunitySearch.CauseIds == null || o.Organization.Cause != null && opportunitySearch.CauseIds.Contains(o.Organization.Cause.Id)) &&
-                (opportunitySearch.CategoryIds == null || opportunitySearch.CategoryIds.Contains(o.Category.Id)) &&
-                (opportunitySearch.OrganizationIds == null || opportunitySearch.OrganizationIds.Contains(o.Organization.Id)) &&
-                (dates.Count == 0 || dates.Contains(o.DateTime.Date)))
+            List<Opportunity> opportunities = await VollyMemoryCache.GetAllOpportunities(_memoryCache, _context);
+            foreach (var opportunity in opportunities)
+            {
+                if (dates.Count > 0)
+                {
+                    opportunity.FOccurrences = opportunity.Occurrences
+                        .Where(oc => dates.Contains(oc.StartTime.Date))
+                        .ToList();
+                }
+                else
+                {
+                    opportunity.FOccurrences = opportunity.Occurrences;
+                }
+            }
+
+            opportunities = opportunities.Where(o =>
+                    (opportunitySearch.CauseIds == null || o.Organization.Cause != null &&
+                     opportunitySearch.CauseIds.Contains(o.Organization.Cause.Id)) &&
+                    (opportunitySearch.CategoryIds == null ||
+                     opportunitySearch.CategoryIds.Contains(o.Category.Id)) &&
+                    (opportunitySearch.OrganizationIds == null ||
+                     opportunitySearch.OrganizationIds.Contains(o.Organization.Id)) &&
+                     o.FOccurrences.Count > 0)
                 .ToList();
 
             return Ok(Sort(opportunities, opportunitySearch.Sort));
@@ -84,92 +105,30 @@ namespace VollyV2.Controllers.Api
             switch (sort)
             {
                 case 1:
-                    return opportunities.OrderBy(o => o.DateTime).ToList();
+                    return opportunities.OrderBy(o =>
+                    {
+                        Occurrence firstOcc = o.Occurrences[0];
+                        return firstOcc.StartTime;
+                    }).ToList();
                 case 2:
                     return opportunities.OrderBy(o => o.Organization.Name).ToList();
                 case 3:
                     return opportunities.OrderBy(o => o.Openings).ToList();
                 case 4:
-                    return opportunities.OrderBy(o => o.EndDateTime.Subtract(o.DateTime)).ToList();
+                    return opportunities.OrderBy(o =>
+                    {
+                        Occurrence firstOcc = o.Occurrences[0];
+                        return firstOcc.EndTime - firstOcc.StartTime;
+                    }).ToList();
                 default:
                     return opportunities;
             }
         }
 
-        //// PUT: api/Opportunities/5
-        //[HttpPut("{id}")]
-        //public async Task<IActionResult> PutOpportunity([FromRoute] int id, [FromBody] Opportunity opportunity)
-        //{
-        //    if (!ModelState.IsValid)
-        //    {
-        //        return BadRequest(ModelState);
-        //    }
-
-        //    if (id != opportunity.Id)
-        //    {
-        //        return BadRequest();
-        //    }
-
-        //    _context.Entry(opportunity).State = EntityState.Modified;
-
-        //    try
-        //    {
-        //        await _context.SaveChangesAsync();
-        //    }
-        //    catch (DbUpdateConcurrencyException)
-        //    {
-        //        if (!OpportunityExists(id))
-        //        {
-        //            return NotFound();
-        //        }
-        //        else
-        //        {
-        //            throw;
-        //        }
-        //    }
-
-        //    return NoContent();
-        //}
-
-        //// POST: api/Opportunities
-        //[HttpPost]
-        //public async Task<IActionResult> PostOpportunity([FromBody] Opportunity opportunity)
-        //{
-        //    if (!ModelState.IsValid)
-        //    {
-        //        return BadRequest(ModelState);
-        //    }
-
-        //    _context.Opportunities.Add(opportunity);
-        //    await _context.SaveChangesAsync();
-
-        //    return CreatedAtAction("GetOpportunity", new { id = opportunity.Id }, opportunity);
-        //}
-
-        //// DELETE: api/Opportunities/5
-        //[HttpDelete("{id}")]
-        //public async Task<IActionResult> DeleteOpportunity([FromRoute] int id)
-        //{
-        //    if (!ModelState.IsValid)
-        //    {
-        //        return BadRequest(ModelState);
-        //    }
-
-        //    var opportunity = await _context.Opportunities.SingleOrDefaultAsync(m => m.Id == id);
-        //    if (opportunity == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    _context.Opportunities.Remove(opportunity);
-        //    await _context.SaveChangesAsync();
-
-        //    return Ok(opportunity);
-        //}
-
         private bool OpportunityExists(int id)
         {
             return _context.Opportunities.Any(e => e.Id == id);
         }
+
     }
 }

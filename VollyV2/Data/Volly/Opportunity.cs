@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
@@ -22,13 +23,6 @@ namespace VollyV2.Data.Volly
         public Organization Organization { get; set; }
         public Category Category { get; set; }
         public Location Location { get; set; }
-        [DisplayFormat(DataFormatString = "{0:ddd MMM d yyyy h:mm tt}")]
-        public DateTime DateTime { get; set; }
-        [DisplayFormat(DataFormatString = "{0:ddd MMM d yyyy h:mm tt}")]
-        public DateTime EndDateTime { get; set; }
-        [DisplayName("Application deadline")]
-        [DisplayFormat(DataFormatString = "{0:ddd MMM d yyyy h:mm tt}")]
-        public DateTime ApplicationDeadline { get; set; }
         public int Openings { get; set; }
         public List<Application> Applications { get; set; }
         public string ImageUrl { get; set; }
@@ -36,6 +30,8 @@ namespace VollyV2.Data.Volly
         public ApplicationUser CreatedByUser { get; set; }
         public List<OpportunityImage> OpportunityImages { get; set; }
         public List<Occurrence> Occurrences { get; set; }
+        [NotMapped]
+        public List<Occurrence> FOccurrences { get; set; }
 
         public Opportunity Clone()
         {
@@ -51,9 +47,6 @@ namespace VollyV2.Data.Volly
                     Longitude = Location.Longitude,
                     Latitude = Location.Latitude
                 },
-                DateTime = DateTime,
-                EndDateTime = EndDateTime,
-                ApplicationDeadline = ApplicationDeadline,
                 ImageUrl = ImageUrl
             };
         }

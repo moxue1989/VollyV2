@@ -115,7 +115,7 @@ namespace VollyV2.Controllers.Mvc
             {
                 return View(model);
             }
-            Application application = model.GetApplication(_context);
+            Application application = await model.GetApplication(_context);
             if (User.Identity.IsAuthenticated)
             {
                 application.User = await _userManager.GetUserAsync(User);

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
@@ -15,6 +16,8 @@ namespace VollyV2.Models.Volly
         [Required]
         public int OpportunityId { get; set; }
         [Required]
+        [MinLength(1)]
+        [DisplayName("Occurrence")]
         public List<int> OccurrenceIds { get; set; }
         [Required]
         public string Name { get; set; }
@@ -23,9 +26,9 @@ namespace VollyV2.Models.Volly
         public string Email { get; set; }
         public string Message { get; set; }
 
-        public Application GetApplication(ApplicationDbContext context)
+        public async Task<Application> GetApplication(ApplicationDbContext context)
         {
-            return new Application()
+            Application application = new Application()
             {
                 Name = Name,
                 Email = Email,
@@ -33,6 +36,23 @@ namespace VollyV2.Models.Volly
                 DateTime = DateTime.UtcNow,
                 Opportunity = context.Opportunities.Find(OpportunityId)
             };
+
+            context.Applications.Add(application);
+            await context.SaveChangesAsync();
+            UpdateOccurences(context, application.Id);
+            return application;
+        }
+
+        private async void UpdateOccurences(ApplicationDbContext context, int applicationId)
+        {
+            List<ApplicationOccurrence> occurrenceApplications = OccurrenceIds.Select(o => new ApplicationOccurrence()
+            {
+                ApplicationId = applicationId,
+                OccurrenceId = o
+            }).ToList();
+
+            context.OccurrenceApplications.AddRange(occurrenceApplications);
+            await context.SaveChangesAsync();
         }
     }
 }

@@ -27,12 +27,6 @@ namespace VollyV2.Models.Volly
         [Display(Name = "Category")]
         public int CategoryId { get; set; }
         [Required]
-        public DateTime DateTime { get; set; }
-        [Required]
-        public DateTime EndDateTime { get; set; }
-        [Required]
-        public DateTime ApplicationDeadline { get; set; }
-        [Required]
         public int Openings { get; set; }
         public SelectList Organizations { get; set; }
         public SelectList Categories { get; set; }
@@ -50,9 +44,6 @@ namespace VollyV2.Models.Volly
                 OrganizationId = opportunity.Organization.Id,
                 CategoryId = opportunity.Category.Id,
                 ImageUrl = opportunity.ImageUrl,
-                DateTime = VollyConstants.ConvertFromUtc(opportunity.DateTime),
-                EndDateTime = VollyConstants.ConvertFromUtc(opportunity.EndDateTime),
-                ApplicationDeadline = VollyConstants.ConvertFromUtc(opportunity.ApplicationDeadline),
                 Openings = opportunity.Openings,
                 Categories = new SelectList(dbContext.Categories
                     .OrderBy(c => c.Name)
@@ -77,9 +68,6 @@ namespace VollyV2.Models.Volly
             }
             opportunity.Organization = context.Organizations.Find(OrganizationId);
             opportunity.Category = context.Categories.Find(CategoryId);
-            opportunity.DateTime = VollyConstants.ConvertToUtc(DateTime);
-            opportunity.EndDateTime = VollyConstants.ConvertToUtc(EndDateTime);
-            opportunity.ApplicationDeadline = VollyConstants.ConvertToUtc(ApplicationDeadline);
             opportunity.Openings = Openings;
             opportunity.Location = GoogleLocator.GetLocationFromAddress(Address);
 

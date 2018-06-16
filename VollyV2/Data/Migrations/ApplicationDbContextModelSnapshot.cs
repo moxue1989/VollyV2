@@ -3,8 +3,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
-using Microsoft.EntityFrameworkCore.Storage;
-using Microsoft.EntityFrameworkCore.Storage.Internal;
 using System;
 using VollyV2.Data;
 
@@ -152,6 +150,19 @@ namespace VollyV2.Data.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Applications");
+                });
+
+            modelBuilder.Entity("VollyV2.Data.Volly.ApplicationOccurrence", b =>
+                {
+                    b.Property<int>("ApplicationId");
+
+                    b.Property<int>("OccurrenceId");
+
+                    b.HasKey("ApplicationId", "OccurrenceId");
+
+                    b.HasIndex("OccurrenceId");
+
+                    b.ToTable("OccurrenceApplications");
                 });
 
             modelBuilder.Entity("VollyV2.Data.Volly.Category", b =>
@@ -413,6 +424,19 @@ namespace VollyV2.Data.Migrations
                     b.HasOne("VollyV2.Models.ApplicationUser", "User")
                         .WithMany("Applications")
                         .HasForeignKey("UserId");
+                });
+
+            modelBuilder.Entity("VollyV2.Data.Volly.ApplicationOccurrence", b =>
+                {
+                    b.HasOne("VollyV2.Data.Volly.Application", "Application")
+                        .WithMany("Occurrences")
+                        .HasForeignKey("ApplicationId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("VollyV2.Data.Volly.Occurrence", "Occurrence")
+                        .WithMany("Applications")
+                        .HasForeignKey("OccurrenceId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("VollyV2.Data.Volly.Occurrence", b =>

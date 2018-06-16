@@ -9,50 +9,65 @@
 <p>
     <a asp-action="Create">Create New</a>
 </p>
-<table class="table table-bordered table-striped table-text">
+
+<input class="form-control" id="searchInput" type="text" placeholder="Search..">
+<table class="table table-bordered table-striped table-text" id="occurrenceList">
     <thead>
         <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.StartTime)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.EndTime)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.ApplicationDeadline)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Openings)
-                </th>
             <th>
                 @Html.DisplayNameFor(model => model.Opportunity)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StartTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EndTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ApplicationDeadline)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Openings)
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.StartTime)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.EndTime)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ApplicationDeadline)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Openings)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Opportunity.Name)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Opportunity.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.StartTime)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EndTime)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ApplicationDeadline)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Openings)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
+
+<script>
+    $(document).ready(function () {
+        $("#searchInput").on("keyup", function () {
+            var value = $(this).val().toLowerCase();
+            $("#occurrenceList tbody tr").filter(function () {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
+            });
+        });
+    });
+</script>

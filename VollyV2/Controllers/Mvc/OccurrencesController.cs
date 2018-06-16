@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using VollyV2.Data;
+using VollyV2.Data.Migrations;
 using VollyV2.Data.Volly;
 
 namespace VollyV2.Controllers.Mvc
@@ -22,12 +23,29 @@ namespace VollyV2.Controllers.Mvc
         // GET: Occurrences
         public async Task<IActionResult> Index()
         {
-            List<Occurrence> occurences = await _context
-                .Occurrences
+            List<Occurrence> occurrences = await _context.Occurrences
                 .Include(o => o.Opportunity)
                 .ToListAsync();
-            
-            return View(occurences.Select(OccurrenceTimeZoneConverter.ConvertFromUtc()));
+            return View(occurrences.Select(OccurrenceTimeZoneConverter.ConvertFromUtc()).ToList());
+        }
+
+        // GET: Occurrences/Details/5
+        public async Task<IActionResult> Details(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var occurrence = await _context.Occurrences
+                .Include(o => o.Opportunity)
+                .SingleOrDefaultAsync(m => m.Id == id);
+            if (occurrence == null)
+            {
+                return NotFound();
+            }
+
+            return View(OccurrenceTimeZoneConverter.ConvertFromUtc().Invoke(occurrence));
         }
 
         // GET: Occurrences/Create
@@ -46,8 +64,7 @@ namespace VollyV2.Controllers.Mvc
         {
             if (ModelState.IsValid)
             {
-                Occurrence occurrenceToadd = OccurrenceTimeZoneConverter.ConvertToUtc().Invoke(occurrence);
-                _context.Add(occurrenceToadd);
+                _context.Add(OccurrenceTimeZoneConverter.ConvertToUtc().Invoke(occurrence));
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
@@ -64,7 +81,6 @@ namespace VollyV2.Controllers.Mvc
             }
 
             var occurrence = await _context.Occurrences.SingleOrDefaultAsync(m => m.Id == id);
-
             if (occurrence == null)
             {
                 return NotFound();
