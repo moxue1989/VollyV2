@@ -51,7 +51,7 @@ namespace VollyV2.Models.Volly
                 OccurrenceId = o
             }).ToList();
 
-            context.OccurrenceApplications.AddRange(occurrenceApplications);
+            context.ApplicationsOccurrence.AddRange(occurrenceApplications);
             await context.SaveChangesAsync();
         }
     }

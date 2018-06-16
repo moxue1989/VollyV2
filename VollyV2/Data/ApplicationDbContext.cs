@@ -25,7 +25,7 @@ namespace VollyV2.Data
         public DbSet<Application> Applications { get; set; }
         public DbSet<OpportunityImage> OpportunityImages { get; set; }
         public DbSet<Occurrence> Occurrences { get; set; }
-        public DbSet<ApplicationOccurrence> OccurrenceApplications { get; set; }
+        public DbSet<ApplicationOccurrence> ApplicationsOccurrence { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
