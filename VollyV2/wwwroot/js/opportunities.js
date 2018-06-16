@@ -56,9 +56,9 @@ function prettyFormatDateTimes(d1, d2, breakline) {
     return dateTimeString;
     function getSplit(breakline) {
         if (breakline) {
-            return " -<br />"
+            return " -<br />";
         }
-        return " - "
+        return " - ";
     }
 }
 
@@ -90,10 +90,10 @@ function initMap() {
     });
     $('#nothingFoundAlert').hide();
     getAllOpportunities();
-    enableDickPicker();
+    enableDatePicker();
 };
 
-function enableDickPicker() {
+function enableDatePicker() {
     $('#dateSelect').datepicker({
         multidate: true,
         clearBtn: true,
