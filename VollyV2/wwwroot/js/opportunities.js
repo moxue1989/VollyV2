@@ -54,12 +54,13 @@ function prettyFormatDateTimes(d1, d2, breakline) {
         }
     }
     return dateTimeString;
-    function getSplit(breakline) {
-        if (breakline) {
-            return " -<br />";
-        }
-        return " - ";
+}
+
+function getSplit(breakline) {
+    if (breakline) {
+        return " -<br />";
     }
+    return " - ";
 }
 
 function appendOpportunityPanel(opportunity, marker) {
