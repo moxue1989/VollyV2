@@ -4,10 +4,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using VollyV2.Data;
 using VollyV2.Data.Volly;
 using VollyV2.Models.Volly;
 using VollyV2.Services;
+using Z.EntityFramework.Plus;
 
 namespace VollyV2.Controllers.Api
 {
@@ -40,15 +42,13 @@ namespace VollyV2.Controllers.Api
         }
 
         [HttpPost]
-        public async Task<IActionResult> Search([FromBody]ApplyModel applyModel)
+        public async Task<IActionResult> Apply([FromBody]ApplyModel applyModel)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-                Application application = applyModel.GetApplication(_dbContext);
-                _dbContext.Applications.Add(application);
-                await _dbContext.SaveChangesAsync();
+                Application application = await applyModel.GetApplication(_dbContext);
                 await _emailSender.SendApplicationConfirmAsync(application);
                 return Ok(application);
         }

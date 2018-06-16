@@ -148,10 +148,16 @@
                         <span asp-validation-for="@Model.ApplyModel.Email" class="text-danger"></span>
                     </div>
                     <div class="form-group">
+                        <label asp-for="@Model.ApplyModel.OccurrenceIds" class="col-form-label">Select a time:</label>
+                        <div class="row apply-opportunity-row">
+                            <select asp-for="@Model.ApplyModel.OccurrenceIds" class="form-control" id="occurrencesInput" multiple="multiple"></select>
+                        </div>
+                        <span asp-validation-for="@Model.ApplyModel.OccurrenceIds" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
                         <label asp-for="@Model.ApplyModel.Message" class="row apply-opportunity-row col-form-label col-sm-2">Message</label>
                         <div class="row apply-opportunity-row">
-                            <div class="col-sm-2"></div>
-                            <textarea asp-for="@Model.ApplyModel.Message" class="form-control col-sm-10" rows="4" placeholder="Please state your availability if you cannot help out the whole time"></textarea>
+                            <textarea asp-for="@Model.ApplyModel.Message" class="form-control col-sm-12" rows="4" placeholder="Please state your availability if you cannot help out the whole time"></textarea>
                         </div>
                         <span asp-validation-for="@Model.ApplyModel.Message" class="text-danger"></span>
                     </div>

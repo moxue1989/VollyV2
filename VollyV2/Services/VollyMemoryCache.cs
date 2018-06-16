@@ -7,6 +7,7 @@ using Microsoft.Extensions.Caching.Memory;
 using VollyV2.Controllers;
 using VollyV2.Data;
 using VollyV2.Data.Volly;
+using Z.EntityFramework.Plus;
 
 namespace VollyV2.Services
 {
@@ -17,17 +18,31 @@ namespace VollyV2.Services
             return await memoryCache.GetOrCreateAsync(VollyConstants.OpportunityCacheKey, async entry =>
             {
                 entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(2);
+
+                List<int> opportunityIds = await context.Occurrences
+                    .Where(o => o.ApplicationDeadline > DateTime.Now && o.Applications.Count < o.Openings)
+                    .Select(o => o.OpportunityId)
+                    .ToListAsync();
+
                 List<Opportunity> opportunities = await context.Opportunities
+                    .Where(o => opportunityIds.Contains(o.Id))
                     .Include(o => o.Category)
                     .Include(o => o.Organization)
                     .ThenInclude(o => o.Cause)
                     .Include(o => o.Location)
+                    .Include(o => o.Occurrences)
+                    .ThenInclude(o => o.Applications)
                     .AsNoTracking()
-                    .Where(o => o.Applications.Count < o.Openings && o.ApplicationDeadline > DateTime.Now)
-                    .OrderBy(o => o.DateTime)
                     .ToListAsync();
 
-                return opportunities.Select(OpportunityTimeZoneConverter.ConvertFromUtc()).ToList();
+                foreach (Opportunity opportunity in opportunities)
+                {
+                    opportunity.Occurrences = opportunity.Occurrences
+                        .Where(oc => oc.ApplicationDeadline > DateTime.Now && oc.Openings > oc.Applications.Count)
+                        .Select(OccurrenceTimeZoneConverter.ConvertFromUtc())
+                        .ToList();
+                }
+                return opportunities;
             });
         }
     }

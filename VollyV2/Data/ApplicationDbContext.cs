@@ -24,16 +24,25 @@ namespace VollyV2.Data
         public DbSet<Location> Locations { get; set; }
         public DbSet<Application> Applications { get; set; }
         public DbSet<OpportunityImage> OpportunityImages { get; set; }
+        public DbSet<Occurrence> Occurrences { get; set; }
+        public DbSet<ApplicationOccurrence> OccurrenceApplications { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
-            // Customize the ASP.NET Identity model and override the defaults if needed.
-            // For example, you can rename the ASP.NET Identity table names and more.
-            // Add your customizations after calling base.OnModelCreating(builder);
+            builder.Entity<ApplicationOccurrence>()
+                .HasKey(k => new { k.ApplicationId, k.OccurrenceId });
+            builder.Entity<ApplicationOccurrence>()
+                .HasOne(ao => ao.Application)
+                .WithMany(ao => ao.Occurrences)
+                .HasForeignKey(ao => ao.ApplicationId);
+            builder.Entity<ApplicationOccurrence>()
+                .HasOne(ao => ao.Occurrence)
+                .WithMany(ao => ao.Applications)
+                .HasForeignKey(ao => ao.OccurrenceId);
         }
 
-        public DbSet<VollyV2.Models.ApplicationUser> ApplicationUser { get; set; }
+        public DbSet<ApplicationUser> ApplicationUser { get; set; }
         public DbSet<IdentityRole> IdentityRoles { get; set; }
     }
 }
