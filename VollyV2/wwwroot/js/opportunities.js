@@ -42,9 +42,9 @@ function prettyFormatDateTimes(d1, d2, breakline) {
     var dateTimeString = "Coming soon!";
     if (dateTime.getFullYear() >= 1970) {
         if (endDateTime.getFullYear() >= 1970) {
-            if (dateTime.getFullYear() == endDateTime.getFullYear()
-                && dateTime.getMonth() == endDateTime.getMonth()
-                && dateTime.getDay() == endDateTime.getDay()) {
+            if (dateTime.getFullYear() === endDateTime.getFullYear()
+                && dateTime.getMonth() === endDateTime.getMonth()
+                && dateTime.getDay() === endDateTime.getDay()) {
                 dateTimeString = moment(dateTime).format('ddd MMM D YYYY h:mm a') + " - " + moment(endDateTime).format('h:mm a');
             } else {
                 dateTimeString = moment(dateTime).format('ddd MMM D YYYY h:mm a') + getSplit(breakline) + moment(endDateTime).format('ddd MMM D YYYY h:mm a')

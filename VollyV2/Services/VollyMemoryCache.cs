@@ -23,7 +23,7 @@ namespace VollyV2.Services
                     .ThenInclude(o => o.Cause)
                     .Include(o => o.Location)
                     .AsNoTracking()
-                    .Where(o => o.Applications.Count < o.Openings)
+                    .Where(o => o.Applications.Count < o.Openings && o.ApplicationDeadline > DateTime.Now)
                     .OrderBy(o => o.DateTime)
                     .ToListAsync();
 
