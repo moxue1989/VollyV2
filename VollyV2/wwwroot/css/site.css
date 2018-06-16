@@ -297,3 +297,6 @@ nav img.img-brand {
     z-index: 100;
     margin-right: 15px;
 }
+.div-description {
+    white-space: pre-wrap;
+}

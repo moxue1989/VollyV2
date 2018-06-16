@@ -37,8 +37,8 @@ function openOpportunityModal(opportunity) {
 };
 
 function prettyFormatDateTimes(d1, d2, breakline) {
-    var dateTime = new Date(d1);
-    var endDateTime = new Date(d2);
+    var dateTime = new Date(d1 +"-06:00");
+    var endDateTime = new Date(d2 + "-06:00");
     var dateTimeString = "Coming soon!";
     if (dateTime.getFullYear() >= 1970) {
         if (endDateTime.getFullYear() >= 1970) {
@@ -54,16 +54,17 @@ function prettyFormatDateTimes(d1, d2, breakline) {
         }
     }
     return dateTimeString;
-    function getSplit(breakline) {
-        if (breakline) {
-            return " -<br />"
-        }
-        return " - "
+}
+
+function getSplit(breakline) {
+    if (breakline) {
+        return " -<br />";
     }
+    return " - ";
 }
 
 function appendOpportunityPanel(opportunity, marker) {
-    $("#opportunityList").append('<div id="opportunity-' + opportunity.id + '" class="col-lg-3 col-md-4 col-sm-12 result-card"><div class="result-card-inner">' +
+    $("#opportunityList").append('<div id="opportunity-' + opportunity.id + '" class="col-xl-3 col-lg-4 col-md-6 col-sm-12 result-card"><div class="result-card-inner">' +
         '<div class="wrap-center"><div class="result-datetime">' + prettyFormatDateTimes(opportunity.dateTime, opportunity.endDateTime, true) + '</div></div>' +
         '<div class="img-opp"><img src="' + opportunity.imageUrl + '" /></div>' +
         '<div class="result-details"><div class="result-address">' + opportunity.address + '</div>' +
@@ -90,10 +91,10 @@ function initMap() {
     });
     $('#nothingFoundAlert').hide();
     getAllOpportunities();
-    enableDickPicker();
+    enableDatePicker();
 };
 
-function enableDickPicker() {
+function enableDatePicker() {
     $('#dateSelect').datepicker({
         multidate: true,
         clearBtn: true,
@@ -193,28 +194,16 @@ $("#toggle-map").click(function () {
             $("#toggle-map").attr('value', 'Hide Map');
             $("#toggle-map").attr('data-show', '1');
             $("#wrap-main").removeClass('col-lg-12');
-            $("#wrap-main").addClass('col-lg-6');
+            $("#wrap-main").addClass('col-lg-8');
             $("#wrap-main").removeClass('col-md-12');
-            $("#wrap-main").addClass('col-md-6');
-            $(".result-card").each(function () {
-                $(this).removeClass('col-lg-3');
-                $(this).addClass('col-lg-6');
-                $(this).removeClass('col-md-4');
-                $(this).addClass('col-md-6');
-            });
+            $("#wrap-main").addClass('col-md-8');
         } else {
             $("#toggle-map").attr('value', 'Show Map');
             $("#toggle-map").attr('data-show', '0');
-            $("#wrap-main").removeClass('col-lg-6');
+            $("#wrap-main").removeClass('col-lg-8');
             $("#wrap-main").addClass('col-lg-12');
-            $("#wrap-main").removeClass('col-md-6');
+            $("#wrap-main").removeClass('col-md-8');
             $("#wrap-main").addClass('col-md-12');
-            $(".result-card").each(function () {
-                $(this).removeClass('col-lg-6');
-                $(this).addClass('col-lg-3');
-                $(this).removeClass('col-md-6');
-                $(this).addClass('col-md-4');
-            });
         }
     });
 });
