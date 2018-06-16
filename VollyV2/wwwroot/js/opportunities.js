@@ -186,31 +186,33 @@ function filterOpportunities() {
 }
 
 $("#toggle-map").click(function () {
+    var dataShow = parseInt($('#toggle-map').attr('data-show'));
+    if (dataShow === 1) {
+        $('#map').css('height', '85vh');
+    }
     $("#map").animate({
-        width: "toggle",
-        height: "toggle"
+        opacity: dataShow
     }, 500, function () {
-        if (parseInt($("#toggle-map").attr('data-show')) === 0) {
+        if (dataShow === 1) {
             $("#toggle-map").attr('value', 'Hide Map');
-            $("#toggle-map").attr('data-show', '1');
+            $("#toggle-map").attr('data-show', '0');
             $("#wrap-main").removeClass('col-lg-12');
             $("#wrap-main").addClass('col-lg-8');
             $("#wrap-main").removeClass('col-md-12');
             $("#wrap-main").addClass('col-md-8');
         } else {
             $("#toggle-map").attr('value', 'Show Map');
-            $("#toggle-map").attr('data-show', '0');
+            $("#toggle-map").attr('data-show', '1');
             $("#wrap-main").removeClass('col-lg-8');
             $("#wrap-main").addClass('col-lg-12');
             $("#wrap-main").removeClass('col-md-8');
             $("#wrap-main").addClass('col-md-12');
+            $('#map').css('height', 0);
         }
     });
 });
+
 (function () {
-    $("#map").animate({
-        width: "toggle",
-        height: "toggle"
-    }, 100, function () {
-    })
+    $("#map").css("opacity", 0);
+    $('#map').css('height', 0);
 })();
