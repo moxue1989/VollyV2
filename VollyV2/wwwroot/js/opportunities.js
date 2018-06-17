@@ -86,7 +86,9 @@ function getOccurrenceSelectors(occurrences) {
     var element = "";
     for (var i = 0; i < occurrences.length; i++) {
         var occurrence = occurrences[i];
-        element = element + "<option value='" + occurrence.id + "'>" + prettyFormatDateTimes(occurrence.startTime, occurrence.endTime, false) + "</option>";
+        element = element + "<option value='" + occurrence.id +
+            "'>" + prettyFormatDateTimes(occurrence.startTime, occurrence.endTime, false) +
+            " (" + occurrence.openings + " spots remaining)</option>";
     }
     return element;
 }

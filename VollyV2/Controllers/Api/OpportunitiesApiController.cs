@@ -79,6 +79,7 @@ namespace VollyV2.Controllers.Api
                 {
                     opportunity.FOccurrences = opportunity.Occurrences
                         .Where(oc => dates.Contains(oc.StartTime.Date))
+                        .OrderBy(o => o.StartTime)
                         .ToList();
                 }
                 else
@@ -113,7 +114,7 @@ namespace VollyV2.Controllers.Api
                 case 2:
                     return opportunities.OrderBy(o => o.Organization.Name).ToList();
                 case 3:
-                    return opportunities.OrderBy(o => o.Openings).ToList();
+                    return opportunities.OrderBy(o => o.Occurrences.Sum(occ => occ.Openings)).ToList();
                 case 4:
                     return opportunities.OrderBy(o =>
                     {

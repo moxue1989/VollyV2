@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -11,6 +12,7 @@ using VollyV2.Data.Volly;
 
 namespace VollyV2.Controllers.Mvc
 {
+    [Authorize(Roles = "Admin")]
     public class OccurrencesController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -27,25 +29,6 @@ namespace VollyV2.Controllers.Mvc
                 .Include(o => o.Opportunity)
                 .ToListAsync();
             return View(occurrences.Select(OccurrenceTimeZoneConverter.ConvertFromUtc()).ToList());
-        }
-
-        // GET: Occurrences/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var occurrence = await _context.Occurrences
-                .Include(o => o.Opportunity)
-                .SingleOrDefaultAsync(m => m.Id == id);
-            if (occurrence == null)
-            {
-                return NotFound();
-            }
-
-            return View(OccurrenceTimeZoneConverter.ConvertFromUtc().Invoke(occurrence));
         }
 
         // GET: Occurrences/Create

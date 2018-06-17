@@ -26,8 +26,6 @@ namespace VollyV2.Models.Volly
         [Required]
         [Display(Name = "Category")]
         public int CategoryId { get; set; }
-        [Required]
-        public int Openings { get; set; }
         public SelectList Organizations { get; set; }
         public SelectList Categories { get; set; }
         public string ImageUrl { get; set; }
@@ -44,7 +42,6 @@ namespace VollyV2.Models.Volly
                 OrganizationId = opportunity.Organization.Id,
                 CategoryId = opportunity.Category.Id,
                 ImageUrl = opportunity.ImageUrl,
-                Openings = opportunity.Openings,
                 Categories = new SelectList(dbContext.Categories
                     .OrderBy(c => c.Name)
                     .ToList(), "Id", "Name"),
@@ -68,7 +65,6 @@ namespace VollyV2.Models.Volly
             }
             opportunity.Organization = context.Organizations.Find(OrganizationId);
             opportunity.Category = context.Categories.Find(CategoryId);
-            opportunity.Openings = Openings;
             opportunity.Location = GoogleLocator.GetLocationFromAddress(Address);
 
             return opportunity;

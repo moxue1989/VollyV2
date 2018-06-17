@@ -14,6 +14,9 @@
                 @Html.DisplayNameFor(model => model.Opportunity)
             </th>
             <th>
+                @Html.DisplayNameFor(model => model.Occurrences)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.Name)
             </th>
             <th>
@@ -37,6 +40,12 @@
             <tr>
                 <td>
                     @Html.DisplayFor(modelItem => item.Opportunity.Name)
+                </td>
+                <td>
+                    @foreach (var occ in item.Occurrences)
+                    {
+                        @Html.Raw(occ.Occurrence.StartTime + " -->" + occ.Occurrence.EndTime + "<br/>")
+                    }
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Name)
