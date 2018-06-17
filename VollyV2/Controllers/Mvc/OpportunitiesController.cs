@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
@@ -89,7 +90,8 @@ namespace VollyV2.Controllers.Mvc
             var opportunity = await _context.Opportunities
                 .Include(o => o.Category)
                 .Include(o => o.Organization)
-                .Include(o => o.OpportunityImages)
+                .Include(o => o.Occurrences)
+                .ThenInclude(occ => occ.Applications)
                 .SingleOrDefaultAsync(m => m.Id == id);
 
             if (opportunity == null)
@@ -97,11 +99,17 @@ namespace VollyV2.Controllers.Mvc
                 return NotFound();
             }
 
+            List<Occurrence> occurrences = opportunity.Occurrences
+                .Where(o => o.ApplicationDeadline > DateTime.Now && o.Openings > o.Applications.Count)
+                .ToList();
+
             ApplyModel applyModel = new ApplyModel()
             {
                 OpportunityId = opportunity.Id,
-                Opportunity = opportunity
+                Opportunity = opportunity,
+                Occurrences = new SelectList(occurrences, "Id", "StartTime")
             };
+
             ViewData["Message"] = Message;
             return View(applyModel);
         }
@@ -113,7 +121,7 @@ namespace VollyV2.Controllers.Mvc
         {
             if (!ModelState.IsValid)
             {
-                return View(model);
+                return await Details(model.OpportunityId);
             }
             Application application = await model.GetApplication(_context);
             if (User.Identity.IsAuthenticated)

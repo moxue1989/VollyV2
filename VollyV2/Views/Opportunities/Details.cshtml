@@ -38,20 +38,16 @@
                 @Html.DisplayFor(model => model.Opportunity.Category.Name)
             </dd>
             <dt>
-                @Html.DisplayNameFor(model => model.Opportunity.OpportunityImages)
+                @Html.DisplayNameFor(model => model.Opportunity.ImageUrl)
             </dt>
             <dd>
-                @foreach (var image in Model.Opportunity.OpportunityImages)
-                {
-                    <img src="@image.ImageUrl"  class="thumbnail-img"/>
-                }
+                <div class="text-center">
+                    <img id="details-img" src="@Model.Opportunity.ImageUrl" />
+                </div>
             </dd>
         </dl>
     </div>
     <div class="col-md-6 col-sm-12">
-        <div class="text-center">
-            <img id="details-img" src="@Model.Opportunity.ImageUrl" />
-        </div>
         <form asp-action="Details" id="applyForm">
             <input asp-for="@Model.OpportunityId" type="hidden" class="form-control" id="OpportunityId" />
             <div id="apply-now" class="d-flex justify-content-center"> Apply Now:</div>
@@ -67,12 +63,20 @@
                 <span asp-validation-for="@Model.Email" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="@Model.Message" class="row apply-opportunity-row col-form-label col-sm-2">Message</label>
+                <label asp-for="@Model.OccurrenceIds" class="row apply-opportunity-row col-form-label">Pick a time:</label>
                 <div class="row apply-opportunity-row">
-                    <div class="col-sm-2"></div>
-                    <textarea asp-for="@Model.Message" class="form-control col-sm-10" rows="4"></textarea>
+                    <select asp-for="@Model.OccurrenceIds" class="form-control" 
+                            asp-items="@Model.Occurrences"
+                            rows="4" multiple="multiple"></select>
+                    <span asp-validation-for="@Model.OccurrenceIds" class="text-danger"></span>
                 </div>
-                <span asp-validation-for="@Model.Message" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.Message" class="row apply-opportunity-row col-form-label">Message</label>
+                <div class="row apply-opportunity-row">
+                    <textarea asp-for="@Model.Message" class="form-control" rows="4"></textarea>
+                    <span asp-validation-for="@Model.Message" class="text-danger"></span>
+                </div>
             </div>
             <button type="submit" class="btn btn-primary">Volunteer</button>
         </form>
