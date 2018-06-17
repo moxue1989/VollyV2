@@ -15,7 +15,6 @@
             <dt class="text-center">
                 @Html.DisplayFor(model => model.Opportunity.Name)
             </dt>
-            <hr />
             <dd class="div-description">
                 @Html.DisplayFor(model => model.Opportunity.Description)
             </dd>
@@ -29,9 +28,6 @@
                 </a>
             </dd>
             <dt>
-                Duration
-            </dt>
-            <dt>
                 @Html.DisplayNameFor(model => model.Opportunity.Category)
             </dt>
             <dd>
@@ -44,6 +40,15 @@
                 <div class="text-center">
                     <img id="details-img" src="@Model.Opportunity.ImageUrl" />
                 </div>
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Opportunity.OpportunityImages)
+            </dt>
+            <dd>
+                @foreach (var image in Model.Opportunity.OpportunityImages)
+                {
+                    <img src="@image.ImageUrl" class="thumbnail-img" />
+                }
             </dd>
         </dl>
     </div>

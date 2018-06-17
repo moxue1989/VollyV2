@@ -90,8 +90,10 @@ namespace VollyV2.Controllers.Mvc
             var opportunity = await _context.Opportunities
                 .Include(o => o.Category)
                 .Include(o => o.Organization)
+                .Include(o => o.OpportunityImages)
                 .Include(o => o.Occurrences)
                 .ThenInclude(occ => occ.Applications)
+                .AsNoTracking()
                 .SingleOrDefaultAsync(m => m.Id == id);
 
             if (opportunity == null)
@@ -225,6 +227,7 @@ namespace VollyV2.Controllers.Mvc
             var opportunity = await _context.Opportunities
                 .Include(o => o.Category)
                 .Include(o => o.Organization)
+                .AsNoTracking()
                 .SingleOrDefaultAsync(m => m.Id == id);
             if (opportunity == null)
             {

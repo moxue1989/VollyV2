@@ -45,13 +45,13 @@
             </div>
             <div class="form-group">
                 <label asp-for="ImageFile" class="col-form-label"></label>
-                <input asp-for="ImageFile" class="form-control"/>
+                <input asp-for="ImageFile" class="form-control" />
                 <span asp-validation-for="ImageFile" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-default"/>
+                <input type="submit" value="Save" class="btn btn-default" />
             </div>
-            <br/>
+            <br />
         </div>
     </div>
 </form>
@@ -59,21 +59,21 @@
     <div class="col-md-6">
         <h3>Duplicate Opportunity</h3>
         <form asp-action="Duplicate">
-            <input asp-for="Id" type="hidden" class="form-control"/>
+            <input asp-for="Id" type="hidden" class="form-control" />
             <div class="form-group">
-                <input type="submit" value="Duplicate" class="btn btn-default"/>
+                <input type="submit" value="Duplicate" class="btn btn-default" />
             </div>
         </form>
     </div>
     <div class="col-md-6">
         <h3>Upload Images</h3>
         <form asp-action="UploadImages" enctype="multipart/form-data">
-            <input asp-for="Id" type="hidden" class="form-control"/>
+            <input asp-for="Id" type="hidden" class="form-control" />
             <div class="form-group">
-                <input type="file" name="images" class="form-control" multiple/>
+                <input type="file" name="images" class="form-control" multiple />
             </div>
             <div class="form-group">
-                <input type="submit" value="Upload Images" class="btn btn-default"/>
+                <input type="submit" value="Upload Images" class="btn btn-default" />
             </div>
         </form>
     </div>
