@@ -41,20 +41,20 @@ namespace VollyV2.Models.Volly
 
             context.Applications.Add(application);
             await context.SaveChangesAsync();
-            UpdateOccurences(context, application.Id);
+            UpdateOccurences(context, application);
             return application;
         }
 
-        private async void UpdateOccurences(ApplicationDbContext context, int applicationId)
+        private  void UpdateOccurences(ApplicationDbContext context, Application application)
         {
             List<ApplicationOccurrence> occurrenceApplications = OccurrenceIds.Select(o => new ApplicationOccurrence()
             {
-                ApplicationId = applicationId,
-                OccurrenceId = o
+                Application = application,
+                Occurrence = context.Occurrences.Find(o)
             }).ToList();
 
             context.ApplicationsOccurrence.AddRange(occurrenceApplications);
-            await context.SaveChangesAsync();
+            context.SaveChangesAsync();
         }
     }
 }

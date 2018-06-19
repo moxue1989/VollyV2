@@ -23,7 +23,6 @@ namespace VollyV2.Data.Volly
         public Organization Organization { get; set; }
         public Category Category { get; set; }
         public Location Location { get; set; }
-        public List<Application> Applications { get; set; }
         public string ImageUrl { get; set; }
         public string CreatedByUserId { get; set; }
         public ApplicationUser CreatedByUser { get; set; }

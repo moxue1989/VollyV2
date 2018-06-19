@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using System.Net.Mail;
 using System.Threading.Tasks;
 using SendGrid;
 using SendGrid.Helpers.Mail;
@@ -56,6 +54,11 @@ namespace VollyV2.Services
             sendGridMessage.AddTo(new EmailAddress(application.Email, application.Name));
             sendGridMessage.AddCc(new EmailAddress(VollyConstants.AliceEmail, "Alice"));
 
+            List<string> occurrenceStrings = application.Occurrences
+                .Select(ao => ToOccurrenceTimeString().Invoke(ao.Occurrence))
+                .ToList();
+
+            sendGridMessage.AddSubstitution(":time", string.Join("<br/>", occurrenceStrings));
             sendGridMessage.AddSubstitution(":description", application.Opportunity.Description);
             sendGridMessage.AddSubstitution(":address", application.Opportunity.Address);
             sendGridMessage.AddSubstitution(":name", application.Opportunity.Name);
@@ -67,7 +70,7 @@ namespace VollyV2.Services
         private static Func<Occurrence, string> ToOccurrenceTimeString()
         {
             return o => o.StartTime.ToShortDateString() + " " + o.StartTime.ToShortTimeString() +
-            " --> " + o.EndTime.ToShortDateString() + " " + o.EndTime.ToShortTimeString();
+            " --> " + o.EndTime.ToShortTimeString();
         }
     }
 }
