@@ -42,11 +42,7 @@ namespace VollyV2.Models.Volly
             context.Applications.Add(application);
             await context.SaveChangesAsync();
             UpdateOccurences(context, application.Id);
-            return context.Applications
-                .Where(a => a.Id == application.Id)
-                .Include(a => a.Occurrences)
-                .ThenInclude(o => o.Occurrence)
-                .FirstOrDefault();
+            return application;
         }
 
         private async void UpdateOccurences(ApplicationDbContext context, int applicationId)

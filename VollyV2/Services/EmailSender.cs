@@ -56,12 +56,6 @@ namespace VollyV2.Services
             sendGridMessage.AddTo(new EmailAddress(application.Email, application.Name));
             sendGridMessage.AddCc(new EmailAddress(VollyConstants.AliceEmail, "Alice"));
 
-            List<string> occurrenceStrings = application.Occurrences
-                .Select(o => OccurrenceTimeZoneConverter.ConvertFromUtc().Invoke(o.Occurrence))
-                .Select(ToOccurrenceTimeString())
-                .ToList();
-
-            sendGridMessage.AddSubstitution(":time", String.Join("<br/>", occurrenceStrings));
             sendGridMessage.AddSubstitution(":description", application.Opportunity.Description);
             sendGridMessage.AddSubstitution(":address", application.Opportunity.Address);
             sendGridMessage.AddSubstitution(":name", application.Opportunity.Name);
@@ -73,7 +67,7 @@ namespace VollyV2.Services
         private static Func<Occurrence, string> ToOccurrenceTimeString()
         {
             return o => o.StartTime.ToShortDateString() + " " + o.StartTime.ToShortTimeString() +
-            " --> "  + o.EndTime.ToShortTimeString();
+            " --> " + o.EndTime.ToShortDateString() + " " + o.EndTime.ToShortTimeString();
         }
     }
 }
