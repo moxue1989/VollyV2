@@ -17,7 +17,7 @@ namespace VollyV2.Services
     {
         private static readonly string FromEmail = Environment.GetEnvironmentVariable("email_address");
         private static readonly string SendgridApiKey = Environment.GetEnvironmentVariable("sendgrid_api");
-        
+
         public async Task SendEmailAsync(string email, string subject, string message)
         {
             await SendEmailsAsync(new List<string> { email }, subject, message);
@@ -56,15 +56,24 @@ namespace VollyV2.Services
             sendGridMessage.AddTo(new EmailAddress(application.Email, application.Name));
             sendGridMessage.AddCc(new EmailAddress(VollyConstants.AliceEmail, "Alice"));
 
-            DateTime dateTime = VollyConstants.ConvertFromUtc(application.Opportunity.Occurrences[0].StartTime);
+            List<string> occurrenceStrings = application.Occurrences
+                .Select(o => OccurrenceTimeZoneConverter.ConvertFromUtc().Invoke(o.Occurrence))
+                .Select(ToOccurrenceTimeString())
+                .ToList();
 
-            sendGridMessage.AddSubstitution(":time", dateTime.ToShortDateString() + " " + dateTime.ToShortTimeString());
+            sendGridMessage.AddSubstitution(":time", String.Join("<br/>", occurrenceStrings));
             sendGridMessage.AddSubstitution(":description", application.Opportunity.Description);
             sendGridMessage.AddSubstitution(":address", application.Opportunity.Address);
             sendGridMessage.AddSubstitution(":name", application.Opportunity.Name);
             sendGridMessage.AddSubstitution(":image", application.Opportunity.ImageUrl);
 
             await client.SendEmailAsync(sendGridMessage);
+        }
+
+        private static Func<Occurrence, string> ToOccurrenceTimeString()
+        {
+            return o => o.StartTime.ToShortDateString() + " " + o.StartTime.ToShortTimeString() +
+            " --> "  + o.EndTime.ToShortTimeString();
         }
     }
 }

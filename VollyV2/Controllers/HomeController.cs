@@ -81,9 +81,8 @@ namespace VollyV2.Controllers
                 if (User.Identity.IsAuthenticated)
                 {
                     application.User = await _userManager.GetUserAsync(User);
+                    await _dbContext.SaveChangesAsync();
                 }
-                _dbContext.Applications.Update(application);
-                await _dbContext.SaveChangesAsync();
                 await _emailSender.SendApplicationConfirmAsync(application);
                 return Ok();
             }
