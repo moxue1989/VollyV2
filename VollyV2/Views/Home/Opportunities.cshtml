@@ -202,13 +202,13 @@
 <script>
     $('#applyForm').submit(function (e) {
         var $theForm = $(this);
+        $('#OpportunityModal').modal('hide');
 
         $.ajax({
             type: $theForm.attr('method'),
             url: $theForm.attr('action'),
             data: $theForm.serialize(),
             success: function (data) {
-                $('#OpportunityModal').modal('hide');
                 $('#ApplyModal').modal('show');
                 $theForm.trigger("reset");
             }
