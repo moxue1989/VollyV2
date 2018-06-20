@@ -31,6 +31,7 @@ namespace VollyV2.Models.Volly
                 OpportunityName = application.Opportunity.Name,
                 OpportunityImageUrl = application.Opportunity.ImageUrl,
                 OpportunityAddress = application.Opportunity.Address,
+                OpportunityDescription = application.Opportunity.Description,
                 Name = application.Name,
                 Email = application.Email,
                 Message = application.Message,
