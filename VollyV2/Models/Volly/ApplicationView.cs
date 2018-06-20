@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using VollyV2.Controllers;
@@ -19,6 +20,7 @@ namespace VollyV2.Models.Volly
         public string Name { get; set; }
         public string Email { get; set; }
         public string Message { get; set; }
+        [DisplayFormat(DataFormatString = "{0:ddd MMM d yyyy h:mm tt}")]
         public DateTime DateTime { get; set; }
         public string UserName { get; set; }
 

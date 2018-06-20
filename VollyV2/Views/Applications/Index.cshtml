@@ -7,7 +7,8 @@
 
 <h2>Index</h2>
 
-<table class="table">
+<input class="form-control" id="searchInput" type="text" placeholder="Search..">
+<table class="table table-bordered table-striped table-text" id="applicationList">
     <thead>
         <tr>
             <th>
@@ -69,3 +70,14 @@
         }
     </tbody>
 </table>
+
+<script>
+    $(document).ready(function () {
+        $("#searchInput").on("keyup", function () {
+            var value = $(this).val().toLowerCase();
+            $("#applicationList tbody tr").filter(function () {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
+            });
+        });
+    });
+</script>

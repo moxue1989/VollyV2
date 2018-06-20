@@ -13,10 +13,13 @@ namespace VollyV2.Data.Volly
     {
         public int Id { get; set; }
         [Required]
+        [DisplayFormat(DataFormatString = "{0:ddd MMM d yyyy h:mm tt}")]
         public DateTime StartTime { get; set; }
         [Required]
+        [DisplayFormat(DataFormatString = "{0:ddd MMM d yyyy h:mm tt}")]
         public DateTime EndTime { get; set; }
         [Required]
+        [DisplayFormat(DataFormatString = "{0:ddd MMM d yyyy h:mm tt}")]
         public DateTime ApplicationDeadline { get; set; }
         [Required]
         public int Openings { get; set; }
