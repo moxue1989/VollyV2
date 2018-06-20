@@ -48,7 +48,7 @@ namespace VollyV2.Controllers.Api
             {
                 return BadRequest(ModelState);
             }
-            Application application = await applyModel.GetApplication(_dbContext);
+            ApplicationView application = await applyModel.GetApplication(_dbContext);
             await _emailSender.SendApplicationConfirmAsync(application);
             return Ok(application);
         }

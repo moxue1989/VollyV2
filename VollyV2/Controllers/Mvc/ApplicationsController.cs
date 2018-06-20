@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using VollyV2.Data;
 using VollyV2.Data.Volly;
+using VollyV2.Models.Volly;
 
 namespace VollyV2.Controllers.Mvc
 {
@@ -29,19 +30,12 @@ namespace VollyV2.Controllers.Mvc
                 .Include(a => a.Occurrences)
                 .ThenInclude(o => o.Occurrence)
                 .Include(a => a.User)
+                .AsNoTracking()
                 .ToListAsync();
 
-            applications = applications.Select(ConvertFromUtc());
-            return View(applications);
-        }
-
-        private Func<Application, Application> ConvertFromUtc()
-        {
-            return delegate (Application application)
-            {
-                application.DateTime = VollyConstants.ConvertFromUtc(application.DateTime);
-                return application;
-            };
+            IEnumerable<ApplicationView> applicationViews = applications
+                .Select(ApplicationView.FromApplication);
+            return View(applicationViews);
         }
 
         // GET: Applications/Delete/5
@@ -53,13 +47,14 @@ namespace VollyV2.Controllers.Mvc
             }
 
             var application = await _context.Applications
+                .AsNoTracking()
                 .SingleOrDefaultAsync(m => m.Id == id);
             if (application == null)
             {
                 return NotFound();
             }
 
-            return View(application);
+            return View(ApplicationView.FromApplication(application));
         }
 
         // POST: Applications/Delete/5

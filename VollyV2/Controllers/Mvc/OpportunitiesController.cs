@@ -125,7 +125,7 @@ namespace VollyV2.Controllers.Mvc
             {
                 return await Details(model.OpportunityId);
             }
-            Application application = await model.GetApplication(_context);
+            ApplicationView application = await model.GetApplication(_context);
             await _emailSender.SendApplicationConfirmAsync(application);
             Message = "Thank you for applying! Expect an email confirmation soon!";
             return await Details(model.OpportunityId);

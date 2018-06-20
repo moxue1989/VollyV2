@@ -1,4 +1,4 @@
-﻿@model IEnumerable<VollyV2.Data.Volly.Application>
+﻿@model IEnumerable<VollyV2.Models.Volly.ApplicationView>
 
 @{
     ViewData["Title"] = "Index";
@@ -11,7 +11,7 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Opportunity)
+                @Html.DisplayNameFor(model => model.OpportunityName)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Occurrences)
@@ -29,7 +29,7 @@
                 @Html.DisplayNameFor(model => model.DateTime)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.User)
+                @Html.DisplayNameFor(model => model.UserName)
             </th>
             <th></th>
         </tr>
@@ -39,12 +39,12 @@
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Opportunity.Name)
+                    @Html.DisplayFor(modelItem => item.OpportunityName)
                 </td>
                 <td>
                     @foreach (var occ in item.Occurrences)
                     {
-                        @Html.Raw(occ.Occurrence.StartTime + " -->" + occ.Occurrence.EndTime + "<br/>")
+                        @Html.Raw(occ.StartTime + " -->" + occ.EndTime + "<br/>")
                     }
                 </td>
                 <td>
@@ -60,7 +60,7 @@
                     @Html.DisplayFor(modelItem => item.DateTime)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.User.Email)
+                    @Html.DisplayFor(modelItem => item.UserName)
                 </td>
                 <td>
                     <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>

@@ -6,6 +6,7 @@ using SendGrid;
 using SendGrid.Helpers.Mail;
 using VollyV2.Controllers;
 using VollyV2.Data.Volly;
+using VollyV2.Models.Volly;
 
 namespace VollyV2.Services
 {
@@ -39,14 +40,14 @@ namespace VollyV2.Services
             await client.SendEmailAsync(msg);
         }
 
-        public async Task SendApplicationConfirmAsync(Application application)
+        public async Task SendApplicationConfirmAsync(ApplicationView application)
         {
             var client = new SendGridClient(SendgridApiKey);
 
             SendGridMessage sendGridMessage = new SendGridMessage()
             {
                 From = new EmailAddress(FromEmail, "Volly Team"),
-                Subject = "Application For: " + application.Opportunity.Name,
+                Subject = "Application For: " + application.OpportunityName,
                 TemplateId = "e9713a19-2a9e-4d0f-8994-088633aaab25",
                 HtmlContent = application.GetEmailMessage(),
                 PlainTextContent = application.GetEmailMessage()
@@ -55,14 +56,14 @@ namespace VollyV2.Services
             sendGridMessage.AddCc(new EmailAddress(VollyConstants.AliceEmail, "Alice"));
 
             List<string> occurrenceStrings = application.Occurrences
-                .Select(ao => ToOccurrenceTimeString().Invoke(ao.Occurrence))
+                .Select(o => ToOccurrenceTimeString().Invoke(o))
                 .ToList();
 
             sendGridMessage.AddSubstitution(":time", string.Join("<br/>", occurrenceStrings));
-            sendGridMessage.AddSubstitution(":description", application.Opportunity.Description);
-            sendGridMessage.AddSubstitution(":address", application.Opportunity.Address);
-            sendGridMessage.AddSubstitution(":name", application.Opportunity.Name);
-            sendGridMessage.AddSubstitution(":image", application.Opportunity.ImageUrl);
+            sendGridMessage.AddSubstitution(":description", application.OpportunityDescription);
+            sendGridMessage.AddSubstitution(":address", application.OpportunityAddress);
+            sendGridMessage.AddSubstitution(":name", application.OpportunityName);
+            sendGridMessage.AddSubstitution(":image", application.OpportunityImageUrl);
 
             await client.SendEmailAsync(sendGridMessage);
         }

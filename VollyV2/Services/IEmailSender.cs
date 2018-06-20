@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using VollyV2.Data.Volly;
+using VollyV2.Models.Volly;
 
 namespace VollyV2.Services
 {
@@ -8,6 +9,6 @@ namespace VollyV2.Services
     {
         Task SendEmailAsync(string email, string subject, string message);
         Task SendEmailsAsync(List<string> emailList, string subject, string message);
-        Task SendApplicationConfirmAsync(Application application);
+        Task SendApplicationConfirmAsync(ApplicationView application);
     }
 }

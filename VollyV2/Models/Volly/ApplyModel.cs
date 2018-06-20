@@ -28,7 +28,7 @@ namespace VollyV2.Models.Volly
         public string Message { get; set; }
         public SelectList Occurrences { get; set; } 
 
-        public async Task<Application> GetApplication(ApplicationDbContext context)
+        public async Task<ApplicationView> GetApplication(ApplicationDbContext context)
         {
             Application application = new Application()
             {
@@ -42,7 +42,7 @@ namespace VollyV2.Models.Volly
             context.Applications.Add(application);
             await context.SaveChangesAsync();
             UpdateOccurences(context, application);
-            return application;
+            return ApplicationView.FromApplication(application);
         }
 
         private  void UpdateOccurences(ApplicationDbContext context, Application application)
