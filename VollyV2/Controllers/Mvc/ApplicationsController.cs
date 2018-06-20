@@ -47,6 +47,10 @@ namespace VollyV2.Controllers.Mvc
             }
 
             var application = await _context.Applications
+                .Include(a => a.Opportunity)
+                .Include(a => a.Occurrences)
+                .ThenInclude(o => o.Occurrence)
+                .Include(a => a.User)
                 .AsNoTracking()
                 .SingleOrDefaultAsync(m => m.Id == id);
             if (application == null)
