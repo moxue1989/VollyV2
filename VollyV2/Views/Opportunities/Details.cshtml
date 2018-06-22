@@ -84,9 +84,9 @@
 @section OGp
     {
     <meta property="og:title" content="@Html.DisplayFor(model => model.Opportunity.Name)" />
-    <meta property="og:image" content="@Model.Opportunity.ImageUrl" />
+    <meta property="og:image" content="@Uri.EscapeUriString(@Model.Opportunity.ImageUrl)" />
     <meta property="og:description" content="@Html.DisplayFor(model => model.Opportunity.Description)" />
     <meta property="og:site_name" content="Volly" />
     <meta property="og:type" content="website" />
-    <meta property="og:url" content="vollyapp.com" />
+    <meta property="og:url" content="http://vollyapp.com" />
 }
