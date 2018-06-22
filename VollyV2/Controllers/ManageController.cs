@@ -69,7 +69,8 @@ namespace VollyV2.Controllers
                 Email = user.Email,
                 PhoneNumber = user.PhoneNumber,
                 IsEmailConfirmed = user.EmailConfirmed,
-                StatusMessage = StatusMessage
+                StatusMessage = StatusMessage,
+                ProfileImage = user.ProfileImage
             };
 
             return View(model);
