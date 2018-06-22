@@ -11,5 +11,6 @@ namespace VollyV2.Models
     public class ApplicationUser : IdentityUser
     {
         public List<Application> Applications { get; set; }
+        public string ProfileImage { get; set; }
     }
 }

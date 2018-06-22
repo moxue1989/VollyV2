@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 
 namespace VollyV2.Models.ManageViewModels
 {
@@ -20,5 +21,7 @@ namespace VollyV2.Models.ManageViewModels
         [Display(Name = "Phone number")]
         public string PhoneNumber { get; set; }
         public string StatusMessage { get; set; }
+        public string ProfileImage { get; set; }
+        public IFormFile ProfileImageFile { get; set; }
     }
 }

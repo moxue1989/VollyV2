@@ -77,7 +77,8 @@ namespace VollyV2.Controllers
             if (ModelState.IsValid)
             {
                 ApplyModel applyModel = mapModel.ApplyModel;
-                ApplicationView application = await applyModel.GetApplication(_dbContext);
+                ApplicationUser user = User.Identity.IsAuthenticated ? await _userManager.GetUserAsync(User) : null;
+                ApplicationView application = await applyModel.GetApplication(_dbContext, user);
                 await _emailSender.SendApplicationConfirmAsync(application);
                 return Ok();
             }

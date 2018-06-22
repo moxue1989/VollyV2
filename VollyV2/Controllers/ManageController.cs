@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using VollyV2.Data;
 using VollyV2.Extensions;
 using VollyV2.Models;
 using VollyV2.Models.ManageViewModels;
@@ -26,6 +27,8 @@ namespace VollyV2.Controllers
         private readonly IEmailSender _emailSender;
         private readonly ILogger _logger;
         private readonly UrlEncoder _urlEncoder;
+        private readonly IImageManager _imageManager;
+        private ApplicationDbContext _dbContext;
 
         private const string AuthenticatorUriFormat = "otpauth://totp/{0}:{1}?secret={2}&issuer={0}&digits=6";
         private const string RecoveryCodesKey = nameof(RecoveryCodesKey);
@@ -34,14 +37,18 @@ namespace VollyV2.Controllers
           UserManager<ApplicationUser> userManager,
           SignInManager<ApplicationUser> signInManager,
           IEmailSender emailSender,
+          ApplicationDbContext context,
           ILogger<ManageController> logger,
-          UrlEncoder urlEncoder)
+          UrlEncoder urlEncoder,
+          IImageManager imageManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _emailSender = emailSender;
+            _dbContext = context;
             _logger = logger;
             _urlEncoder = urlEncoder;
+            _imageManager = imageManager;
         }
 
         [TempData]
@@ -101,6 +108,16 @@ namespace VollyV2.Controllers
                 {
                     throw new ApplicationException($"Unexpected error occurred setting phone number for user with ID '{user.Id}'.");
                 }
+            }
+
+            if (model.ProfileImageFile != null)
+            {
+                string url = await _imageManager.UploadImageAsync(model.ProfileImageFile,
+                    user.Id + model.ProfileImageFile.FileName);
+
+                user.ProfileImage = url;
+
+                await _userManager.UpdateAsync(user);
             }
 
             StatusMessage = "Your profile has been updated";

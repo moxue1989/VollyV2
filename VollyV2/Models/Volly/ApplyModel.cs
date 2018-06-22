@@ -28,7 +28,7 @@ namespace VollyV2.Models.Volly
         public string Message { get; set; }
         public SelectList Occurrences { get; set; } 
 
-        public async Task<ApplicationView> GetApplication(ApplicationDbContext context)
+        public async Task<ApplicationView> GetApplication(ApplicationDbContext context, ApplicationUser user)
         {
             Application application = new Application()
             {
@@ -36,7 +36,8 @@ namespace VollyV2.Models.Volly
                 Email = Email,
                 Message = Message,
                 DateTime = DateTime.UtcNow,
-                Opportunity = context.Opportunities.Find(OpportunityId)
+                Opportunity = context.Opportunities.Find(OpportunityId),
+                UserId = user.Id
             };
 
             context.Applications.Add(application);
