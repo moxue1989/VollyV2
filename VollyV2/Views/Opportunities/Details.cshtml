@@ -18,10 +18,7 @@
             <dd class="div-description">
                 @Html.DisplayFor(model => model.Opportunity.Description)
             </dd>
-            <dt>
-                @Html.DisplayNameFor(model => model.Opportunity.Address)
-            </dt>
-            <dd>
+            <dd class="text-center">
                 <a target="resource window"
                    href="https://maps.google.com/?q= @Html.DisplayFor(model => model.Opportunity.Address)">
                     @Html.DisplayFor(model => model.Opportunity.Address)
@@ -33,16 +30,13 @@
             <dd>
                 @Html.DisplayFor(model => model.Opportunity.Category.Name)
             </dd>
-            <dt>
-                @Html.DisplayNameFor(model => model.Opportunity.ImageUrl)
-            </dt>
             <dd>
                 <div class="text-center">
                     <img id="details-img" src="@Model.Opportunity.ImageUrl" />
                 </div>
             </dd>
             <dt>
-                @Html.DisplayNameFor(model => model.Opportunity.OpportunityImages)
+               <hr />
             </dt>
             <dd>
                 @foreach (var image in Model.Opportunity.OpportunityImages)
@@ -70,7 +64,7 @@
             <div class="form-group">
                 <label asp-for="@Model.OccurrenceIds" class="row apply-opportunity-row col-form-label">Pick a time:</label>
                 <div class="row apply-opportunity-row">
-                    <select asp-for="@Model.OccurrenceIds" class="form-control" 
+                    <select asp-for="@Model.OccurrenceIds" class="form-control"
                             asp-items="@Model.Occurrences"
                             rows="4" multiple="multiple"></select>
                     <span asp-validation-for="@Model.OccurrenceIds" class="text-danger"></span>
@@ -87,3 +81,12 @@
         </form>
     </div>
 </div>
+@section OGp
+    {
+    <meta property="og:title" content="@Html.DisplayFor(model => model.Opportunity.Name)" />
+    <meta property="og:image" content="@Uri.EscapeUriString(@Model.Opportunity.ImageUrl)" />
+    <meta property="og:description" content="@Html.DisplayFor(model => model.Opportunity.Description)" />
+    <meta property="og:site_name" content="Volly" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://volly.azurewebsites.net/Opportunities/Details/@Model.OpportunityId" />
+}
