@@ -30,15 +30,19 @@ namespace VollyV2.Models.Volly
 
         public async Task<ApplicationView> GetApplication(ApplicationDbContext context, ApplicationUser user)
         {
+            
             Application application = new Application()
             {
                 Name = Name,
                 Email = Email,
                 Message = Message,
                 DateTime = DateTime.UtcNow,
-                Opportunity = context.Opportunities.Find(OpportunityId),
-                UserId = user.Id
+                Opportunity = context.Opportunities.Find(OpportunityId)
             };
+            if (user != null)
+            {
+                application.UserId = user.Id;
+            }
 
             context.Applications.Add(application);
             await context.SaveChangesAsync();
