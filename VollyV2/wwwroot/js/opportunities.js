@@ -3,8 +3,8 @@ var markers = [];
 
 function addOpportunityMarker(opportunity) {
     var marker = map.addMarker({
-        lat: opportunity.location.latitude,
-        lng: opportunity.location.longitude,
+        lat: opportunity.latitude,
+        lng: opportunity.longitude,
         title: opportunity.name,
         infoWindow: { content: opportunity.name },
         click: function (e) {
@@ -17,19 +17,15 @@ function addOpportunityMarker(opportunity) {
 
 function openOpportunityModal(opportunity) {
     var baseUrl = "https%3A%2F%2Fvolly.azurewebsites.net%2FOpportunities%2FDetails%2F";
-    var causename = "";
-    if (opportunity.organization.cause) {
-        causename = opportunity.organization.cause.name;
-    }
     $("#OpportunityId").val(opportunity.id);
     $("#OpportunityModalTitle").html(opportunity.name);
-    $("#OpportunityModalCategory").html(opportunity.category.name);
-    $("#OpportunityModalCause").html(causename);
-    $("#OpportunityModalOrganization").html(opportunity.organization.name);
-    $("#OpportunityModalOrganizationUrl").attr("href", opportunity.organization.websiteLink);
+    $("#OpportunityModalCategory").html(opportunity.categoryName);
+    $("#OpportunityModalCause").html(opportunity.causeName);
+    $("#OpportunityModalOrganization").html(opportunity.organizationName);
+    $("#OpportunityModalOrganizationUrl").attr("href", opportunity.organizationLink);
     $("#ModalAddress").html(opportunity.address);
     $("#ModalDescription").html(opportunity.description);
-    $("#occurrencesInput").html(getOccurrenceSelectors(opportunity.fOccurrences));
+    $("#occurrencesInput").html(getOccurrenceSelectors(opportunity.occurrenceViews));
     $("#fb-share").attr("href", "https://www.facebook.com/sharer/sharer.php?u=" + baseUrl + opportunity.id);
     $("#tw-share").attr("href", "https://twitter.com/share?url=" + baseUrl + opportunity.id + "&text=Volly - " + opportunity.name);
     $("#OpportunityModal").modal('show');
@@ -63,12 +59,12 @@ function getSplit(breakline) {
 }
 
 function appendOpportunityPanel(opportunity, marker) {
-    var firstOccurrence = opportunity.fOccurrences[0];
+    var firstOccurrence = opportunity.occurrenceViews[0];
     $("#opportunityList").append('<div id="opportunity-' + opportunity.id + '" class="col-xl-3 col-lg-4 col-md-6 col-sm-12 result-card"><div class="result-card-inner">' +
         '<div class="wrap-center"><div class="result-datetime">' + prettyFormatDateTimes(firstOccurrence.startTime, firstOccurrence.endtime, true) + '</div></div>' +
         '<div class="img-opp"><img src="' + opportunity.imageUrl + '" /></div>' +
         '<div class="result-details"><div class="result-address">' + opportunity.address + '</div>' +
-        '<div class="result-org-name">' + opportunity.organization.name + '</div>' +
+        '<div class="result-org-name">' + opportunity.organizationName + '</div>' +
         '<div class="result-name">' + opportunity.name + '</div>' +
         '</div></div></div>');
     $("#opportunity-" + opportunity.id).click(function (e) {
@@ -129,9 +125,6 @@ function clearOpportunities() {
 function addOpportunityMarkers(opportunities) {
     for (var i = 0; i < opportunities.length; i++) {
         var opportunity = opportunities[i];
-        if (!opportunity.location) {
-            continue;
-        }
         var marker = addOpportunityMarker(opportunity);
         appendOpportunityPanel(opportunity, marker);
     }

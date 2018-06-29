@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
 using VollyV2.Data;
 using VollyV2.Data.Volly;
+using VollyV2.Models.Views;
 using VollyV2.Models.Volly;
 using VollyV2.Services;
 
@@ -31,11 +32,9 @@ namespace VollyV2.Controllers.Api
         public async Task<IActionResult> GetOpportunities()
         {
             List<Opportunity> opportunities = await VollyMemoryCache.GetAllOpportunities(_memoryCache, _context);
-            foreach (var opportunity in opportunities)
-            {
-                opportunity.FOccurrences = opportunity.Occurrences;
-            }
-            return Ok(Sort(opportunities, 1));
+            List<OpportunityView> opportunityViews = opportunities.Select(o => OpportunityView.FromOpportunity(o, new List<DateTime>())).ToList();
+
+            return Ok(Sort(opportunityViews, 1));
         }
 
         // GET: api/Opportunities/5
@@ -73,56 +72,46 @@ namespace VollyV2.Controllers.Api
                 .ToList();
 
             List<Opportunity> opportunities = await VollyMemoryCache.GetAllOpportunities(_memoryCache, _context);
-            foreach (var opportunity in opportunities)
-            {
-                if (dates.Count > 0)
-                {
-                    opportunity.FOccurrences = opportunity.Occurrences
-                        .Where(oc => dates.Contains(oc.StartTime.Date))
-                        .OrderBy(o => o.StartTime)
-                        .ToList();
-                }
-                else
-                {
-                    opportunity.FOccurrences = opportunity.Occurrences;
-                }
-            }
-
-            opportunities = opportunities.Where(o =>
-                    (opportunitySearch.CauseIds == null || o.Organization.Cause != null &&
-                     opportunitySearch.CauseIds.Contains(o.Organization.Cause.Id)) &&
-                    (opportunitySearch.CategoryIds == null ||
-                     opportunitySearch.CategoryIds.Contains(o.Category.Id)) &&
-                    (opportunitySearch.OrganizationIds == null ||
-                     opportunitySearch.OrganizationIds.Contains(o.Organization.Id)) &&
-                     o.FOccurrences.Count > 0)
+            List<OpportunityView> opportunityViews = opportunities.Where(GetEligibleOpportunityPredicate(opportunitySearch))
+                .Select(o => OpportunityView.FromOpportunity(o, dates))
                 .ToList();
 
-            return Ok(Sort(opportunities, opportunitySearch.Sort));
+            return Ok(Sort(opportunityViews, opportunitySearch.Sort));
         }
 
-        private List<Opportunity> Sort(List<Opportunity> opportunities, int sort)
+        private static Func<Opportunity, bool> GetEligibleOpportunityPredicate(OpportunitySearch opportunitySearch)
+        {
+            return o =>
+                (opportunitySearch.CauseIds == null || o.Organization.Cause != null &&
+                 opportunitySearch.CauseIds.Contains(o.Organization.Cause.Id)) &&
+                (opportunitySearch.CategoryIds == null ||
+                 opportunitySearch.CategoryIds.Contains(o.Category.Id)) &&
+                (opportunitySearch.OrganizationIds == null ||
+                 opportunitySearch.OrganizationIds.Contains(o.Organization.Id));
+        }
+
+        private List<OpportunityView> Sort(List<OpportunityView> opportunitieViews, int sort)
         {
             switch (sort)
             {
                 case 1:
-                    return opportunities.OrderBy(o =>
+                    return opportunitieViews.OrderBy(o =>
                     {
-                        Occurrence firstOcc = o.Occurrences[0];
+                        OccurrenceView firstOcc = o.OccurrenceViews[0];
                         return firstOcc.StartTime;
                     }).ToList();
                 case 2:
-                    return opportunities.OrderBy(o => o.Organization.Name).ToList();
+                    return opportunitieViews.OrderBy(o => o.OrganizationName).ToList();
                 case 3:
-                    return opportunities.OrderBy(o => o.Occurrences.Sum(occ => occ.Openings)).ToList();
+                    return opportunitieViews.OrderBy(o => o.OccurrenceViews.Sum(occ => occ.Openings)).ToList();
                 case 4:
-                    return opportunities.OrderBy(o =>
+                    return opportunitieViews.OrderBy(o =>
                     {
-                        Occurrence firstOcc = o.Occurrences[0];
+                        OccurrenceView firstOcc = o.OccurrenceViews[0];
                         return firstOcc.EndTime - firstOcc.StartTime;
                     }).ToList();
                 default:
-                    return opportunities;
+                    return opportunitieViews;
             }
         }
 
