@@ -53,13 +53,27 @@ function appendOrganizationPanel(organization) {
 }
 
 function initMap() {
+    var geoOptions = {
+        timeout: 10000,
+    };
     map = new GMaps({
         div: '#map',
         lat: 51.044308,
         lng: -114.0652801,
-        zoom: 10
+        zoom: 14
     });
     getAllOrganizations();
+    $('#searchNearMe').click(function () {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(function (p) {
+                map.panTo(new google.maps.LatLng(p.coords.latitude, p.coords.longitude));
+            }, function (e) {
+                alert(e.message);
+            }, geoOptions);
+        } else {
+            alert('Geolocation services must be enabled.')
+        }
+    })
 };
 
 function getAllOrganizations() {

@@ -300,3 +300,7 @@ nav img.img-brand {
 .div-description {
     white-space: pre-wrap;
 }
+.btn-map {
+    border: 1px solid #2e65ee;
+    color: #2e65ee;
+}

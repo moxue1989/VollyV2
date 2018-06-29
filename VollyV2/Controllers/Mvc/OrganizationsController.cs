@@ -35,6 +35,7 @@ namespace VollyV2.Controllers.Mvc
         }
 
         // GET: Organizations/Details/5
+        [AllowAnonymous]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)

@@ -7,7 +7,7 @@
 
 <div class="container-fluid">
     <div class="row">
-        <div class="col-lg-8 col-md-6 col-sm-12 order-lg-first order-md-first">
+        <div class="col-lg-8 col-md-7 col-sm-12 order-lg-first order-md-first">
             <h3>
                 Use this map to find non-profits in Calgary. Click on their name to see what they are about.
                 <br />
@@ -59,10 +59,12 @@
             </div>
         </div>
 
-        <div class="col-lg-4 col-md-4 col-sm-12 order-sm-first order-first wrap-map">
+        <div class="col-lg-4 col-md-5 col-sm-12 order-sm-first order-first wrap-map">
             <div class="sticky-top">
+                <div class="wrap-toggle">
+                    <input type="button" id="searchNearMe" class="btn-map btn btn-light" value="Focus Near Me" />
+                </div>
                 <div class="map" id="map"></div>
-                <br />
             </div>
         </div>
     </div>
