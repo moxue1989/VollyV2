@@ -59,9 +59,9 @@ function getSplit(breakline) {
 }
 
 function appendOpportunityPanel(opportunity, marker) {
-    var firstOccurrence = opportunity.fOccurrences[0];
     var dateTimeString = "Multiple Shifts";
-    if (opportunity.fOccurrences.length === 1) {
+    if (opportunity.occurrenceViews.length === 1) {
+        var firstOccurrence = opportunity.occurrenceViews[0];
         dateTimeString = prettyFormatDateTimes(firstOccurrence.startTime, firstOccurrence.endtime, true);
     }
     $("#opportunityList").append('<div id="opportunity-' + opportunity.id + '" class="col-xl-3 col-lg-4 col-md-6 col-sm-12 result-card"><div class="result-card-inner">' +
