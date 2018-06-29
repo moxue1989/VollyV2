@@ -36,8 +36,8 @@ function openOpportunityModal(opportunity) {
 };
 
 function prettyFormatDateTimes(d1, d2, breakline) {
-    var dateTime = new Date(d1+"-06:00");
-    var endDateTime = new Date(d2+"-06:00");
+    var dateTime = new Date(d1 + "-06:00");
+    var endDateTime = new Date(d2 + "-06:00");
     var dateTimeString = "Coming soon!";
     if (dateTime.getFullYear() >= 1970) {
         if (endDateTime.getFullYear() >= 1970) {
@@ -64,8 +64,12 @@ function getSplit(breakline) {
 
 function appendOpportunityPanel(opportunity, marker) {
     var firstOccurrence = opportunity.fOccurrences[0];
+    var dateTimeString = "Multiple Shifts";
+    if (opportunity.fOccurrences.length === 1) {
+        dateTimeString = prettyFormatDateTimes(firstOccurrence.startTime, firstOccurrence.endtime, true);
+    }
     $("#opportunityList").append('<div id="opportunity-' + opportunity.id + '" class="col-xl-3 col-lg-4 col-md-6 col-sm-12 result-card"><div class="result-card-inner">' +
-        '<div class="wrap-center"><div class="result-datetime">' + prettyFormatDateTimes(firstOccurrence.startTime, firstOccurrence.endtime, true) + '</div></div>' +
+        '<div class="wrap-center"><div class="result-datetime">' + dateTimeString + '</div></div>' +
         '<div class="img-opp"><img src="' + opportunity.imageUrl + '" /></div>' +
         '<div class="result-details"><div class="result-address">' + opportunity.address + '</div>' +
         '<div class="result-org-name">' + opportunity.organization.name + '</div>' +
