@@ -10,6 +10,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using VollyV2.Data;
+using VollyV2.Data.Volly;
 using VollyV2.Extensions;
 using VollyV2.Models;
 using VollyV2.Models.AccountViewModels;
@@ -25,13 +27,15 @@ namespace VollyV2.Controllers
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IEmailSender _emailSender;
         private readonly ILogger _logger;
+        private readonly ApplicationDbContext _dbContext;
 
-        public AccountController(
+        public AccountController(ApplicationDbContext dbContext,
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
             IEmailSender emailSender,
             ILogger<AccountController> logger)
         {
+            _dbContext = dbContext;
             _userManager = userManager;
             _signInManager = signInManager;
             _emailSender = emailSender;
@@ -221,7 +225,18 @@ namespace VollyV2.Controllers
             ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+                var user = new ApplicationUser {UserName = model.Email, Email = model.Email};
+                if (model.CompanyCode != null)
+                {
+                    Company company = _dbContext.Companies
+                        .FirstOrDefault(c => c.CompanyCode == model.CompanyCode);
+                    if (company == null)
+                    {
+                        ModelState.AddModelError("CompanyCode", "Cannot find company with this code");
+                        return View(model);
+                    }
+                    user.Company = company;
+                }
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {

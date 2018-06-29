@@ -32,6 +32,10 @@
     <Compile Remove="Data\Migrations\20180616193509_occurences.Designer.cs" />
     <Compile Remove="Data\Migrations\20180616224804_rename.cs" />
     <Compile Remove="Data\Migrations\20180616224804_rename.Designer.cs" />
+    <Compile Remove="Data\Migrations\20180629003858_CompanyProfile.cs" />
+    <Compile Remove="Data\Migrations\20180629003858_CompanyProfile.Designer.cs" />
+    <Compile Remove="Data\Migrations\20180629004032_CompanyProfile.cs" />
+    <Compile Remove="Data\Migrations\20180629004032_CompanyProfile.Designer.cs" />
   </ItemGroup>
 
 

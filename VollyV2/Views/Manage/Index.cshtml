@@ -35,15 +35,19 @@
                 <input asp-for="PhoneNumber" class="form-control" />
                 <span asp-validation-for="PhoneNumber" class="text-danger"></span>
             </div>
-            @if (Model.ProfileImage != null)
-            {
-                <img class="img-fluid" src="@Model.ProfileImage"/>
-            }
             <div class="form-group">
                 <label asp-for="ProfileImageFile"></label>
                 <input asp-for="ProfileImageFile" class="form-control" />
                 <span asp-validation-for="ProfileImageFile" class="text-danger"></span>
             </div>
+            @if (Model.CompanyName != null)
+            {
+            <h4>@Model.CompanyName</h4>
+            }
+            @if (Model.ProfileImage != null)
+            {
+                <img class="img-fluid" src="@Model.ProfileImage" />
+            }
             <button type="submit" class="btn btn-default">Save</button>
         </form>
     </div>
