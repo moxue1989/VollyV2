@@ -32,7 +32,10 @@ namespace VollyV2.Controllers.Api
         public async Task<IActionResult> GetOpportunities()
         {
             List<Opportunity> opportunities = await VollyMemoryCache.GetAllOpportunities(_memoryCache, _context);
-            List<OpportunityView> opportunityViews = opportunities.Select(o => OpportunityView.FromOpportunity(o, new List<DateTime>())).ToList();
+            List<OpportunityView> opportunityViews = opportunities
+                .Select(OpportunityView.FromOpportunity)
+                .Where(o => o.OccurrenceViews.Count > 0)
+                .ToList();
 
             return Ok(Sort(opportunityViews, 1));
         }
@@ -54,7 +57,7 @@ namespace VollyV2.Controllers.Api
                 return NotFound();
             }
 
-            return Ok(opportunity);
+            return Ok(OpportunityView.FromOpportunity(opportunity));
         }
 
         [HttpPost]
@@ -74,6 +77,7 @@ namespace VollyV2.Controllers.Api
             List<Opportunity> opportunities = await VollyMemoryCache.GetAllOpportunities(_memoryCache, _context);
             List<OpportunityView> opportunityViews = opportunities.Where(GetEligibleOpportunityPredicate(opportunitySearch))
                 .Select(o => OpportunityView.FromOpportunity(o, dates))
+                .Where(o => o.OccurrenceViews.Count > 0)
                 .ToList();
 
             return Ok(Sort(opportunityViews, opportunitySearch.Sort));
@@ -113,11 +117,6 @@ namespace VollyV2.Controllers.Api
                 default:
                     return opportunitieViews;
             }
-        }
-
-        private bool OpportunityExists(int id)
-        {
-            return _context.Opportunities.Any(e => e.Id == id);
         }
 
     }

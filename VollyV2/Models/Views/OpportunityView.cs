@@ -19,6 +19,12 @@ namespace VollyV2.Models.Views
         public double Longitude { get; set; }
         public string ImageUrl { get; set; }
         public List<OccurrenceView> OccurrenceViews { get; set; }
+
+        public static OpportunityView FromOpportunity(Opportunity opportunity)
+        {
+            return FromOpportunity(opportunity, new List<DateTime>());
+        }
+
         public static OpportunityView FromOpportunity(Opportunity opportunity, List<DateTime> valiDateTimes)
         {
             return new OpportunityView()
@@ -34,11 +40,13 @@ namespace VollyV2.Models.Views
                 Latitude = opportunity.Location.Latitude,
                 Longitude = opportunity.Location.Longitude,
                 ImageUrl = opportunity.ImageUrl,
-                OccurrenceViews = valiDateTimes.Count > 0 ? opportunity.Occurrences
-                    .Where(oc => valiDateTimes.Contains(oc.StartTime.Date))
+                OccurrenceViews = opportunity.Occurrences
+                    .Where(oc => oc.ApplicationDeadline > DateTime.Now &&
+                    oc.Openings > oc.Applications.Count && 
+                    (valiDateTimes.Count == 0 || valiDateTimes.Contains(oc.StartTime.Date)))
                     .OrderBy(o => o.StartTime)
                     .Select(OccurrenceView.FromOccurrence)
-                    .ToList() : opportunity.Occurrences.Select(OccurrenceView.FromOccurrence).ToList()
+                    .ToList()
             };
         }
     }

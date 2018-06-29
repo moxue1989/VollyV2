@@ -27,10 +27,7 @@ namespace VollyV2.Data.Volly
         public string CreatedByUserId { get; set; }
         public ApplicationUser CreatedByUser { get; set; }
         public List<OpportunityImage> OpportunityImages { get; set; }
-        [JsonIgnore]
         public List<Occurrence> Occurrences { get; set; }
-        [NotMapped]
-        public List<Occurrence> FOccurrences { get; set; }
 
         public Opportunity Clone()
         {
