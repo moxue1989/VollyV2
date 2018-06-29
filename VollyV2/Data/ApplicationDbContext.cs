@@ -28,6 +28,7 @@ namespace VollyV2.Data
         public DbSet<ApplicationOccurrence> ApplicationsOccurrence { get; set; }
         public DbSet<Company> Companies { get; set; }
         public DbSet<VolunteerHours> VolunteerHours { get; set; }
+        public DbSet<Community> Communities { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

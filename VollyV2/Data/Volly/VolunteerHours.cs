@@ -9,7 +9,7 @@ namespace VollyV2.Data.Volly
 {
     public class VolunteerHours
     {
-        public int VolunteerHoursId { get; set; }
+        public int Id { get; set; }
         [Required]
         public string UserId { get; set; }
         public ApplicationUser User { get; set; }

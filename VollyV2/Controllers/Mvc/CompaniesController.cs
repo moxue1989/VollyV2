@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -11,7 +10,6 @@ using VollyV2.Data.Volly;
 
 namespace VollyV2.Controllers.Mvc
 {
-    [Authorize(Roles = "Admin")]
     public class CompaniesController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -36,7 +34,7 @@ namespace VollyV2.Controllers.Mvc
             }
 
             var company = await _context.Companies
-                .SingleOrDefaultAsync(m => m.CompanyId == id);
+                .SingleOrDefaultAsync(m => m.Id == id);
             if (company == null)
             {
                 return NotFound();
@@ -56,7 +54,7 @@ namespace VollyV2.Controllers.Mvc
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("CompanyId,Name,ContactEmail,Address,Description,CompanyCode")] Company company)
+        public async Task<IActionResult> Create([Bind("Id,Name,ContactEmail,Address,Description,CompanyCode")] Company company)
         {
             if (ModelState.IsValid)
             {
@@ -75,7 +73,7 @@ namespace VollyV2.Controllers.Mvc
                 return NotFound();
             }
 
-            var company = await _context.Companies.SingleOrDefaultAsync(m => m.CompanyId == id);
+            var company = await _context.Companies.SingleOrDefaultAsync(m => m.Id == id);
             if (company == null)
             {
                 return NotFound();
@@ -88,9 +86,9 @@ namespace VollyV2.Controllers.Mvc
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("CompanyId,Name,ContactEmail,Address,Description,CompanyCode")] Company company)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,ContactEmail,Address,Description,CompanyCode")] Company company)
         {
-            if (id != company.CompanyId)
+            if (id != company.Id)
             {
                 return NotFound();
             }
@@ -104,7 +102,7 @@ namespace VollyV2.Controllers.Mvc
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!CompanyExists(company.CompanyId))
+                    if (!CompanyExists(company.Id))
                     {
                         return NotFound();
                     }
@@ -127,7 +125,7 @@ namespace VollyV2.Controllers.Mvc
             }
 
             var company = await _context.Companies
-                .SingleOrDefaultAsync(m => m.CompanyId == id);
+                .SingleOrDefaultAsync(m => m.Id == id);
             if (company == null)
             {
                 return NotFound();
@@ -141,7 +139,7 @@ namespace VollyV2.Controllers.Mvc
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var company = await _context.Companies.SingleOrDefaultAsync(m => m.CompanyId == id);
+            var company = await _context.Companies.SingleOrDefaultAsync(m => m.Id == id);
             _context.Companies.Remove(company);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
@@ -149,7 +147,7 @@ namespace VollyV2.Controllers.Mvc
 
         private bool CompanyExists(int id)
         {
-            return _context.Companies.Any(e => e.CompanyId == id);
+            return _context.Companies.Any(e => e.Id == id);
         }
     }
 }
