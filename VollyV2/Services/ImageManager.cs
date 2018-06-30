@@ -13,6 +13,7 @@ namespace VollyV2.Services
     {
         private static readonly string StorageName = "vollyblobstorage";
         private static readonly string StorageApiKey = Environment.GetEnvironmentVariable("storage_api");
+        private static readonly string ImageContainer = Environment.GetEnvironmentVariable("images_container");
 
         public async Task<string> UploadImageAsync(IFormFile image, string imageName)
         {
@@ -21,7 +22,7 @@ namespace VollyV2.Services
                     StorageName,StorageApiKey), true);
 
             CloudBlobClient blobClient = storageAccount.CreateCloudBlobClient();
-            CloudBlobContainer cloudBlobContainer = blobClient.GetContainerReference("images");
+            CloudBlobContainer cloudBlobContainer = blobClient.GetContainerReference(ImageContainer);
             CloudBlockBlob blob = cloudBlobContainer.GetBlockBlobReference(imageName);
 
             await blob.DeleteIfExistsAsync();

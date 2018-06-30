@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using System;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -15,9 +16,12 @@ namespace VollyV2
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        private static readonly string ConnectionString = Environment.GetEnvironmentVariable("connection_string");
+        private IHostingEnvironment CurrentEnvironment { get; }
+        public Startup(IHostingEnvironment env, IConfiguration configuration)
         {
             Configuration = configuration;
+            CurrentEnvironment = env;
         }
 
         public IConfiguration Configuration { get; }
@@ -26,7 +30,9 @@ namespace VollyV2
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            {
+                options.UseSqlServer(GetConnectionString());
+            });
 
             services.AddIdentity<ApplicationUser, IdentityRole>(options =>
                     {
@@ -57,6 +63,15 @@ namespace VollyV2
             {
                 builder.AllowAnyHeader().AllowAnyOrigin().AllowAnyMethod();
             }));
+        }
+
+        private string GetConnectionString()
+        {
+            if (CurrentEnvironment.EnvironmentName == "Development")
+            {
+                return Configuration.GetConnectionString("Develop");
+            }
+            return ConnectionString;
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
