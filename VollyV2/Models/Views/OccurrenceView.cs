@@ -24,7 +24,7 @@ namespace VollyV2.Models.Views
                 StartTime = VollyConstants.ConvertFromUtc(occurrence.StartTime),
                 EndTime = VollyConstants.ConvertFromUtc(occurrence.EndTime),
                 ApplicationDeadline = VollyConstants.ConvertFromUtc(occurrence.ApplicationDeadline),
-                Openings = occurrence.Openings
+                Openings = occurrence.Openings - occurrence.Applications.Count
             };
         }
     }

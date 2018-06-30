@@ -163,7 +163,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary">Volunteer</button>
+                    <button type="submit" class="btn btn-primary" id="VolunteerSubmit">Volunteer</button>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 </div>
             </form>
@@ -202,7 +202,7 @@
 <script>
     $('#applyForm').submit(function (e) {
         var $theForm = $(this);
-
+        $('#VolunteerSubmit').prop('disabled', true);
         $.ajax({
             type: $theForm.attr('method'),
             url: $theForm.attr('action'),
@@ -211,6 +211,10 @@
                 $('#OpportunityModal').modal('hide');
                 $('#ApplyModal').modal('show');
                 $theForm.trigger("reset");
+                $('#VolunteerSubmit').prop('disabled', false);
+            },
+            error: function (data) {
+                $('#VolunteerSubmit').prop('disabled', false);
             }
         });
         return false;
