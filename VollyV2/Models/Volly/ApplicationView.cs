@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using VollyV2.Controllers;
 using VollyV2.Data.Volly;
+using VollyV2.Models.Views;
 
 namespace VollyV2.Models.Volly
 {
@@ -16,7 +17,7 @@ namespace VollyV2.Models.Volly
         public string OpportunityImageUrl { get; set; }
         public string OpportunityDescription { get; set; }
         public string OpportunityAddress { get; set; }
-        public List<Occurrence> Occurrences { get; set; }
+        public List<OccurrenceView> OccurrenceViews { get; set; }
         public string Name { get; set; }
         public string Email { get; set; }
         public string Message { get; set; }
@@ -38,8 +39,9 @@ namespace VollyV2.Models.Volly
                 Email = application.Email,
                 Message = application.Message,
                 DateTime = VollyConstants.ConvertFromUtc(application.DateTime),
-                Occurrences = application.Occurrences
-                    .Select(ao => OccurrenceTimeZoneConverter.ConvertFromUtc().Invoke(ao.Occurrence))
+                OccurrenceViews = application.Occurrences
+                    .Select(ao => ao.Occurrence)
+                    .Select(OccurrenceView.FromOccurrence)
                     .ToList(),
                 UserName = application.User?.UserName
             };

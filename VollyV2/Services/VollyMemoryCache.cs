@@ -39,7 +39,6 @@ namespace VollyV2.Services
                 {
                     opportunity.Occurrences = opportunity.Occurrences
                         .Where(oc => oc.ApplicationDeadline > DateTime.Now && oc.Openings > oc.Applications.Count)
-                        .Select(OccurrenceTimeZoneConverter.ConvertFromUtc())
                         .ToList();
                 }
                 return opportunities;

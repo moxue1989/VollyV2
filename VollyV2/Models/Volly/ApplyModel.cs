@@ -30,7 +30,6 @@ namespace VollyV2.Models.Volly
 
         public async Task<ApplicationView> GetApplication(ApplicationDbContext context, ApplicationUser user)
         {
-            
             Application application = new Application()
             {
                 Name = Name,
@@ -46,11 +45,11 @@ namespace VollyV2.Models.Volly
 
             context.Applications.Add(application);
             await context.SaveChangesAsync();
-            UpdateOccurences(context, application);
+            application.Occurrences = UpdateOccurences(context, application);
             return ApplicationView.FromApplication(application);
         }
 
-        private  void UpdateOccurences(ApplicationDbContext context, Application application)
+        private List<ApplicationOccurrence> UpdateOccurences(ApplicationDbContext context, Application application)
         {
             List<ApplicationOccurrence> occurrenceApplications = OccurrenceIds.Select(o => new ApplicationOccurrence()
             {
@@ -60,6 +59,7 @@ namespace VollyV2.Models.Volly
 
             context.ApplicationsOccurrence.AddRange(occurrenceApplications);
             context.SaveChangesAsync();
+            return occurrenceApplications;
         }
     }
 }

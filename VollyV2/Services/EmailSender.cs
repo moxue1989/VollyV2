@@ -6,6 +6,7 @@ using SendGrid;
 using SendGrid.Helpers.Mail;
 using VollyV2.Controllers;
 using VollyV2.Data.Volly;
+using VollyV2.Models.Views;
 using VollyV2.Models.Volly;
 
 namespace VollyV2.Services
@@ -55,7 +56,7 @@ namespace VollyV2.Services
             sendGridMessage.AddTo(new EmailAddress(application.Email, application.Name));
             sendGridMessage.AddCc(new EmailAddress(VollyConstants.AliceEmail, "Alice"));
 
-            List<string> occurrenceStrings = application.Occurrences
+            List<string> occurrenceStrings = application.OccurrenceViews
                 .Select(o => ToOccurrenceTimeString().Invoke(o))
                 .ToList();
 
@@ -68,7 +69,7 @@ namespace VollyV2.Services
             await client.SendEmailAsync(sendGridMessage);
         }
 
-        private static Func<Occurrence, string> ToOccurrenceTimeString()
+        private static Func<OccurrenceView, string> ToOccurrenceTimeString()
         {
             return o => o.StartTime.ToShortDateString() + " " + o.StartTime.ToShortTimeString() +
             " --> " + o.EndTime.ToShortTimeString();
