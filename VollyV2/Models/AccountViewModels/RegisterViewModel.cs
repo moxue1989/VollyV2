@@ -24,7 +24,7 @@ namespace VollyV2.Models.AccountViewModels
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
 
-        [Display(Name = "Company Code")]
+        [Display(Name = "Company Code (Optional)")]
         public string CompanyCode { get; set; }
     }
 }

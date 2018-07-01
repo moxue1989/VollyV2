@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using VollyV2.Data;
@@ -57,10 +58,14 @@ namespace VollyV2.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            var user = await _userManager.GetUserAsync(User);
+            string userId = _userManager.GetUserId(User);
+            var user = await _userManager
+                .Users
+                .Include(u => u.Company)
+                .SingleOrDefaultAsync(u => u.Id == userId);
             if (user == null)
             {
-                throw new ApplicationException($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+                throw new ApplicationException($"Unable to load user with ID '{userId}'.");
             }
 
             var model = new IndexViewModel
@@ -70,7 +75,8 @@ namespace VollyV2.Controllers
                 PhoneNumber = user.PhoneNumber,
                 IsEmailConfirmed = user.EmailConfirmed,
                 StatusMessage = StatusMessage,
-                ProfileImage = user.ProfileImage
+                ProfileImage = user.ProfileImage,
+                CompanyName = user.Company?.Name
             };
 
             return View(model);

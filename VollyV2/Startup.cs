@@ -68,7 +68,7 @@ namespace VollyV2
 
         private string GetConnectionString()
         {
-            if (CurrentEnvironment.EnvironmentName == "Development")
+            if (CurrentEnvironment.IsDevelopment())
             {
                 return Configuration.GetConnectionString("Develop");
             }

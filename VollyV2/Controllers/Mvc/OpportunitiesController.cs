@@ -103,6 +103,7 @@ namespace VollyV2.Controllers.Mvc
 
             List<Occurrence> occurrences = opportunity.Occurrences
                 .Where(o => o.ApplicationDeadline > DateTime.Now && o.Openings > o.Applications.Count)
+                .Select(occ => OccurrenceTimeZoneConverter.ConvertFromUtc().Invoke(occ))
                 .ToList();
 
             ApplyModel applyModel = new ApplyModel()

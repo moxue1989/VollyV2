@@ -21,6 +21,7 @@ namespace VollyV2.Models.ManageViewModels
         [Display(Name = "Phone Number")]
         public string PhoneNumber { get; set; }
         public string StatusMessage { get; set; }
+        [Display(Name = "Profile Image")]
         public string ProfileImage { get; set; }
         [Display(Name = "Upload/Update Profile Image")]
         public IFormFile ProfileImageFile { get; set; }

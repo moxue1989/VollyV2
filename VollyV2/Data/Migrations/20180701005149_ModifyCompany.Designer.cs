@@ -11,9 +11,10 @@ using VollyV2.Data;
 namespace VollyV2.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20180701005149_ModifyCompany")]
+    partial class ModifyCompany
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -356,11 +357,11 @@ namespace VollyV2.Data.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<int>("ApplicationId");
-
                     b.Property<DateTime>("DateTime");
 
                     b.Property<double>("Hours");
+
+                    b.Property<int>("OccurrenceId");
 
                     b.Property<string>("OrganizationName");
 
@@ -369,8 +370,7 @@ namespace VollyV2.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ApplicationId")
-                        .IsUnique();
+                    b.HasIndex("OccurrenceId");
 
                     b.HasIndex("UserId");
 
@@ -551,9 +551,9 @@ namespace VollyV2.Data.Migrations
 
             modelBuilder.Entity("VollyV2.Data.Volly.VolunteerHours", b =>
                 {
-                    b.HasOne("VollyV2.Data.Volly.Application", "Application")
-                        .WithOne("VolunteerHours")
-                        .HasForeignKey("VollyV2.Data.Volly.VolunteerHours", "ApplicationId")
+                    b.HasOne("VollyV2.Data.Volly.Occurrence", "Occurrence")
+                        .WithMany()
+                        .HasForeignKey("OccurrenceId")
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("VollyV2.Models.ApplicationUser", "User")

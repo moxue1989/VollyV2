@@ -1,0 +1,59 @@
+﻿@using VollyV2.Models.Volly
+@model VolunteerHoursModel
+
+@{
+    ViewData["Title"] = "Hours";
+    var models = (IEnumerable<VolunteerHoursModel>)ViewData["VolunteerHours"];
+}
+
+<h2>Log hours</h2>
+<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+<table class="table table-bordered table-text">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ApplicationDescription)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.OrganizationName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DateTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Hours)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in models)
+        {
+            <tr>
+                <form asp-action="Index">
+                    <input type="hidden" name="Id" value="@item.Id" />
+                    <input type="hidden" name="ApplicationId" value="@item.ApplicationId" />
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ApplicationDescription)
+                    </td>
+                    <td>
+                        <input name="OrganizationName" value="@item.OrganizationName" />
+                    </td>
+                    <td>
+                        <input name="DateTime" value="@item.DateTime" />
+                    </td>
+                    <td>
+                        <input name="Hours" value="@item.Hours" />
+                    </td>
+                    <td>
+                        <input type="submit" value="Save" />
+                    </td>
+                </form>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

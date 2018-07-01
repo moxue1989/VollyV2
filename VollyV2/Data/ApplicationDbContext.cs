@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using VollyV2.Data.Volly;
 using VollyV2.Models;
+using VollyV2.Models.Volly;
 
 namespace VollyV2.Data
 {
@@ -43,9 +44,13 @@ namespace VollyV2.Data
                 .HasOne(ao => ao.Occurrence)
                 .WithMany(ao => ao.Applications)
                 .HasForeignKey(ao => ao.OccurrenceId);
+            builder.Entity<Company>()
+                .HasIndex(c => c.CompanyCode)
+                .IsUnique();
         }
 
         public DbSet<ApplicationUser> ApplicationUser { get; set; }
         public DbSet<IdentityRole> IdentityRoles { get; set; }
+        public DbSet<VollyV2.Models.Volly.VolunteerHoursModel> VolunteerHoursModel { get; set; }
     }
 }

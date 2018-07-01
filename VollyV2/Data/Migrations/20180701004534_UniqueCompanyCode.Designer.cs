@@ -11,9 +11,10 @@ using VollyV2.Data;
 namespace VollyV2.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20180701004534_UniqueCompanyCode")]
+    partial class UniqueCompanyCode
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -212,21 +213,23 @@ namespace VollyV2.Data.Migrations
 
                     b.Property<string>("Address");
 
-                    b.Property<string>("CompanyCode")
-                        .IsRequired();
+                    b.Property<string>("CompanyCode");
 
-                    b.Property<string>("ContactEmail")
-                        .IsRequired();
+                    b.Property<string>("ContactEmail");
 
                     b.Property<string>("Description");
 
-                    b.Property<string>("Name")
-                        .IsRequired();
+                    b.Property<int?>("LocationId");
+
+                    b.Property<string>("Name");
 
                     b.HasKey("Id");
 
                     b.HasIndex("CompanyCode")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasFilter("[CompanyCode] IS NOT NULL");
+
+                    b.HasIndex("LocationId");
 
                     b.ToTable("Companies");
                 });
@@ -356,11 +359,11 @@ namespace VollyV2.Data.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<int>("ApplicationId");
-
                     b.Property<DateTime>("DateTime");
 
                     b.Property<double>("Hours");
+
+                    b.Property<int>("OccurrenceId");
 
                     b.Property<string>("OrganizationName");
 
@@ -369,8 +372,7 @@ namespace VollyV2.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ApplicationId")
-                        .IsUnique();
+                    b.HasIndex("OccurrenceId");
 
                     b.HasIndex("UserId");
 
@@ -503,6 +505,13 @@ namespace VollyV2.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
+            modelBuilder.Entity("VollyV2.Data.Volly.Company", b =>
+                {
+                    b.HasOne("VollyV2.Data.Volly.Location", "Location")
+                        .WithMany()
+                        .HasForeignKey("LocationId");
+                });
+
             modelBuilder.Entity("VollyV2.Data.Volly.Occurrence", b =>
                 {
                     b.HasOne("VollyV2.Data.Volly.Opportunity", "Opportunity")
@@ -551,9 +560,9 @@ namespace VollyV2.Data.Migrations
 
             modelBuilder.Entity("VollyV2.Data.Volly.VolunteerHours", b =>
                 {
-                    b.HasOne("VollyV2.Data.Volly.Application", "Application")
-                        .WithOne("VolunteerHours")
-                        .HasForeignKey("VollyV2.Data.Volly.VolunteerHours", "ApplicationId")
+                    b.HasOne("VollyV2.Data.Volly.Occurrence", "Occurrence")
+                        .WithMany()
+                        .HasForeignKey("OccurrenceId")
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("VollyV2.Models.ApplicationUser", "User")

@@ -15,8 +15,8 @@ namespace VollyV2.Data.Volly
         public ApplicationUser User { get; set; }
         public string OrganizationName { get; set; }
         public DateTime DateTime { get; set; }
-        public int OccurrenceId { get; set; }
-        public Occurrence Occurrence { get; set; }
+        public int ApplicationId { get; set; }
+        public Application Application { get; set; }
         public double Hours { get; set; }
     }
 }
