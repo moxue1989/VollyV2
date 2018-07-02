@@ -6,31 +6,37 @@
 
 @if (SignInManager.IsSignedIn(User))
 {
-<ul class="navbar-nav ml-auto">
-    <li class="nav-item">
-        <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Chat">Chat Beta</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" asp-area="" asp-controller="VolunteerHours" asp-action="Index">Hours</a>
-    </li>
-        @if (User.IsInRole("Admin"))
-        {
+    <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+            <img class="img-brand" src=@UserManager.GetUserAsync(User).Result.ProfileImage>
+        </li>
         <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="adminActions" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Admin Actions
+            <a class="nav-link dropdown-toggle" href="#" id="userActions" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                @User.Identity.Name
             </a>
-            <div class="dropdown-menu" aria-labelledby="adminActions">
-                <a class="dropdown-item" asp-area="" asp-controller="Categories" asp-action="Index">Manage Categories</a>
-                <a class="dropdown-item" asp-area="" asp-controller="Causes" asp-action="Index">Manage Causes</a>
-                <a class="dropdown-item" asp-area="" asp-controller="Organizations" asp-action="Index">Manage Organizations</a>
-                <a class="dropdown-item" asp-area="" asp-controller="Opportunities" asp-action="Index">Manage Opportunities</a>
-                <a class="dropdown-item" asp-area="" asp-controller="Applications" asp-action="Index">Manage Applications</a>
-                <a class="dropdown-item" asp-area="" asp-controller="Occurrences" asp-action="Index">Manage Occurrences</a>
-                <a class="dropdown-item" asp-area="" asp-controller="Companies" asp-action="Index">Manage Companies</a>
-                <a class="dropdown-item" asp-area="" asp-controller="Import" asp-action="Index">Import Files</a>
+            <div class="dropdown-menu" aria-labelledby="userActions">
+                <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Chat">Chat Beta</a>
+                <a class="nav-link" asp-area="" asp-controller="VolunteerHours" asp-action="Index">Hours</a>
             </div>
         </li>
-    }
+        @if (User.IsInRole("Admin"))
+        {
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="adminActions" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Admin Actions
+                </a>
+                <div class="dropdown-menu" aria-labelledby="adminActions">
+                    <a class="dropdown-item" asp-area="" asp-controller="Categories" asp-action="Index">Manage Categories</a>
+                    <a class="dropdown-item" asp-area="" asp-controller="Causes" asp-action="Index">Manage Causes</a>
+                    <a class="dropdown-item" asp-area="" asp-controller="Organizations" asp-action="Index">Manage Organizations</a>
+                    <a class="dropdown-item" asp-area="" asp-controller="Opportunities" asp-action="Index">Manage Opportunities</a>
+                    <a class="dropdown-item" asp-area="" asp-controller="Applications" asp-action="Index">Manage Applications</a>
+                    <a class="dropdown-item" asp-area="" asp-controller="Occurrences" asp-action="Index">Manage Occurrences</a>
+                    <a class="dropdown-item" asp-area="" asp-controller="Companies" asp-action="Index">Manage Companies</a>
+                    <a class="dropdown-item" asp-area="" asp-controller="Import" asp-action="Index">Import Files</a>
+                </div>
+            </li>
+        }
         @if (User.IsInRole("PowerUser"))
         {
             <li class="nav-item dropdown">

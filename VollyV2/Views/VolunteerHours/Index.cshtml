@@ -1,4 +1,5 @@
-﻿@using VollyV2.Models.Volly
+﻿@using Newtonsoft.Json
+@using VollyV2.Models.Volly
 @model VolunteerHoursModel
 
 @{
@@ -40,7 +41,7 @@
                         <input name="OrganizationName" value="@item.OrganizationName" />
                     </td>
                     <td>
-                        <input name="DateTime" value="@item.DateTime" />
+                        <input name="DateTime" type="date" value=@item.DateTime.ToString("d") />
                     </td>
                     <td>
                         <input name="Hours" value="@item.Hours" />

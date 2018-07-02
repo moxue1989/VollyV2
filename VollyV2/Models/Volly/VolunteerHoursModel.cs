@@ -16,8 +16,11 @@ namespace VollyV2.Models.Volly
 
         public int Id { get; set; }
         public int ApplicationId { get; set; }
+        [Display(Name = "Application Description")]
         public string ApplicationDescription { get; set; }
+        [Display(Name = "Organization")]
         public string OrganizationName { get; set; }
+        [Display(Name = "Date")]
         public DateTime DateTime { get; set; }
         [Required]
         public double Hours { get; set; }
