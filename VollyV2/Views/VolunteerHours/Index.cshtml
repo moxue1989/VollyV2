@@ -41,7 +41,7 @@
                         <input name="OrganizationName" value="@item.OrganizationName" />
                     </td>
                     <td>
-                        <input name="DateTime" type="date" value=@item.DateTime.ToString("d") />
+                        <input name="DateTime" type="date" value=@item.DateTime.ToString("yyyy-MM-dd") />
                     </td>
                     <td>
                         <input name="Hours" value="@item.Hours" />
@@ -54,6 +54,37 @@
         }
     </tbody>
 </table>
+
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addModal">
+    Add
+</button>
+
+<div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addModalLabel">Add new hours</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form asp-action="Index">
+                <div class="modal-body">
+                    <label asp-for="OrganizationName" class="col-form-label"></label>
+                    <input asp-for="OrganizationName" class="form-control" />
+                    <label asp-for="DateTime" class="col-form-label"></label>
+                    <input asp-for="DateTime" type="date" class="form-control" />
+                    <label asp-for="Hours" class="col-form-label"></label>
+                    <input asp-for="Hours" class="form-control" />
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

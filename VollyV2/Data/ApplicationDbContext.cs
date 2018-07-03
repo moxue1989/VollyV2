@@ -51,6 +51,5 @@ namespace VollyV2.Data
 
         public DbSet<ApplicationUser> ApplicationUser { get; set; }
         public DbSet<IdentityRole> IdentityRoles { get; set; }
-        public DbSet<VollyV2.Models.Volly.VolunteerHoursModel> VolunteerHoursModel { get; set; }
     }
 }

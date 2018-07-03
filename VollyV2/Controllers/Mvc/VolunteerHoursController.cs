@@ -42,8 +42,22 @@ namespace VollyV2.Controllers.Mvc
                 .Where(a => a.UserId == userId)
                 .ToListAsync();
 
-            ViewData["VolunteerHours"] = applications
-                .Select(VolunteerHoursModel.FromApplication);
+            List<VolunteerHoursModel> otherVolunteerHours = _context.VolunteerHours
+                .Where(v => v.Application == null)
+                .AsNoTracking().AsEnumerable()
+                .Select(VolunteerHoursModel.FromVolunteerHours)
+                .ToList();
+
+
+
+            List<VolunteerHoursModel> models = applications
+                .Select(VolunteerHoursModel.FromApplication)
+                .ToList();
+
+
+            models.AddRange(otherVolunteerHours);
+
+            ViewData["VolunteerHours"] = models;
             return View();
         }
 
@@ -52,7 +66,7 @@ namespace VollyV2.Controllers.Mvc
         {
             if (ModelState.IsValid)
             {
-               model.CreateOrUpdate(_context, _userManager.GetUserId(User));
+                model.CreateOrUpdate(_context, _userManager.GetUserId(User));
             }
             return RedirectToAction("Index");
         }

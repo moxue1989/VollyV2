@@ -25,6 +25,18 @@ namespace VollyV2.Models.Volly
         [Required]
         public double Hours { get; set; }
 
+        public static VolunteerHoursModel FromVolunteerHours(VolunteerHours volunteerHours)
+        {
+            return new VolunteerHoursModel()
+            {
+                Id = volunteerHours.Id,
+                DateTime = VollyConstants.ConvertFromUtc(volunteerHours.DateTime),
+                Hours = volunteerHours.Hours,
+                OrganizationName = volunteerHours.OrganizationName,
+                ApplicationDescription = "User entered hours"
+            };
+        }
+
         public static VolunteerHoursModel FromApplication(Application application)
         {
             VolunteerHours existingVolunteerHours = application.VolunteerHours;
@@ -34,7 +46,7 @@ namespace VollyV2.Models.Volly
                 return new VolunteerHoursModel()
                 {
                     Id = existingVolunteerHours.Id,
-                    ApplicationId = existingVolunteerHours.ApplicationId,
+                    ApplicationId = application.Id,
                     ApplicationDescription = applicationDescription,
                     DateTime = VollyConstants.ConvertFromUtc(existingVolunteerHours.DateTime),
                     Hours = existingVolunteerHours.Hours,
@@ -79,10 +91,6 @@ namespace VollyV2.Models.Volly
 
         private static string GetApplicationDescription(Application application)
         {
-            if (application == null)
-            {
-                return "User entered hours";
-            }
             ApplicationView applicationView = ApplicationView.FromApplication(application);
             return applicationView.OpportunityName + ": " +
                    applicationView.OccurrenceViews
