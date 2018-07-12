@@ -43,12 +43,10 @@ namespace VollyV2.Controllers.Mvc
                 .ToListAsync();
 
             List<VolunteerHoursModel> otherVolunteerHours = _context.VolunteerHours
-                .Where(v => v.Application == null)
+                .Where(v => v.Application == null && v.UserId == userId)
                 .AsNoTracking().AsEnumerable()
                 .Select(VolunteerHoursModel.FromVolunteerHours)
                 .ToList();
-
-
 
             List<VolunteerHoursModel> models = applications
                 .Select(VolunteerHoursModel.FromApplication)
