@@ -1,7 +1,18 @@
-﻿
+﻿@model VollyV2.Models.Volly.PreferenceView
+
 @{
     ViewData["Title"] = "Preferences";
+    SelectList causesList = (SelectList)ViewData["CausesList"];
 }
 
-<h2>View</h2>
-
+<h2>Manage Preferences</h2>
+<form asp-action="Preferences">
+    <div class="form-group">
+        <label class="col-form-label">Causes</label>
+        <select asp-for="CauseIds" class="form-control"
+                asp-items="@causesList" size="11"></select>
+    </div>
+    <div class="form-group">
+        <input type="submit" value="Save" class="btn btn-default" />
+    </div>
+</form>

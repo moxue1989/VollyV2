@@ -9,6 +9,6 @@ namespace VollyV2.Models.Volly
 {
     public class PreferenceView
     {
-        public List<Cause> Causes { get; set; }
+        public List<int> CauseIds { get; set; }
     }
 }
