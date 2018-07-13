@@ -21,6 +21,9 @@
                             <li class="nav-item">
                                 <a class="nav-link" data-toggle="tab" href="#organizationFilter">Organizations</a>
                             </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-toggle="tab" href="#communityFilter">Communities</a>
+                            </li>
                         </ul>
 
                         <!-- Tab panes -->
@@ -31,12 +34,16 @@
                                         asp-items="@Model.CausesList" size="7"></select>
                             </div>
                             <div id="categoryFilter" class="container tab-pane fade">
-                                <select asp-for="Categories" class="form-control" id="CategoryList" ,
+                                <select asp-for="Categories" class="form-control" id="CategoryList"
                                         asp-items="@Model.CategoriesList" size="7"></select>
                             </div>
                             <div id="organizationFilter" class="container tab-pane fade">
-                                <select asp-for="Organizations" class="form-control" id="OrganizationList" ,
+                                <select asp-for="Organizations" class="form-control" id="OrganizationList"
                                         asp-items="@Model.OrganizationList" size="7"></select>
+                            </div>
+                            <div id="communityFilter" class="container tab-pane fade">
+                                <select asp-for="Communities" class="form-control" id="CommunityList"
+                                        asp-items="@Model.CommunityList" size="7"></select>
                             </div>
                         </div>
                     </div>

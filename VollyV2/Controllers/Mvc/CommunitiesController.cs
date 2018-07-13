@@ -8,27 +8,26 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using VollyV2.Data;
 using VollyV2.Data.Volly;
-using VollyV2.Services;
 
 namespace VollyV2.Controllers.Mvc
 {
     [Authorize(Roles = "Admin")]
-    public class CompaniesController : Controller
+    public class CommunitiesController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public CompaniesController(ApplicationDbContext context)
+        public CommunitiesController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        // GET: Companies
+        // GET: Communities
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Companies.ToListAsync());
+            return View(await _context.Communities.ToListAsync());
         }
 
-        // GET: Companies/Details/5
+        // GET: Communities/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -36,39 +35,39 @@ namespace VollyV2.Controllers.Mvc
                 return NotFound();
             }
 
-            var company = await _context.Companies
+            var community = await _context.Communities
                 .SingleOrDefaultAsync(m => m.Id == id);
-            if (company == null)
+            if (community == null)
             {
                 return NotFound();
             }
 
-            return View(company);
+            return View(community);
         }
 
-        // GET: Companies/Create
+        // GET: Communities/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Companies/Create
+        // POST: Communities/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,ContactEmail,Address,Description,CompanyCode")] Company company)
+        public async Task<IActionResult> Create([Bind("Id,Name")] Community community)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(company);
+                _context.Add(community);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(company);
+            return View(community);
         }
 
-        // GET: Companies/Edit/5
+        // GET: Communities/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -76,22 +75,22 @@ namespace VollyV2.Controllers.Mvc
                 return NotFound();
             }
 
-            var company = await _context.Companies.SingleOrDefaultAsync(m => m.Id == id);
-            if (company == null)
+            var community = await _context.Communities.SingleOrDefaultAsync(m => m.Id == id);
+            if (community == null)
             {
                 return NotFound();
             }
-            return View(company);
+            return View(community);
         }
 
-        // POST: Companies/Edit/5
+        // POST: Communities/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,ContactEmail,Address,Description,CompanyCode")] Company company)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name")] Community community)
         {
-            if (id != company.Id)
+            if (id != community.Id)
             {
                 return NotFound();
             }
@@ -100,12 +99,12 @@ namespace VollyV2.Controllers.Mvc
             {
                 try
                 {
-                    _context.Update(company);
+                    _context.Update(community);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!CompanyExists(company.Id))
+                    if (!CommunityExists(community.Id))
                     {
                         return NotFound();
                     }
@@ -116,10 +115,10 @@ namespace VollyV2.Controllers.Mvc
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(company);
+            return View(community);
         }
 
-        // GET: Companies/Delete/5
+        // GET: Communities/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -127,30 +126,30 @@ namespace VollyV2.Controllers.Mvc
                 return NotFound();
             }
 
-            var company = await _context.Companies
+            var community = await _context.Communities
                 .SingleOrDefaultAsync(m => m.Id == id);
-            if (company == null)
+            if (community == null)
             {
                 return NotFound();
             }
 
-            return View(company);
+            return View(community);
         }
 
-        // POST: Companies/Delete/5
+        // POST: Communities/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var company = await _context.Companies.SingleOrDefaultAsync(m => m.Id == id);
-            _context.Companies.Remove(company);
+            var community = await _context.Communities.SingleOrDefaultAsync(m => m.Id == id);
+            _context.Communities.Remove(community);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool CompanyExists(int id)
+        private bool CommunityExists(int id)
         {
-            return _context.Companies.Any(e => e.Id == id);
+            return _context.Communities.Any(e => e.Id == id);
         }
     }
 }

@@ -39,7 +39,7 @@ namespace VollyV2.Controllers
         {
             var images = _dbContext.OpportunityImages
                 .AsNoTracking()
-                .OrderByDescending(o=>o.Id)
+                .OrderByDescending(o => o.Id)
                 .Take(10)
                 .ToList();
             CarouselModel model = new CarouselModel() { opportunityImages = images };
@@ -63,6 +63,10 @@ namespace VollyV2.Controllers
                     .OrderBy(c => c.Name)
                     .AsNoTracking()
                     .ToList(), "Id", "Name"),
+
+                CommunityList = new SelectList(_dbContext.Communities
+                .OrderBy(c => c.Name)
+                .ToList(), "Id", "Name"),
 
                 ApplyModel = new ApplyModel()
             };

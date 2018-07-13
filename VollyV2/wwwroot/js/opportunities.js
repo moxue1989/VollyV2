@@ -164,6 +164,7 @@ function filterOpportunities() {
     var categoryIds = $("#CategoryList").val();
     var causeIds = $("#CausesList").val();
     var organizationIds = $("#OrganizationList").val();
+    var communityIds = $("#CommunityList").val();
     var dates = $('#dateSelect').datepicker("getDates");
     var sortBy = $('input[name="sortRadio"]:checked').val();
 
@@ -171,6 +172,7 @@ function filterOpportunities() {
         "CategoryIds": categoryIds,
         "CauseIds": causeIds,
         "OrganizationIds": organizationIds,
+        "CommunityIds": communityIds,
         "Dates": dates,
         "Sort": sortBy
     };

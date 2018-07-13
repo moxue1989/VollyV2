@@ -17,6 +17,7 @@ namespace VollyV2.Models.Views
         public string CategoryName { get; set; }
         public double Latitude { get; set; }
         public double Longitude { get; set; }
+        public string CommunityName { get; set; }
         public string ImageUrl { get; set; }
         public List<OccurrenceView> OccurrenceViews { get; set; }
 
@@ -39,10 +40,11 @@ namespace VollyV2.Models.Views
                 CategoryName = opportunity.Category.Name,
                 Latitude = opportunity.Location.Latitude,
                 Longitude = opportunity.Location.Longitude,
+                CommunityName = opportunity.Community?.Name,
                 ImageUrl = opportunity.ImageUrl,
                 OccurrenceViews = opportunity.Occurrences
                     .Where(oc => oc.ApplicationDeadline > DateTime.Now &&
-                    oc.Openings > oc.Applications.Count && 
+                    oc.Openings > oc.Applications.Count &&
                     (valiDateTimes.Count == 0 || valiDateTimes.Contains(oc.StartTime.Date)))
                     .OrderBy(o => o.StartTime)
                     .Select(OccurrenceView.FromOccurrence)

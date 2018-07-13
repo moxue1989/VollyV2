@@ -91,7 +91,9 @@ namespace VollyV2.Controllers.Api
                 (opportunitySearch.CategoryIds == null ||
                  opportunitySearch.CategoryIds.Contains(o.Category.Id)) &&
                 (opportunitySearch.OrganizationIds == null ||
-                 opportunitySearch.OrganizationIds.Contains(o.Organization.Id));
+                 opportunitySearch.OrganizationIds.Contains(o.Organization.Id)) &&
+                 (opportunitySearch.CommunityIds == null ||
+                 opportunitySearch.CommunityIds.Contains(o.Community.Id));
         }
 
         private List<OpportunityView> Sort(List<OpportunityView> opportunitieViews, int sort)
