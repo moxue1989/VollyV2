@@ -30,6 +30,7 @@ namespace VollyV2.Data
         public DbSet<Company> Companies { get; set; }
         public DbSet<VolunteerHours> VolunteerHours { get; set; }
         public DbSet<Community> Communities { get; set; }
+        public DbSet<UserCause> UserCauses { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -47,6 +48,17 @@ namespace VollyV2.Data
             builder.Entity<Company>()
                 .HasIndex(c => c.CompanyCode)
                 .IsUnique();
+
+            builder.Entity<UserCause>()
+                .HasKey(u => new { u.UserId, u.CauseId });
+            builder.Entity<UserCause>()
+                .HasOne(uc => uc.User)
+                .WithMany(uc => uc.Causes)
+                .HasForeignKey(uc => uc.UserId);
+            builder.Entity<UserCause>()
+                .HasOne(uc => uc.Cause)
+                .WithMany(uc => uc.Users)
+                .HasForeignKey(uc => uc.CauseId);
         }
 
         public DbSet<ApplicationUser> ApplicationUser { get; set; }

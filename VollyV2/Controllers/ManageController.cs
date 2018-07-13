@@ -12,9 +12,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using VollyV2.Data;
+using VollyV2.Data.Volly;
 using VollyV2.Extensions;
 using VollyV2.Models;
 using VollyV2.Models.ManageViewModels;
+using VollyV2.Models.Volly;
 using VollyV2.Services;
 
 namespace VollyV2.Controllers
@@ -249,6 +251,27 @@ namespace VollyV2.Controllers
             StatusMessage = "Your password has been set.";
 
             return RedirectToAction(nameof(SetPassword));
+        }
+
+        public async Task<IActionResult> Preferences()
+        {
+            string userId = _userManager.GetUserId(User);
+            var user = await _userManager
+                .Users
+                .Include(u => u.Causes)
+                .ThenInclude(uc => uc.Cause)
+                .SingleOrDefaultAsync(u => u.Id == userId);
+
+            List<Cause> causes = user.Causes
+                .Select(uc => uc.Cause)
+                .ToList();
+
+            PreferenceView view = new PreferenceView()
+            {
+                Causes = causes
+            };
+
+            return View(view);
         }
 
         [HttpGet]

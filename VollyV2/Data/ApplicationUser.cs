@@ -14,5 +14,6 @@ namespace VollyV2.Models
         public string ProfileImage { get; set; }
         public List<VolunteerHours> VolunteerHours { get; set; }
         public Company Company { get; set; }
+        public List<UserCause> Causes { get; set; }
     }
 }

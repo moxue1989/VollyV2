@@ -38,6 +38,8 @@
     <Compile Remove="Data\Migrations\20180629004032_CompanyProfile.Designer.cs" />
     <Compile Remove="Data\Migrations\20180703015803_RemoveNotNull.cs" />
     <Compile Remove="Data\Migrations\20180703015803_RemoveNotNull.Designer.cs" />
+    <Compile Remove="Data\Migrations\20180713004944_UserCategory.cs" />
+    <Compile Remove="Data\Migrations\20180713004944_UserCategory.Designer.cs" />
   </ItemGroup>
 
 
