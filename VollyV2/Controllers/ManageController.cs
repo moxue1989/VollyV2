@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -18,6 +19,7 @@ using VollyV2.Models;
 using VollyV2.Models.ManageViewModels;
 using VollyV2.Models.Volly;
 using VollyV2.Services;
+using Z.EntityFramework.Plus;
 
 namespace VollyV2.Controllers
 {
@@ -252,7 +254,7 @@ namespace VollyV2.Controllers
 
             return RedirectToAction(nameof(SetPassword));
         }
-
+        [HttpGet]
         public async Task<IActionResult> Preferences()
         {
             string userId = _userManager.GetUserId(User);
@@ -262,16 +264,48 @@ namespace VollyV2.Controllers
                 .ThenInclude(uc => uc.Cause)
                 .SingleOrDefaultAsync(u => u.Id == userId);
 
-            List<Cause> causes = user.Causes
-                .Select(uc => uc.Cause)
+            List<int> causeIds = user.Causes
+                .Select(uc => uc.CauseId)
                 .ToList();
 
             PreferenceView view = new PreferenceView()
             {
-                Causes = causes
+                CauseIds = causeIds
             };
-
+            ViewData["CausesList"] = new SelectList(_dbContext.Causes.ToList(), "Id", "Name");
             return View(view);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Preferences(PreferenceView model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            string userId = _userManager.GetUserId(User);
+            List<int> existing = _dbContext.UserCauses
+                .Where(uc => uc.UserId == userId)
+                .Select(uc => uc.CauseId)
+                .ToList();
+
+            List<UserCause> toAdd = model.CauseIds
+                .Where(c => !existing.Contains(c))
+                .Select(c => new UserCause()
+                {
+                    CauseId = c,
+                    UserId = userId
+                }).ToList();
+
+            await _dbContext.UserCauses.AddRangeAsync(toAdd);
+
+            _dbContext.UserCauses
+                .Where(uc => uc.UserId == userId && !model.CauseIds.Contains(uc.CauseId))
+                .Delete();
+
+            await _dbContext.SaveChangesAsync();
+            return await Preferences();
         }
 
         [HttpGet]
