@@ -23,7 +23,7 @@ namespace VollyV2.Services
 
             CloudBlobClient blobClient = storageAccount.CreateCloudBlobClient();
             CloudBlobContainer cloudBlobContainer = blobClient.GetContainerReference(ImageContainer);
-            CloudBlockBlob blob = cloudBlobContainer.GetBlockBlobReference(imageName);
+            CloudBlockBlob blob = cloudBlobContainer.GetBlockBlobReference(imageName.Replace(" ", String.Empty));
 
             await blob.DeleteIfExistsAsync();
             CloudBlobStream blobStream = blob.OpenWriteAsync().Result;
