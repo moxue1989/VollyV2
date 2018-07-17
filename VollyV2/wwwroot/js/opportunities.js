@@ -153,6 +153,7 @@ $("#ClearFilters").click(function () {
     $("#CategoryList").val("");
     $("#CausesList").val("");
     $("#OrganizationList").val("");
+    $("#CommunityList").val("");
     $("#EventSort").prop("checked", true);
     $('#dateSelect').val("").datepicker("update");
     filterOpportunities();

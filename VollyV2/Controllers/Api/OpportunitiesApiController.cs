@@ -92,7 +92,7 @@ namespace VollyV2.Controllers.Api
                  opportunitySearch.CategoryIds.Contains(o.Category.Id)) &&
                 (opportunitySearch.OrganizationIds == null ||
                  opportunitySearch.OrganizationIds.Contains(o.Organization.Id)) &&
-                 (opportunitySearch.CommunityIds == null ||
+                 (opportunitySearch.CommunityIds == null || o.Community != null &&
                  opportunitySearch.CommunityIds.Contains(o.Community.Id));
         }
 

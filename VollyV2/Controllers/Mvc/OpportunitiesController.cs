@@ -49,6 +49,7 @@ namespace VollyV2.Controllers.Mvc
             bool isAdmin = await IsAdmin(user);
             IIncludableQueryable<Opportunity, Organization> opportunitiesQueryable = _context.Opportunities
                 .Include(o => o.Category)
+                .Include(o => o.Community)
                 .Include(o => o.Organization);
 
             List<Opportunity> opportunities;
@@ -90,6 +91,7 @@ namespace VollyV2.Controllers.Mvc
             var opportunity = await _context.Opportunities
                 .Include(o => o.Category)
                 .Include(o => o.Organization)
+                .Include(o => o.Community)
                 .Include(o => o.OpportunityImages)
                 .Include(o => o.Occurrences)
                 .ThenInclude(occ => occ.Applications)
@@ -143,6 +145,9 @@ namespace VollyV2.Controllers.Mvc
                 .ToList(), "Id", "Name"),
                 Organizations = new SelectList(_context.Organizations
                 .OrderBy(o => o.Name)
+                .ToList(), "Id", "Name"),
+                Communities = new SelectList(_context.Communities
+                .OrderBy(o => o.Name)
                 .ToList(), "Id", "Name")
             };
             return View(model);
@@ -153,7 +158,7 @@ namespace VollyV2.Controllers.Mvc
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Description,Address,DateTime,EndDateTime,ApplicationDeadline,Openings,CategoryId,OrganizationId,ImageFile")] OpportunityModel model)
+        public async Task<IActionResult> Create([Bind("Id,Name,Description,Address,DateTime,EndDateTime,ApplicationDeadline,Openings,CategoryId,OrganizationId,CommunityId,ImageFile")] OpportunityModel model)
         {
             if (ModelState.IsValid)
             {
@@ -174,6 +179,7 @@ namespace VollyV2.Controllers.Mvc
                 .Include(o => o.Location)
                 .Include(o => o.Category)
                 .Include(o => o.Organization)
+                .Include(o => o.Community)
                 .FirstOrDefault(o => o.Id == id);
 
             if (opportunity == null)
@@ -223,6 +229,7 @@ namespace VollyV2.Controllers.Mvc
             var opportunity = await _context.Opportunities
                 .Include(o => o.Category)
                 .Include(o => o.Organization)
+                .Include(o => o.Community)
                 .AsNoTracking()
                 .SingleOrDefaultAsync(m => m.Id == id);
             if (opportunity == null)
@@ -246,7 +253,7 @@ namespace VollyV2.Controllers.Mvc
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Description,Address,DateTime,EndDateTime,ApplicationDeadline,Openings,CategoryId,OrganizationId,ImageFile")] OpportunityModel opportunityModel)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Description,Address,DateTime,EndDateTime,ApplicationDeadline,Openings,CategoryId,OrganizationId,CommunityId,ImageFile")] OpportunityModel opportunityModel)
         {
             if (id != opportunityModel.Id)
             {
@@ -292,6 +299,7 @@ namespace VollyV2.Controllers.Mvc
             var opportunity = await _context.Opportunities
                 .Include(o => o.Category)
                 .Include(o => o.Organization)
+                .Include(o => o.Community)
                 .SingleOrDefaultAsync(m => m.Id == id);
 
             if (opportunity == null)

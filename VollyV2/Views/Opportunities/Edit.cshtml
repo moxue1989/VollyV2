@@ -42,6 +42,12 @@
                 <select asp-for="OrganizationId" class="form-control"
                         asp-items="@Model?.Organizations"></select>
                 <span asp-validation-for="OrganizationId" class="text-danger"></span>
+            </div> 
+            <div class="form-group">
+                <label asp-for="CommunityId" class="col-form-label"></label>
+                <select asp-for="CommunityId" class="form-control"
+                        asp-items="@Model?.Communities"></select>
+                <span asp-validation-for="CommunityId" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="ImageFile" class="col-form-label"></label>

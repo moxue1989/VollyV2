@@ -24,6 +24,9 @@
             @Html.DisplayNameFor(model => model.Organization)
         </th>
         <th>
+            @Html.DisplayNameFor(model => model.Community)
+        </th>
+        <th>
             @Html.DisplayNameFor(model => model.ImageUrl)
         </th>
         <th>
@@ -42,6 +45,9 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Organization.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Community.Name)
             </td>
             <td>
                 <img class="img-fluid thumbnail-img" src="@item.ImageUrl"/>
@@ -64,6 +70,5 @@
                 $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
             });
         });
-        $('#opportunityList').DataTable();
     });
 </script>

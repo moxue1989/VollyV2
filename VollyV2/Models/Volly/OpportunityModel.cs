@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using VollyV2.Controllers;
 using VollyV2.Data;
 using VollyV2.Data.Volly;
 using VollyV2.Services;
@@ -26,8 +22,11 @@ namespace VollyV2.Models.Volly
         [Required]
         [Display(Name = "Category")]
         public int CategoryId { get; set; }
+        [Display(Name = "Community")]
+        public int CommunityId { get; set; }
         public SelectList Organizations { get; set; }
         public SelectList Categories { get; set; }
+        public SelectList Communities { get; set; }
         public string ImageUrl { get; set; }
         public IFormFile ImageFile { get; set; }
 
@@ -41,11 +40,15 @@ namespace VollyV2.Models.Volly
                 Address = opportunity.Address,
                 OrganizationId = opportunity.Organization.Id,
                 CategoryId = opportunity.Category.Id,
+                CommunityId = opportunity.Community?.Id ?? 0,
                 ImageUrl = opportunity.ImageUrl,
                 Categories = new SelectList(dbContext.Categories
                     .OrderBy(c => c.Name)
                     .ToList(), "Id", "Name"),
                 Organizations = new SelectList(dbContext.Organizations
+                    .OrderBy(o => o.Name)
+                    .ToList(), "Id", "Name"),
+                Communities = new SelectList(dbContext.Communities
                     .OrderBy(o => o.Name)
                     .ToList(), "Id", "Name")
             };
@@ -65,6 +68,7 @@ namespace VollyV2.Models.Volly
             }
             opportunity.Organization = context.Organizations.Find(OrganizationId);
             opportunity.Category = context.Categories.Find(CategoryId);
+            opportunity.Community = context.Communities.Find(CommunityId);
             opportunity.Location = GoogleLocator.GetLocationFromAddress(Address);
 
             return opportunity;

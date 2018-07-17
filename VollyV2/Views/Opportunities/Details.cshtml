@@ -30,6 +30,12 @@
             <dd>
                 @Html.DisplayFor(model => model.Opportunity.Category.Name)
             </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Opportunity.Community)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Opportunity.Community.Name)
+            </dd>
             <dd>
                 <div class="text-center">
                     <img id="details-img" src="@Model.Opportunity.ImageUrl" />
