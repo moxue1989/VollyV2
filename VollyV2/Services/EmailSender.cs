@@ -49,7 +49,7 @@ namespace VollyV2.Services
             {
                 From = new EmailAddress(FromEmail, "Volly Team"),
                 Subject = "Application For: " + application.OpportunityName,
-                TemplateId = "e9713a19-2a9e-4d0f-8994-088633aaab25",
+                TemplateId = "26a2626e-03c6-48c1-9f78-03339787de2d",
                 HtmlContent = application.GetEmailMessage(),
                 PlainTextContent = application.GetEmailMessage()
             };
