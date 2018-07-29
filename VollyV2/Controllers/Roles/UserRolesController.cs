@@ -19,14 +19,17 @@ namespace VollyV2.Controllers.Roles
         private readonly ApplicationDbContext _context;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly SignInManager<ApplicationUser> _signInManager;
 
         public UserRolesController(ApplicationDbContext context,
             RoleManager<IdentityRole> roleManager,
-            UserManager<ApplicationUser> userManager)
+            UserManager<ApplicationUser> userManager,
+            SignInManager<ApplicationUser> signInManager)
         {
             _context = context;
             _roleManager = roleManager;
             _userManager = userManager;
+            _signInManager = signInManager;
         }
 
         // GET: UserRoles
@@ -94,6 +97,7 @@ namespace VollyV2.Controllers.Roles
 
                 await _userManager.AddToRolesAsync(applicationUser, rolesToAdd);
                 await _userManager.RemoveFromRolesAsync(applicationUser, rolesToRemove);
+                await _signInManager.RefreshSignInAsync(applicationUser);
 
                 return RedirectToAction("Index");
             }
