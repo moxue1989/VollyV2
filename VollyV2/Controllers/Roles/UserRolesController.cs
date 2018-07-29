@@ -97,7 +97,6 @@ namespace VollyV2.Controllers.Roles
 
                 await _userManager.AddToRolesAsync(applicationUser, rolesToAdd);
                 await _userManager.RemoveFromRolesAsync(applicationUser, rolesToRemove);
-                await _signInManager.RefreshSignInAsync(applicationUser);
 
                 return RedirectToAction("Index");
             }
