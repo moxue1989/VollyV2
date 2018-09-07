@@ -59,6 +59,20 @@ namespace VollyV2.Controllers.Mvc
             return View();
         }
 
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> Admin()
+        {
+            List<VolunteerHours> hours = await _context.VolunteerHours
+                .AsNoTracking()
+                .Include(h => h.Application)
+                .ThenInclude(a => a.Opportunity)
+                .Include(a => a.User)
+                .ToListAsync();
+
+            ViewData["VolunteerHours"] = hours;
+            return View();
+        }
+
         [HttpPost]
         public IActionResult Index(VolunteerHoursModel model)
         {
