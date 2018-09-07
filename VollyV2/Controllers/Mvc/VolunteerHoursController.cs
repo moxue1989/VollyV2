@@ -64,9 +64,10 @@ namespace VollyV2.Controllers.Mvc
         {
             List<VolunteerHours> hours = await _context.VolunteerHours
                 .AsNoTracking()
+                .Include(a => a.User)
+                .ThenInclude(u => u.Company)
                 .Include(h => h.Application)
                 .ThenInclude(a => a.Opportunity)
-                .Include(a => a.User)
                 .ToListAsync();
 
             ViewData["VolunteerHours"] = hours;
