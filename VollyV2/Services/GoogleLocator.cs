@@ -9,7 +9,7 @@ namespace VollyV2.Services
 {
     public class GoogleLocator
     {
-        public static string Endpoint = "https://maps.googleapis.com/maps/api/geocode/json?address=";
+        public static string Endpoint = "https://maps.googleapis.com/maps/api/geocode/json?key=AIzaSyCi84qEblX_oHY4fLUW8pjliIsrXZJs3eI&address=";
         public static HttpClient Client = GetNewClient();
 
         private static HttpClient GetNewClient()
