@@ -20,6 +20,7 @@ namespace VollyV2.Models.Volly
         public List<OccurrenceView> OccurrenceViews { get; set; }
         public string Name { get; set; }
         public string Email { get; set; }
+        public string PhoneNumber { get; set; }
         public string Message { get; set; }
         [DisplayFormat(DataFormatString = "{0:ddd MMM d yyyy h:mm tt}")]
         public DateTime DateTime { get; set; }
@@ -37,6 +38,7 @@ namespace VollyV2.Models.Volly
                 OpportunityDescription = application.Opportunity.Description,
                 Name = application.Name,
                 Email = application.Email,
+                PhoneNumber = application.PhoneNumber,
                 Message = application.Message,
                 DateTime = VollyConstants.ConvertFromUtc(application.DateTime),
                 OccurrenceViews = application.Occurrences
@@ -50,6 +52,7 @@ namespace VollyV2.Models.Volly
         {
             return "<p>Applicant Name: " + Name + "<p/>" +
                    "<p>Applicant Email: " + Email + "<p/>" +
+                   "<p>Applicant Phone: " + PhoneNumber + "<p/>" +
                    "<p>Message: " + Message + "<p/>";
         }
     }

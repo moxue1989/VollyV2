@@ -25,6 +25,9 @@ namespace VollyV2.Models.Volly
         [Required]
         [EmailAddress]
         public string Email { get; set; }
+        [Required]
+        [Phone]
+        public string PhoneNumber { get; set; }
         public string Message { get; set; }
         public SelectList Occurrences { get; set; } 
 
@@ -34,6 +37,7 @@ namespace VollyV2.Models.Volly
             {
                 Name = Name,
                 Email = Email,
+                PhoneNumber = PhoneNumber,
                 Message = Message,
                 DateTime = DateTime.UtcNow,
                 Opportunity = context.Opportunities.Find(OpportunityId)

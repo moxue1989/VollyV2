@@ -15,6 +15,7 @@ namespace VollyV2.Data.Volly
         public List<ApplicationOccurrence> Occurrences { get; set; }
         public string Name { get; set; }
         public string Email { get; set; }
+        public string PhoneNumber { get; set; }
         public string Message { get; set; }
         public DateTime DateTime { get; set; }
         public string UserId { get; set; }
