@@ -12,7 +12,7 @@ namespace WebJobFunction
         private static int _retry = 3;
 
         [FunctionName("ReminderFunction")]
-        public static void Run([TimerTrigger("0 30 7 * * *")]TimerInfo myTimer, TraceWriter log)
+        public static void Run([TimerTrigger("0 */3 * * * *")]TimerInfo myTimer, TraceWriter log)
         {
             var client = new HttpClient();
 

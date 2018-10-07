@@ -10,5 +10,6 @@ namespace VollyV2.Services
         Task SendEmailAsync(string email, string subject, string message);
         Task SendEmailsAsync(List<string> emailList, string subject, string message);
         Task SendApplicationConfirmAsync(ApplicationView application);
+        Task SendRemindersAsync(List<string> emailList, Occurrence occurrence);
     }
 }

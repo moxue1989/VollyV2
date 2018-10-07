@@ -70,6 +70,20 @@ namespace VollyV2.Services
             await client.SendEmailAsync(sendGridMessage);
         }
 
+        public async Task SendRemindersAsync(List<string> emailList, Occurrence occurrence)
+        {
+            string opportunityName = occurrence.Opportunity.Name;
+            DateTime startTime = VollyConstants.ConvertFromUtc(occurrence.StartTime);
+            DateTime endTime = VollyConstants.ConvertFromUtc(occurrence.EndTime);
+            await SendEmailsAsync(emailList,
+                "Volly Reminder: " + opportunityName,
+                "Reminder For: " + opportunityName +
+                "<br/>Date: " + startTime.ToShortDateString() +
+                "<br/>Start Time: " + startTime.ToShortTimeString() +
+                "<br/>End Time: " + endTime.ToShortTimeString());
+
+        }
+
         private static Func<OccurrenceView, string> ToOccurrenceTimeString()
         {
             return o => o.StartTime.ToShortDateString() + " " + o.StartTime.ToShortTimeString() +
