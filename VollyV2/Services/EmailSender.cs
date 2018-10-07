@@ -38,7 +38,8 @@ namespace VollyV2.Services
             {
                 msg.AddTo(new EmailAddress(email));
             }
-            await client.SendEmailAsync(msg);
+
+            Response response = await client.SendEmailAsync(msg);
         }
 
         public async Task SendApplicationConfirmAsync(ApplicationView application)
@@ -67,6 +68,20 @@ namespace VollyV2.Services
             sendGridMessage.AddSubstitution(":image", application.OpportunityImageUrl);
 
             await client.SendEmailAsync(sendGridMessage);
+        }
+
+        public async Task SendRemindersAsync(List<string> emailList, Occurrence occurrence)
+        {
+            string opportunityName = occurrence.Opportunity.Name;
+            DateTime startTime = VollyConstants.ConvertFromUtc(occurrence.StartTime);
+            DateTime endTime = VollyConstants.ConvertFromUtc(occurrence.EndTime);
+            await SendEmailsAsync(emailList,
+                "Volly Reminder: " + opportunityName,
+                "Reminder For: " + opportunityName +
+                "<br/>Date: " + startTime.ToShortDateString() +
+                "<br/>Start Time: " + startTime.ToShortTimeString() +
+                "<br/>End Time: " + endTime.ToShortTimeString());
+
         }
 
         private static Func<OccurrenceView, string> ToOccurrenceTimeString()
