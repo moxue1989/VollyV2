@@ -16,7 +16,7 @@ function addOpportunityMarker(opportunity) {
 };
 
 function openOpportunityModal(opportunity) {
-    var baseUrl = "https%3A%2F%2Fvollydevelop.azurewebsites.net%2FOpportunities%2FDetails%2F";
+    var baseUrl = "https%3A%2F%2Fvolly.azurewebsites.net%2FOpportunities%2FDetails%2F";
     $("#OpportunityId").val(opportunity.id);
     $("#OpportunityModalTitle").html(opportunity.name);
     $("#OpportunityModalCategory").html(opportunity.categoryName);
