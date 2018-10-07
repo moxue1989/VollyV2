@@ -38,7 +38,8 @@ namespace VollyV2.Services
             {
                 msg.AddTo(new EmailAddress(email));
             }
-            await client.SendEmailAsync(msg);
+
+            Response response = await client.SendEmailAsync(msg);
         }
 
         public async Task SendApplicationConfirmAsync(ApplicationView application)

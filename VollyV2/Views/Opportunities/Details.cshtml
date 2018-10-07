@@ -5,97 +5,14 @@
     Layout = "_Layout";
 }
 
-<h3>@ViewData["Message"]</h3>
-<div class="text-center text-title">
-    @Html.DisplayFor(model => model.Opportunity.Organization.Name)
-</div>
-<div class="row">
-    <div class="col-md-6 col-sm-12">
-        <dl>
-            <dt class="text-center">
-                @Html.DisplayFor(model => model.Opportunity.Name)
-            </dt>
-            <dd class="div-description">
-                @Html.DisplayFor(model => model.Opportunity.Description)
-            </dd>
-            <dd class="text-center">
-                <a target="resource window"
-                   href="https://maps.google.com/?q= @Html.DisplayFor(model => model.Opportunity.Address)">
-                    @Html.DisplayFor(model => model.Opportunity.Address)
-                </a>
-            </dd>
-            <dt>
-                @Html.DisplayNameFor(model => model.Opportunity.Category)
-            </dt>
-            <dd>
-                @Html.DisplayFor(model => model.Opportunity.Category.Name)
-            </dd>
-            <dt>
-                @Html.DisplayNameFor(model => model.Opportunity.Community)
-            </dt>
-            <dd>
-                @Html.DisplayFor(model => model.Opportunity.Community.Name)
-            </dd>
-            <dd>
-                <div class="text-center">
-                    <img id="details-img" src="@Model.Opportunity.ImageUrl" />
-                </div>
-            </dd>
-            <dt>
-               <hr />
-            </dt>
-            <dd>
-                @foreach (var image in Model.Opportunity.OpportunityImages)
-                {
-                    <img src="@image.ImageUrl" class="thumbnail-img" />
-                }
-            </dd>
-        </dl>
-    </div>
-    <div class="col-md-6 col-sm-12">
-        <form asp-action="Details" id="applyForm">
-            <input asp-for="@Model.OpportunityId" type="hidden" class="form-control" id="OpportunityId" />
-            <div id="apply-now" class="d-flex justify-content-center"> Apply Now:</div>
-            <br />
-            <div class="form-group row apply-opportunity-row">
-                <label asp-for="@Model.Name" class="col-form-label col-sm-2">Name</label>
-                <input asp-for="@Model.Name" class="form-control col-sm-10" />
-                <span asp-validation-for="@Model.Name" class="text-danger"></span>
-            </div>
-            <div class="form-group row apply-opportunity-row">
-                <label asp-for="@Model.Email" class="col-form-label col-sm-2">Email</label>
-                <input asp-for="@Model.Email" class="form-control col-sm-10" />
-                <span asp-validation-for="@Model.Email" class="text-danger"></span>
-            </div>
-            <div class="form-group row apply-opportunity-row">
-                <label asp-for="@Model.PhoneNumber" class="col-form-label col-sm-2">Phone</label>
-                <input asp-for="@Model.PhoneNumber" class="form-control col-sm-10" />
-                <span asp-validation-for="@Model.PhoneNumber" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="@Model.OccurrenceIds" class="row apply-opportunity-row col-form-label">Pick a time:</label>
-                <div class="row apply-opportunity-row">
-                    <select asp-for="@Model.OccurrenceIds" class="form-control"
-                            asp-items="@Model.Occurrences"
-                            rows="4" multiple="multiple"></select>
-                    <span asp-validation-for="@Model.OccurrenceIds" class="text-danger"></span>
-                </div>
-            </div>
-            <div class="form-group">
-                <label asp-for="@Model.Message" class="row apply-opportunity-row col-form-label">Message</label>
-                <div class="row apply-opportunity-row">
-                    <textarea asp-for="@Model.Message" class="form-control" rows="4"></textarea>
-                    <span asp-validation-for="@Model.Message" class="text-danger"></span>
-                </div>
-            </div>
-            <button type="submit" class="btn btn-primary">Volunteer</button>
-        </form>
-    </div>
-</div>
+<script>
+    window.location.replace("/Home/Opportunities?Id=@Model.OpportunityId");
+</script>
+
 @section OGp
     {
     <meta property="og:title" content="@Html.DisplayFor(model => model.Opportunity.Name)" />
-    <meta property="og:image" content="@Uri.EscapeUriString(@Model.Opportunity.ImageUrl)" />
+    <meta property="og:image" content="@Uri.EscapeUriString(Model.Opportunity.ImageUrl)" />
     <meta property="og:description" content="@Html.DisplayFor(model => model.Opportunity.Description)" />
     <meta property="og:site_name" content="Volly" />
     <meta property="og:type" content="website" />

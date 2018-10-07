@@ -46,7 +46,7 @@ namespace VollyV2.Controllers
             return View(model);
         }
 
-        public IActionResult Opportunities()
+        public IActionResult Opportunities(int Id = 1)
         {
             MapModel mapModel = new MapModel
             {
@@ -71,6 +71,7 @@ namespace VollyV2.Controllers
                 ApplyModel = new ApplyModel()
             };
 
+           ViewData["OpportunityId"] = Id;
             return View(mapModel);
         }
 
