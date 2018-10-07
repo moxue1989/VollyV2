@@ -8,11 +8,11 @@ namespace WebJobFunction
 {
     public static class ReminderFunction
     {
-        private static string _url = "https://vollydevelop.azurewebsites.net/api/WebjobApi";
+        private static string _url = "https://volly.azurewebsites.net/api/WebjobApi";
         private static int _retry = 3;
 
         [FunctionName("ReminderFunction")]
-        public static void Run([TimerTrigger("0 */3 * * * *")]TimerInfo myTimer, TraceWriter log)
+        public static void Run([TimerTrigger("0 30 7 * * *")]TimerInfo myTimer, TraceWriter log)
         {
             var client = new HttpClient();
 
@@ -21,7 +21,7 @@ namespace WebJobFunction
             do
             {
                 message = client
-                    .PostAsync(_url, new HttpMessageContent(new HttpRequestMessage()))
+                    .PostAsync(_url, null)
                     .Result;
                 count++;
             } while (!message.IsSuccessStatusCode && count < _retry);
