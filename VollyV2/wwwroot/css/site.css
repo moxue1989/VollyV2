@@ -155,6 +155,17 @@ nav img.img-brand {
     overflow: hidden;
 }
 
+#ln-share {
+    text-decoration: none;
+    color: #fff;
+    padding-right: 0.5rem;
+    padding-left: 0.5rem;
+}
+
+#ln-share-wrap {
+    background-color: #b2dd7b;
+}
+
 #fb-share {
     text-decoration: none;
     color: #fff;
@@ -163,6 +174,10 @@ nav img.img-brand {
 
 #fb-share-wrap {
     background-color: #3b5998;
+}
+
+#ln-share img {
+    height: 1rem;
 }
 
 #fb-share img {
@@ -297,9 +312,11 @@ nav img.img-brand {
     z-index: 100;
     margin-right: 15px;
 }
+
 .div-description {
     white-space: pre-wrap;
 }
+
 .btn-map {
     border: 1px solid #2e65ee;
     color: #2e65ee;
