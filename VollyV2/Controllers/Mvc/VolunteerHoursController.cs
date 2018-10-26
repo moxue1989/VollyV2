@@ -83,5 +83,34 @@ namespace VollyV2.Controllers.Mvc
             }
             return RedirectToAction("Index");
         }
+
+        public async Task<IActionResult> Delete(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var volunteerHours = await _context.VolunteerHours
+                .Include(o => o.Application)
+                .ThenInclude(o => o.Opportunity)
+                .SingleOrDefaultAsync(m => m.Id == id);
+            if (volunteerHours == null)
+            {
+                return NotFound();
+            }
+
+            return View(volunteerHours);
+        }
+
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            var volunteerHours = await _context.VolunteerHours.SingleOrDefaultAsync(m => m.Id == id);
+            _context.VolunteerHours.Remove(volunteerHours);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
     }
 }

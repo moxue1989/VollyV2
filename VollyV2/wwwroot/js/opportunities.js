@@ -28,7 +28,8 @@ function openOpportunityModal(opportunity) {
     $("#occurrencesInput").html(getOccurrenceSelectors(opportunity.occurrenceViews));
     $("#fb-share").attr("href", "https://www.facebook.com/sharer/sharer.php?u=" + baseUrl + opportunity.id);
     $("#tw-share").attr("href", "https://twitter.com/share?url=" + baseUrl + opportunity.id + "&text=Volly - " + opportunity.name);
-    document.getElementById("ln-share").innerHTML = "Share Link: " + baseUrl + opportunity.id;
+    $("#ln-share").attr("href", baseUrl + opportunity.id);
+    document.getElementById("ln-share").innerHTML = baseUrl + opportunity.id;
     $("#OpportunityModal").modal('show');
 };
 
@@ -64,6 +65,9 @@ function appendOpportunityPanel(opportunity, marker) {
     if (opportunity.occurrenceViews.length === 1) {
         var firstOccurrence = opportunity.occurrenceViews[0];
         dateTimeString = prettyFormatDateTimes(firstOccurrence.startTime, firstOccurrence.endtime, true);
+    } else if (opportunity.occurrenceViews.length === 0) {
+        dateTimeString = "Ongoing";
+        console.log(opportunity)
     }
     $("#opportunityList").append('<div id="opportunity-' + opportunity.id + '" class="col-xl-3 col-lg-4 col-md-6 col-sm-12 result-card"><div class="result-card-inner">' +
         '<div class="wrap-center"><div class="result-datetime">' + dateTimeString + '</div></div>' +

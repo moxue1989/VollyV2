@@ -158,11 +158,11 @@ nav img.img-brand {
 #ln-share {
     text-decoration: none;
     color: #fff;
-    padding-right: 0.5rem;
-    padding-left: 0.5rem;
 }
 
 #ln-share-wrap {
+    padding-right: 0.5rem;
+    padding-left: 0.5rem;
     background-color: #b2dd7b;
 }
 
