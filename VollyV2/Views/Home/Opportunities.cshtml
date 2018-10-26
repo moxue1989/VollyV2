@@ -13,35 +13,38 @@
                     <div class="card border-light mb-3">
                         <ul class="nav nav-tabs" role="tablist">
                             <li class="nav-item">
-                                <a class="nav-link active" data-toggle="tab" href="#causesFilter">Causes</a>
+                                <a id="causes-a" class="nav-link active" data-toggle="tab" href="#causesFilter">Causes</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" data-toggle="tab" href="#categoryFilter">Categories</a>
+                                <a id="categories-a" class="nav-link" data-toggle="tab" href="#categoryFilter">Categories</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" data-toggle="tab" href="#organizationFilter">Organizations</a>
+                                <a id="organizations-a" class="nav-link" data-toggle="tab" href="#organizationFilter">Organizations</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" data-toggle="tab" href="#communityFilter">Communities</a>
+                                <a id="communities-a" class="nav-link" data-toggle="tab" href="#communityFilter">Communities</a>
                             </li>
                         </ul>
-
+                        <div id="filter-bottom-label">
+                            <span id="popover-filter" data-trigger="manual" data-toggle="popover" data-placement="bottom" data-content="Here are some optional filters">
+                            </span>
+                        </div>
                         <!-- Tab panes -->
-                        <div class="tab-content">
+                        <div class="tab-content filter-wrapper-hide" id="filter-wrapper">
                             <br />
                             <div id="causesFilter" class="container tab-pane active">
                                 <select asp-for="Causes" class="form-control" id="CausesList"
                                         asp-items="@Model.CausesList" size="7"></select>
                             </div>
-                            <div id="categoryFilter" class="container tab-pane fade">
+                            <div id="categoryFilter" class="container tab-pane">
                                 <select asp-for="Categories" class="form-control" id="CategoryList"
                                         asp-items="@Model.CategoriesList" size="7"></select>
                             </div>
-                            <div id="organizationFilter" class="container tab-pane fade">
+                            <div id="organizationFilter" class="container tab-pane">
                                 <select asp-for="Organizations" class="form-control" id="OrganizationList"
                                         asp-items="@Model.OrganizationList" size="7"></select>
                             </div>
-                            <div id="communityFilter" class="container tab-pane fade">
+                            <div id="communityFilter" class="container tab-pane">
                                 <select asp-for="Communities" class="form-control" id="CommunityList"
                                         asp-items="@Model.CommunityList" size="7"></select>
                             </div>

@@ -321,3 +321,15 @@ nav img.img-brand {
     border: 1px solid #2e65ee;
     color: #2e65ee;
 }
+
+.filter-wrapper-hide {
+    display: none;
+    -webkit-transition: all 0.25s;
+    transition: all 0.25s;
+}
+
+.filter-wrapper-show {
+    display: block;
+    -webkit-transition: all 0.25s;
+    transition: all 0.25s;
+}

@@ -204,7 +204,33 @@ function filterOpportunities() {
         }
     });
 }
-
+$("#causes-a").click(e => {
+    toggleFilterVisibility(e.target.id);
+});
+$("#categories-a").click(e => {
+    toggleFilterVisibility(e.target.id);
+});
+$("#organizations-a").click(e => {
+    toggleFilterVisibility(e.target.id);
+});
+$("#communities-a").click(e => {
+    toggleFilterVisibility(e.target.id);
+});
+function toggleFilterVisibility(filterid) {
+    $("#popover-filter").popover('hide');
+    if ($("#" + filterid).hasClass("active")) {
+        if ($("#filter-wrapper").hasClass("filter-wrapper-hide")) {
+            $("#filter-wrapper").removeClass("filter-wrapper-hide")
+            $("#filter-wrapper").addClass("filter-wrapper-show")
+        } else {
+            $("#filter-wrapper").removeClass("filter-wrapper-show")
+            $("#filter-wrapper").addClass("filter-wrapper-hide")
+        }
+    } else {
+        $("#filter-wrapper").removeClass("filter-wrapper-hide")
+        $("#filter-wrapper").addClass("filter-wrapper-show")
+    }
+}
 $("#toggle-map").click(function () {
     var dataShow = parseInt($('#toggle-map').attr('data-show'));
     if (dataShow === 1) {
@@ -235,4 +261,6 @@ $("#toggle-map").click(function () {
 (function () {
     $("#map").css("opacity", 0);
     $('#map').css('height', 0);
+    $("#popover-filter").popover({ "animation": true });
+    $("#popover-filter").popover('show');
 })();
