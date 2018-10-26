@@ -16,7 +16,7 @@ function addOpportunityMarker(opportunity) {
 };
 
 function openOpportunityModal(opportunity) {
-    var baseUrl = "https%3A%2F%2Fvolly.azurewebsites.net%2FOpportunities%2FDetails%2F";
+    var baseUrl = "https://volly.azurewebsites.net/Opportunities/Details/";
     $("#OpportunityId").val(opportunity.id);
     $("#OpportunityModalTitle").html(opportunity.name);
     $("#OpportunityModalCategory").html(opportunity.categoryName);
@@ -28,6 +28,8 @@ function openOpportunityModal(opportunity) {
     $("#occurrencesInput").html(getOccurrenceSelectors(opportunity.occurrenceViews));
     $("#fb-share").attr("href", "https://www.facebook.com/sharer/sharer.php?u=" + baseUrl + opportunity.id);
     $("#tw-share").attr("href", "https://twitter.com/share?url=" + baseUrl + opportunity.id + "&text=Volly - " + opportunity.name);
+    $("#ln-share").attr("href", baseUrl + opportunity.id);
+    document.getElementById("ln-share").innerHTML = baseUrl + opportunity.id;
     $("#OpportunityModal").modal('show');
 };
 
@@ -63,6 +65,9 @@ function appendOpportunityPanel(opportunity, marker) {
     if (opportunity.occurrenceViews.length === 1) {
         var firstOccurrence = opportunity.occurrenceViews[0];
         dateTimeString = prettyFormatDateTimes(firstOccurrence.startTime, firstOccurrence.endtime, true);
+    } else if (opportunity.occurrenceViews.length === 0) {
+        dateTimeString = "Ongoing";
+        console.log(opportunity)
     }
     $("#opportunityList").append('<div id="opportunity-' + opportunity.id + '" class="col-xl-3 col-lg-4 col-md-6 col-sm-12 result-card"><div class="result-card-inner">' +
         '<div class="wrap-center"><div class="result-datetime">' + dateTimeString + '</div></div>' +
@@ -199,7 +204,33 @@ function filterOpportunities() {
         }
     });
 }
-
+$("#causes-a").click(e => {
+    toggleFilterVisibility(e.target.id);
+});
+$("#categories-a").click(e => {
+    toggleFilterVisibility(e.target.id);
+});
+$("#organizations-a").click(e => {
+    toggleFilterVisibility(e.target.id);
+});
+$("#communities-a").click(e => {
+    toggleFilterVisibility(e.target.id);
+});
+function toggleFilterVisibility(filterid) {
+    $("#popover-filter").popover('hide');
+    if ($("#" + filterid).hasClass("active")) {
+        if ($("#filter-wrapper").hasClass("filter-wrapper-hide")) {
+            $("#filter-wrapper").removeClass("filter-wrapper-hide")
+            $("#filter-wrapper").addClass("filter-wrapper-show")
+        } else {
+            $("#filter-wrapper").removeClass("filter-wrapper-show")
+            $("#filter-wrapper").addClass("filter-wrapper-hide")
+        }
+    } else {
+        $("#filter-wrapper").removeClass("filter-wrapper-hide")
+        $("#filter-wrapper").addClass("filter-wrapper-show")
+    }
+}
 $("#toggle-map").click(function () {
     var dataShow = parseInt($('#toggle-map').attr('data-show'));
     if (dataShow === 1) {
@@ -230,4 +261,6 @@ $("#toggle-map").click(function () {
 (function () {
     $("#map").css("opacity", 0);
     $('#map').css('height', 0);
+    $("#popover-filter").popover({ "animation": true });
+    $("#popover-filter").popover('show');
 })();
