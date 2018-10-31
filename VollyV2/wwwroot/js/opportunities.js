@@ -204,16 +204,16 @@ function filterOpportunities() {
         }
     });
 }
-$("#causes-a").click(e => {
+$("#causes-a").click(function(e){
     toggleFilterVisibility(e.target.id);
 });
-$("#categories-a").click(e => {
+$("#categories-a").click(function(e){
     toggleFilterVisibility(e.target.id);
 });
-$("#organizations-a").click(e => {
+$("#organizations-a").click(function(e){
     toggleFilterVisibility(e.target.id);
 });
-$("#communities-a").click(e => {
+$("#communities-a").click(function(e){
     toggleFilterVisibility(e.target.id);
 });
 function toggleFilterVisibility(filterid) {
