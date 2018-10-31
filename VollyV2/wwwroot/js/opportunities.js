@@ -34,8 +34,8 @@ function openOpportunityModal(opportunity) {
 };
 
 function prettyFormatDateTimes(d1, d2, breakline) {
-    var dateTime = new Date(d1 + "-06:00");
-    var endDateTime = new Date(d2 + "-06:00");
+    var dateTime = new Date(d1 + (moment(d1).isDST()?"-06:00":"-05:00"));
+    var endDateTime = new Date(d2 + (moment(d2).isDST()?"-06:00":"-05:00"));
     var dateTimeString = "Coming soon!";
     if (dateTime.getFullYear() >= 1970) {
         if (endDateTime.getFullYear() >= 1970) {
