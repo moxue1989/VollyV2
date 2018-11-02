@@ -45,15 +45,9 @@ namespace VollyV2.Controllers.Api
 
             foreach (Occurrence occurrence in occurrences)
             {
-                //                List<string> emailsForOccurrence = occurrence.Applications
-                //                    .Select(a => a.Application.Email)
-                //                    .ToList();
-
-                List<string> emailsForOccurrence = new List<string>()
-                {
-                    VollyConstants.MoEmail,
-                    VollyConstants.AliceEmail
-                };
+                List<string> emailsForOccurrence = occurrence.Applications
+                    .Select(a => a.Application.Email)
+                    .ToList();
 
                 await _emailSender.SendRemindersAsync(emailsForOccurrence, occurrence);
             }
