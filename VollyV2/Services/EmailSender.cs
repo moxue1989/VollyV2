@@ -72,32 +72,38 @@ namespace VollyV2.Services
 
         public async Task SendRemindersAsync(List<string> emailList, Occurrence occurrence)
         {
-            string opportunityName = occurrence.Opportunity.Name;
+            Opportunity opportunity = occurrence.Opportunity;
+            string messageText = "Hey There! This is a reminder for your upcoming volunteer gig. " +
+                         "Please reply to this email if you can no longer make the event.";
+
+            SendGridMessage sendGridMessage = new SendGridMessage()
+            {
+                From = new EmailAddress(FromEmail, "Volly Team"),
+                Subject = "Volly Reminder: " + opportunity.Name,
+                TemplateId = "44e14ea7-dd4e-4a6b-bb2c-0bb0d8bf0f99",
+                HtmlContent = messageText,
+                PlainTextContent = messageText
+            };
+
             DateTime startTime = VollyConstants.ConvertFromUtc(occurrence.StartTime);
             DateTime endTime = VollyConstants.ConvertFromUtc(occurrence.EndTime);
 
+            sendGridMessage.AddSubstitution(":start", startTime.ToShortDateString() + " " + startTime.ToShortTimeString());
+            sendGridMessage.AddSubstitution(":end", endTime.ToShortDateString() + " " + endTime.ToShortTimeString());
+            sendGridMessage.AddSubstitution(":description", opportunity.Description);
+            sendGridMessage.AddSubstitution(":address", opportunity.Address);
+            sendGridMessage.AddSubstitution(":name", opportunity.Name);
+            sendGridMessage.AddSubstitution(":image", opportunity.ImageUrl);
+
             var client = new SendGridClient(SendgridApiKey);
 
-            string message = "Reminder For: " + opportunityName +
-                             "<br/>Date: " + startTime.ToShortDateString() +
-                             "<br/>Start Time: " + startTime.ToShortTimeString() +
-                             "<br/>End Time: " + endTime.ToShortTimeString();
-
-            var msg = new SendGridMessage()
-            {
-                From = new EmailAddress(FromEmail, "Volly Team"),
-                Subject = "Volly Reminder: " + opportunityName,
-                HtmlContent = message,
-                PlainTextContent = message
-            };
-
-            List<EmailAddress> addresses = emailList.Select(emailAddress => new EmailAddress(emailAddress))
+           List<EmailAddress> addresses = emailList.Select(emailAddress => new EmailAddress(emailAddress))
                 .ToList();
 
-            msg.AddBccs(addresses);
-            msg.AddCc(VollyConstants.AliceEmail);
+            sendGridMessage.AddBccs(addresses);
+            sendGridMessage.AddTo(VollyConstants.AliceEmail);
 
-            await client.SendEmailAsync(msg);
+            Response response = await client.SendEmailAsync(sendGridMessage);
         }
 
         private static Func<OccurrenceView, string> ToOccurrenceTimeString()
