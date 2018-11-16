@@ -73,8 +73,10 @@ namespace VollyV2.Services
         public async Task SendRemindersAsync(List<string> emailList, Occurrence occurrence)
         {
             Opportunity opportunity = occurrence.Opportunity;
-            string messageText = "Hey There! This is a reminder for your upcoming volunteer gig. " +
-                         "Please reply to this email if you can no longer make the event.";
+//            string messageText = "Hey There! This is a reminder for your upcoming volunteer gig. " +
+//                         "Please reply to this email if you can no longer make the event.";
+
+            string messageText = "Volunteers: " +  String.Join("\n", emailList);
 
             SendGridMessage sendGridMessage = new SendGridMessage()
             {
@@ -97,10 +99,6 @@ namespace VollyV2.Services
 
             var client = new SendGridClient(SendgridApiKey);
 
-           List<EmailAddress> addresses = emailList.Select(emailAddress => new EmailAddress(emailAddress))
-                .ToList();
-
-            sendGridMessage.AddBccs(addresses);
             sendGridMessage.AddTo(VollyConstants.AliceEmail);
 
             Response response = await client.SendEmailAsync(sendGridMessage);
