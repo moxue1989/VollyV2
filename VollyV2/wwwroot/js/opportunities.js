@@ -61,16 +61,7 @@ function getSplit(breakline) {
 }
 
 function appendOpportunityPanel(opportunity, marker) {
-    var dateTimeString = "Multiple Shifts";
-    if (opportunity.occurrenceViews.length === 1) {
-        var firstOccurrence = opportunity.occurrenceViews[0];
-        dateTimeString = prettyFormatDateTimes(firstOccurrence.startTime, firstOccurrence.endtime, true);
-    } else if (opportunity.occurrenceViews.length === 0) {
-        dateTimeString = "Ongoing";
-        console.log(opportunity)
-    }
     $("#opportunityList").append('<div id="opportunity-' + opportunity.id + '" class="col-xl-3 col-lg-4 col-md-6 col-sm-12 result-card"><div class="result-card-inner">' +
-        '<div class="wrap-center"><div class="result-datetime">' + dateTimeString + '</div></div>' +
         '<div class="img-opp"><img src="' + opportunity.imageUrl + '" /></div>' +
         '<div class="result-details"><div class="result-address">' + opportunity.address + '</div>' +
         '<div class="result-org-name">' + opportunity.organizationName + '</div>' +
