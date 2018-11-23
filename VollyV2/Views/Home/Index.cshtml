@@ -1,21 +1,36 @@
 ﻿@model VollyV2.Models.Volly.CarouselModel
 @{
     ViewData["Title"] = "Home Page";
+    ViewData["BodyClass"] = "class=blend";
+    ViewData["IsDark"] = true;
 }
 
 <div class="container">
-    <div class="jumbotron">
-        <h1 class="display-4">Welcome to Volly!</h1>
-        <p class="lead">Volly loves community building and having fun, and our goal is to help create an accessible way for people to get involved and give back.</p>
-        <hr class="my-4">
-        <p>
-            <div class="index-subtitle">What is Volly?</div>
-            Volly is a platform that connects prospective volunteers to organizations in Calgary that need an extra set of hands. We are currently in beta testing stages and are looking to connect with companies, clubs, sports teams, families, faith groups that would like to find fun opportunities to give back without the headache of figuring out the logistics. If this sounds like you, please email <a href="mailto:admin@vollyapp.com">admin@vollyapp.com</a> and we can help find some fun opportunities for you and your team!
-            <div class="index-subtitle">Why Volly?</div>
-            We are life-long volunteers, and we want to show everyone how volunteering can be easy even if you don’t have a lot of time. Volunteering helps you connect with others, experience new cultures, and discover your passions as an individual. If you don’t have a lot of time, and you want to find activities you can easily do with your co-workers, family or friends then <span class="highlight-color">let Volly do the legwork, and help you find something fun to do!</span>
-        </p>
+    <div class="jumbotron vollytron">
+        <div class="row">
+            <div class="col-md-12 col-lg-8">
+                <h1 class="display-4">Volunteering in Calgary has never been easier! Sign up. Show up.</h1>
+            </div>
+            <div class="col-md-12 col-lg-4">
+                <div class="start-browsing">
+                    <a asp-action="Opportunities">
+                        <img src="~/images/assets/startbrowsing.png" />
+                    </a>
+                </div>
+            </div>
+        </div>
         <p class="lead">
-            <a class="btn btn-outline-primary btn-lg" role="button" asp-area="" asp-controller="Home" asp-action="Opportunities">Start Browsing</a>
+            We’ve created a user-friendly platform for you to learn about non-profits in Calgary and find fun ways to give back to your community.
         </p>
+        <div id="mc_embed_signup">
+            <form id="mc-embedded-subscribe-form" class="validate" action="https://vollyapp.us18.list-manage.com/subscribe/post?u=8ff31a021b0b0effbd6a226bc&amp;id=3b751364e1" method="post" name="mc-embedded-subscribe-form" novalidate="" target="_blank">
+                <div id="mc_embed_signup_scroll">
+                    <label for="mce-EMAIL">Subscribe to our mailing list</label>
+                    <input id="mce-EMAIL" class="email" name="EMAIL" required="" type="email" value="" placeholder="email address" />
+                </div>
+            </form>
+        </div>
+        <div style="position: absolute; left: -5000px;" aria-hidden="true"><input tabindex="-1" name="b_8ff31a021b0b0effbd6a226bc_3b751364e1" type="text" value="" /></div>
+        <div class="clear"><input id="mc-embedded-subscribe" class="button" name="subscribe" type="submit" value="Subscribe" /></div>
     </div>
 </div>

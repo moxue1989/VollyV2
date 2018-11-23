@@ -1,7 +1,26 @@
 ﻿body {
     padding-top: 50px;
-    padding-bottom: 20px;
+    margin-bottom: 20px;
 }
+
+    body .blend {
+        background-repeat: no-repeat;
+        background-image: url(/images/assets/navbar-bg.png);
+        background-color: #271f41 !important;
+        background-size: 100% auto;
+    }
+
+.nav-bg {
+    margin-top: -50px;
+}
+
+.blend nav {
+    background-color: #07060e !important;
+}
+
+    .blend nav a {
+        color: #ed639a !important;
+    }
 
 .map {
     width: 100%;
@@ -333,3 +352,30 @@ nav img.img-brand {
     -webkit-transition: all 0.25s;
     transition: all 0.25s;
 }
+
+.vollytron {
+    background-color: rgba(15.3,12.2,25.5,.8);
+    border: 1px solid black;
+}
+
+    .vollytron h1 {
+        color: #ff559b;
+        font-weight: 700;
+    }
+
+    .vollytron .index-subtitle {
+        color: #ff559b;
+    }
+
+    .vollytron p.paragraph {
+        color: #ff559b;
+    }
+
+    .vollytron .start-browsing {
+        text-align: center;
+    }
+
+        .vollytron .start-browsing img {
+            max-height: 100%;
+            max-width: 75%;
+        }
