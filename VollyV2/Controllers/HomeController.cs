@@ -35,6 +35,11 @@ namespace VollyV2.Controllers
             _userManager = userManager;
         }
 
+        public IActionResult About()
+        {
+            return View();
+        }
+
         public IActionResult Index()
         {
             var images = _dbContext.OpportunityImages

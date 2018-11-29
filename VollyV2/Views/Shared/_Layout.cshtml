@@ -12,7 +12,7 @@
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap-theme.css" />
         <link rel="stylesheet" href="~/css/site.css" />
     </environment>
-
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
     <environment exclude="Development">
         <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/4.0.0/css/bootstrap.min.css"
               asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
@@ -41,39 +41,41 @@
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
-        <a asp-area="" asp-controller="Home" asp-action="Index"><img class="img-brand" src="~/images/assets/logo.png" /></a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarText">
-            <ul class="navbar-nav mr-auto">
-                <li class="nav-item">
-                    <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Opportunities">Opportunities</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Organizations">Organizations</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Contact">Contact Us</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Suggestion">Suggestions</a>
-                </li>
-            </ul>
+    <div @ViewData["BodyClass"]>
+        <nav class="navbar navbar-expand-lg @((@ViewData["DarkNav"] != null && (bool)@ViewData["DarkNav"])? "navbar-dark bg-dark nav-dark" : "navbar-light bg-light") fixed-top">
+            <a asp-area="" asp-controller="Home" asp-action="Index"><img class="img-brand" src="~/images/assets/logo-dark.png" /></a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarText">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Opportunities">Opportunities</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Organizations">Organizations</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-area="" asp-controller="Home" asp-action="About">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Contact">Contact</a>
+                    </li>
+                </ul>
 
-            @await Html.PartialAsync("_LoginPartial")
+                @await Html.PartialAsync("_LoginPartial")
+            </div>
+        </nav>
+        <br />
+        <div class="container-fluid">
+            @RenderBody()
+            <hr />
+            <footer>
+                <p>&copy; 2018 - VollyBeta</p>
+            </footer>
         </div>
-    </nav>
-    <br />
-    <div class="container-fluid">
-        @RenderBody()
-        <hr />
-        <footer>
-            <p>&copy; 2018 - VollyBeta</p>
-        </footer>
-    </div>
 
-    @RenderSection("Scripts", false)
+        @RenderSection("Scripts", false)
+    </div>
 </body>
 </html>

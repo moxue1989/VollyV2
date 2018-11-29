@@ -2,7 +2,7 @@
 
 @{
     ViewData["Title"] = "Opportunities";
-    Layout = "_Layout";
+    ViewData["DarkNav"] = true;
 }
 <link rel="stylesheet" href="/css/home.opportunities.css" />
 <div class="container-fluid">
@@ -25,10 +25,6 @@
                                 <a id="communities-a" class="nav-link" data-toggle="tab" href="#communityFilter">Communities</a>
                             </li>
                         </ul>
-                        <div id="filter-bottom-label">
-                            <span id="popover-filter" data-trigger="manual" data-toggle="popover" data-placement="bottom" data-content="Here are some optional filters">
-                            </span>
-                        </div>
                         <!-- Tab panes -->
                         <div class="tab-content filter-wrapper-hide" id="filter-wrapper">
                             <br />

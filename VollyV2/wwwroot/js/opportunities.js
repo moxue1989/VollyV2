@@ -208,7 +208,6 @@ $("#communities-a").click(function(e){
     toggleFilterVisibility(e.target.id);
 });
 function toggleFilterVisibility(filterid) {
-    $("#popover-filter").popover('hide');
     if ($("#" + filterid).hasClass("active")) {
         if ($("#filter-wrapper").hasClass("filter-wrapper-hide")) {
             $("#filter-wrapper").removeClass("filter-wrapper-hide")
@@ -252,6 +251,4 @@ $("#toggle-map").click(function () {
 (function () {
     $("#map").css("opacity", 0);
     $('#map').css('height', 0);
-    $("#popover-filter").popover({ "animation": true });
-    $("#popover-filter").popover('show');
 })();

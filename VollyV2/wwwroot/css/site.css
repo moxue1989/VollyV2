@@ -1,7 +1,30 @@
-﻿body {
-    padding-top: 50px;
-    padding-bottom: 20px;
+﻿html {
+    background-color: #271f41 !important;
 }
+
+body {
+    font-family: 'Roboto', sans-serif !important;
+    padding-top: 50px;
+}
+
+    body .blend {
+        background-repeat: no-repeat;
+        background-image: url(/images/assets/navbar-bg.png);
+        background-color: #271f41 !important;
+        background-size: 100% auto;
+    }
+
+.nav-bg {
+    margin-top: -50px;
+}
+
+.nav-dark {
+    background-color: #07060e !important;
+}
+
+    .nav-dark a {
+        color: #ed639a !important;
+    }
 
 .map {
     width: 100%;
@@ -332,4 +355,87 @@ nav img.img-brand {
     display: block;
     -webkit-transition: all 0.25s;
     transition: all 0.25s;
+}
+
+.secondary-text {
+    color: #6eb5ff;
+}
+
+.vollytron {
+    color: #ff559b;
+    background-color: rgba(15.3,12.2,25.5,.9);
+    border: 1px solid black;
+    border-radius: 2rem;
+    padding: 4rem 3rem;
+}
+
+    .vollytron .vtitle {
+        font-weight: 700;
+        font-size: 2.5rem;
+    }
+
+    .vollytron .index-subtitle {
+        color: #ff559b;
+    }
+
+    .vollytron p.paragraph {
+        color: #ff559b;
+    }
+
+    .vollytron .start-browsing {
+        text-align: center;
+    }
+
+        .vollytron .start-browsing img {
+            max-height: 100%;
+            max-width: 75%;
+        }
+
+    .vollytron p.ptron {
+        font-weight: 700;
+        font-size: 1.2rem;
+    }
+
+#mc_embed_signup {
+    text-align: justify;
+    margin-bottom: 2rem;
+}
+
+.bottom-right-notify {
+    height: 7rem;
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    background-color: #666;
+    border-left: 2px solid;
+    border-radius: 2rem 0 0 2rem;
+    border-top: 2px solid;
+    border-bottom: 2px solid;
+}
+
+.top-right-notify {
+    position: fixed;
+    right: 0;
+    top: 4rem;
+    height: 7rem;
+    border-radius: 2rem 0 0 2rem;
+}
+
+.full-width {
+    width: 100%;
+}
+
+.padded {
+    padding: 2rem;
+}
+
+.clipboard {
+    border-radius: 2rem;
+    padding: 3rem;
+}
+
+.title-paragraph {
+    color: #6eb5ff;
+    font-weight: 600;
+    font-size: 1.8rem;
 }
