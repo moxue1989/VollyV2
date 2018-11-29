@@ -2,13 +2,39 @@
 
 @{
     ViewData["Title"] = "Contact Us";
-    Layout = "_Layout";
+    ViewData["DarkNav"] = true;
+    ViewData["BodyClass"] = "class=blend";
 }
-<div class="container">
+<div class="container vollytron">
+    <div class="row">
+        <div class="col-md-4">
+            <img src="~/images/assets/teamvolly.png" />
+        </div>
+        <div class="col-md-8 padded">
+            <ul>
+                <li>
+                    <h4>
+                        Our vision is to increase civic engagement by making volunteering in Calgary as easy as possible.
+                    </h4>
+                </li>
+                <li>
+                    <h4>
+                        Volly was started in 2018 by a group of passionate and engaged volunteers and was kickstarted at CivicTechYYC/CodeAcross Hackathon.
+                    </h4>
+                </li>
+                <li>
+                    <h4>
+                        Join our team! Currently seeking Graphic Designers/Front-End Developers!
+                    </h4>
+                </li>
+            </ul>
+        </div>
+    </div>
     <div class="row">
         <div class="col-md-6 vertical-margin-auto">
             <h3>Contact Us:</h3>
             <ul>
+                <li>Are you looking for volunteer opportunities in Calgary?</li>
                 <li>Is there a feature you would like us to add on this page?</li>
                 <li>Have a volunteer opportunity to post?</li>
                 <li>Is there a volunteer initiative you are dying to participate in that we can help plan?</li>
@@ -43,8 +69,6 @@
         </div>
     </div>
 </div>
-<h2>@ViewData["Message"]</h2>
-
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
