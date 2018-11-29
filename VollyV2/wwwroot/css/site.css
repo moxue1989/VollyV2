@@ -363,6 +363,7 @@ nav img.img-brand {
 
 .vollytron {
     color: #ff559b;
+    visibility: visible;
     background-color: rgba(15.3,12.2,25.5,.9);
     border: 1px solid black;
     border-radius: 2rem;
