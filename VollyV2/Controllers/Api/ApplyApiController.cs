@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using VollyV2.Data;
 using VollyV2.Models.Volly;
@@ -26,6 +27,10 @@ namespace VollyV2.Controllers.Api
             ApplyModel applyModel = new ApplyModel()
             {
                 OpportunityId = 1,
+                OccurrenceIds = new List<int>()
+                {
+                    1, 2, 3, 4
+                },
                 Name = "first last",
                 Email = "email@email.com",
                 PhoneNumber = "7771119999",
@@ -36,12 +41,13 @@ namespace VollyV2.Controllers.Api
         }
 
         [HttpPost]
-        public async Task<IActionResult> Apply([FromBody]ApplyModel applyModel)
+        public async Task<IActionResult> Apply([FromBody] ApplyModel applyModel)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
+
             ApplicationView application = await applyModel.GetApplication(_dbContext, null);
             await _emailSender.SendApplicationConfirmAsync(application);
             return Ok(application);

@@ -8,18 +8,19 @@ namespace VollyV2.Controllers
     public static class VollyConstants
     {
         public static readonly TimeZoneInfo TimeZoneInfo = TimeZoneInfo.FindSystemTimeZoneById("Mountain Standard Time");
-        public static readonly String OpportunityCacheKey = "OpportunityCache";
-        public static readonly String OrganizationCacheKey = "OrganizationCache";
+        public static readonly string OpportunityCacheKey = "OpportunityCache";
+        public static readonly string OrganizationCacheKey = "OrganizationCache";
         public const string AliceEmail = "alicelam22@gmail.com";
         public const string VollyAdminEmail = "admin@vollyapp.com";
         public const string MoEmail = "moxue2017@gmail.com";
+        public const string BearerSecret = "randomsecret12345678";
 
 
         public static readonly List<string> AllEmails = new List<String>()
         {
-            VollyConstants.AliceEmail,
-            VollyConstants.VollyAdminEmail,
-            VollyConstants.MoEmail
+            AliceEmail,
+            VollyAdminEmail,
+            MoEmail
         };
 
         public static DateTime ConvertFromUtc(DateTime dateTime)

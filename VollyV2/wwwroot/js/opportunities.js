@@ -31,13 +31,13 @@ function openOpportunityModal(opportunity) {
     $("#tw-share").attr("href", "https://twitter.com/share?url=" + baseUrl + opportunity.id + "&text=Volly - " + opportunity.name);
     $("#ln-share").attr("href", baseUrl + opportunity.id);
     document.getElementById("ln-share").innerHTML = baseUrl + opportunity.id;
-    if (opportunity.externalSignUpUrl) {
-        $("#OpportunityModalExternalSignUpUrlHref").attr("href", opportunity.externalSignUpUrl);
-        $("#OpportunityModalExternalSignUpUrl").html(opportunity.externalSignUpUrl);
-        $("#OpportunityModalExternalSignUp").modal('show');
-    } else {
+//    if (opportunity.externalSignUpUrl) {
+//        $("#OpportunityModalExternalSignUpUrlHref").attr("href", opportunity.externalSignUpUrl);
+//        $("#OpportunityModalExternalSignUpUrl").html(opportunity.externalSignUpUrl);
+//        $("#OpportunityModalExternalSignUp").modal('show');
+//    } else {
         $("#OpportunityModal").modal('show');
-    }
+//    }
 };
 
 function prettyFormatDateTimes(d1, d2, breakline) {

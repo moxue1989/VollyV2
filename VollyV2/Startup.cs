@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
@@ -7,7 +9,9 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Rewrite;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
 using VollyV2.Chat;
+using VollyV2.Controllers;
 using VollyV2.Data;
 using VollyV2.Models;
 using VollyV2.Services;
@@ -19,6 +23,7 @@ namespace VollyV2
         private static readonly string ConnectionString = Environment.GetEnvironmentVariable("connection_string");
         private static readonly string AutoMigrate = Environment.GetEnvironmentVariable("auto_migrate");
         private IHostingEnvironment CurrentEnvironment { get; }
+
         public Startup(IHostingEnvironment env, IConfiguration configuration)
         {
             Configuration = configuration;
@@ -30,22 +35,33 @@ namespace VollyV2
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<ApplicationDbContext>(options =>
-            {
-                options.UseSqlServer(GetConnectionString());
-            });
+            services.AddDbContext<ApplicationDbContext>(options => { options.UseSqlServer(GetConnectionString()); });
 
             services.AddIdentity<ApplicationUser, IdentityRole>(options =>
-                    {
-                        options.Password.RequireDigit = false;
-                        options.Password.RequiredLength = 8;
-                        options.Password.RequireNonAlphanumeric = false;
-                        options.Password.RequireUppercase = false;
-                        options.Password.RequireLowercase = false;
-                        options.User.RequireUniqueEmail = true;
-                    })
+                {
+                    options.Password.RequireDigit = false;
+                    options.Password.RequiredLength = 8;
+                    options.Password.RequireNonAlphanumeric = false;
+                    options.Password.RequireUppercase = false;
+                    options.Password.RequireLowercase = false;
+                    options.User.RequireUniqueEmail = true;
+                })
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
+
+            services.AddAuthentication()
+                .AddCookie(cfg => cfg.SlidingExpiration = true)
+                .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, jwtBearerOptions =>
+                {
+                    jwtBearerOptions.SaveToken = true;
+                    jwtBearerOptions.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuer = false,
+                        ValidateAudience = false,
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(VollyConstants.BearerSecret)),
+                        ClockSkew = TimeSpan.Zero
+                    };
+                });
 
             // Add application services.
             services.AddTransient<IEmailSender, EmailSender>();
@@ -60,10 +76,8 @@ namespace VollyV2
 
             services.AddScoped<IAuthorizationHandler, OpportunityAuthorizationHandler>();
 
-            services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
-            {
-                builder.AllowAnyHeader().AllowAnyOrigin().AllowAnyMethod();
-            }));
+            services.AddCors(o =>
+                o.AddPolicy("MyPolicy", builder => { builder.AllowAnyHeader().AllowAnyOrigin().AllowAnyMethod(); }));
         }
 
         private string GetConnectionString()
@@ -72,6 +86,7 @@ namespace VollyV2
             {
                 return Configuration.GetConnectionString("Develop");
             }
+
             return ConnectionString;
         }
 
@@ -96,7 +111,7 @@ namespace VollyV2
             }
             else
             {
-                app.UseExceptionHandler("/Home/Error");                
+                app.UseExceptionHandler("/Home/Error");
             }
 
             var options = new RewriteOptions()
@@ -110,10 +125,7 @@ namespace VollyV2
 
             app.UseCors("MyPolicy");
 
-            app.UseSignalR(routes =>
-            {
-                routes.MapHub<ChatHub>("/chathub");
-            });
+            app.UseSignalR(routes => { routes.MapHub<ChatHub>("/chathub"); });
 
             app.UseMvc(routes =>
             {

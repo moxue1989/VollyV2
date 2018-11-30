@@ -13,6 +13,8 @@
       "launchBrowser": true,
       "launchUrl": "https://localhost:44380/",
       "environmentVariables": {
+        "email_address": "admin@vollyapp.com",
+        "sendgrid_api": "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",
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },

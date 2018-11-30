@@ -28,6 +28,11 @@ namespace VollyV2.Models.Volly
 
         public static ApplicationView FromApplication(Application application)
         {
+            List<OccurrenceView> occurrenceViews = application.Occurrences
+                .Select(ao => ao.Occurrence)
+                .Select(OccurrenceView.FromOccurrence)
+                .ToList();
+
             return new ApplicationView()
             {
                 Id = application.Id,
@@ -41,10 +46,7 @@ namespace VollyV2.Models.Volly
                 PhoneNumber = application.PhoneNumber,
                 Message = application.Message,
                 DateTime = VollyConstants.ConvertFromUtc(application.DateTime),
-                OccurrenceViews = application.Occurrences
-                    .Select(ao => ao.Occurrence)
-                    .Select(OccurrenceView.FromOccurrence)
-                    .ToList(),
+                OccurrenceViews = occurrenceViews,
                 UserName = application.User?.UserName
             };
         }
