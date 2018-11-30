@@ -25,6 +25,7 @@ namespace VollyV2.Data.Volly
         public Location Location { get; set; }
         public Community Community { get; set; }
         public string ImageUrl { get; set; }
+        public string ExternalSignUpUrl { get; set; }
         public string CreatedByUserId { get; set; }
         public ApplicationUser CreatedByUser { get; set; }
         public List<OpportunityImage> OpportunityImages { get; set; }
@@ -45,7 +46,8 @@ namespace VollyV2.Data.Volly
                     Latitude = Location.Latitude
                 },
                 Community = Community,
-                ImageUrl = ImageUrl
+                ImageUrl = ImageUrl,
+                ExternalSignUpUrl = ExternalSignUpUrl
             };
         }
 

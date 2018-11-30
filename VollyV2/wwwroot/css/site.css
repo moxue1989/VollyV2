@@ -364,7 +364,7 @@ nav img.img-brand {
 .vollytron {
     color: #ff559b;
     visibility: visible;
-    background-color: rgba(15.3,12.2,25.5,.9);
+    background-color: #0f0c1a;
     border: 1px solid black;
     border-radius: 2rem;
     padding: 4rem 3rem;
@@ -372,7 +372,12 @@ nav img.img-brand {
 
     .vollytron .vtitle {
         font-weight: 700;
-        font-size: 2.5rem;
+        font-size: 2.25rem;
+    }
+
+    .vollytron .vtext {
+        color: #6eb5ff;
+        font-size: 1.5rem;
     }
 
     .vollytron .index-subtitle {
