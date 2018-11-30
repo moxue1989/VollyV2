@@ -29,6 +29,11 @@
                 <input asp-for="Address" class="form-control" />
                 <span asp-validation-for="Address" class="text-danger"></span>
             </div>
+            <div class="form-group">
+                <label asp-for="ExternalSignUpUrl" class="col-form-label"></label>
+                <input asp-for="ExternalSignUpUrl" class="form-control" />
+                <span asp-validation-for="ExternalSignUpUrl" class="text-danger"></span>
+            </div>
         </div>
         <div class="col-md-6">
             <div class="form-group">
@@ -42,7 +47,7 @@
                 <select asp-for="OrganizationId" class="form-control"
                         asp-items="@Model?.Organizations"></select>
                 <span asp-validation-for="OrganizationId" class="text-danger"></span>
-            </div> 
+            </div>
             <div class="form-group">
                 <label asp-for="CommunityId" class="col-form-label"></label>
                 <select asp-for="CommunityId" class="form-control"

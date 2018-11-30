@@ -23,6 +23,7 @@ function openOpportunityModal(opportunity) {
     $("#OpportunityModalCause").html(opportunity.causeName);
     $("#OpportunityModalOrganization").html(opportunity.organizationName);
     $("#OpportunityModalOrganizationUrl").attr("href", opportunity.organizationLink);
+    $("#ModalAddressHref").attr("href", "https://www.google.com/maps/search/?api=1&query=" + opportunity.address);
     $("#ModalAddress").html(opportunity.address);
     $("#ModalDescription").html(opportunity.description);
     $("#occurrencesInput").html(getOccurrenceSelectors(opportunity.occurrenceViews));
@@ -30,7 +31,13 @@ function openOpportunityModal(opportunity) {
     $("#tw-share").attr("href", "https://twitter.com/share?url=" + baseUrl + opportunity.id + "&text=Volly - " + opportunity.name);
     $("#ln-share").attr("href", baseUrl + opportunity.id);
     document.getElementById("ln-share").innerHTML = baseUrl + opportunity.id;
-    $("#OpportunityModal").modal('show');
+    if (opportunity.externalSignUpUrl) {
+        $("#OpportunityModalExternalSignUpUrlHref").attr("href", opportunity.externalSignUpUrl);
+        $("#OpportunityModalExternalSignUpUrl").html(opportunity.externalSignUpUrl);
+        $("#OpportunityModalExternalSignUp").modal('show');
+    } else {
+        $("#OpportunityModal").modal('show');
+    }
 };
 
 function prettyFormatDateTimes(d1, d2, breakline) {

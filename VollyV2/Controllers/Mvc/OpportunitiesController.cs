@@ -158,7 +158,7 @@ namespace VollyV2.Controllers.Mvc
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Description,Address,DateTime,EndDateTime,ApplicationDeadline,Openings,CategoryId,OrganizationId,CommunityId,ImageFile")] OpportunityModel model)
+        public async Task<IActionResult> Create([Bind("Id,Name,Description,Address,DateTime,EndDateTime,ApplicationDeadline,Openings,CategoryId,OrganizationId,CommunityId,ImageFile,ExternalSignUpUrl")] OpportunityModel model)
         {
             if (ModelState.IsValid)
             {
@@ -253,7 +253,7 @@ namespace VollyV2.Controllers.Mvc
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Description,Address,DateTime,EndDateTime,ApplicationDeadline,Openings,CategoryId,OrganizationId,CommunityId,ImageFile")] OpportunityModel opportunityModel)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Description,Address,DateTime,EndDateTime,ApplicationDeadline,Openings,CategoryId,OrganizationId,CommunityId,ImageFile,ExternalSignUpUrl")] OpportunityModel opportunityModel)
         {
             if (id != opportunityModel.Id)
             {

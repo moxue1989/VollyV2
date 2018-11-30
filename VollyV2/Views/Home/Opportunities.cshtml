@@ -105,6 +105,55 @@
     <br />
 </div>
 
+<div class="modal fade" id="OpportunityModalExternalSignUp" tabindex="-1" role="dialog" aria-labelledby="OpportunityModalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="OpportunityModalTitle"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <a target="resource window" id="OpportunityModalOrganizationUrl"><div id="OpportunityModalOrganization"></div></a>
+                <div id="fb-share-wrap" class="share-wrap">
+                    <a target="resource window" id="fb-share">
+                        <img src="~/images/assets/fb-logo.png" />
+                        Share
+                    </a>
+                </div>
+                <div id="tw-share-wrap" class="share-wrap">
+                    <a target="resource window" id="tw-share">
+                        <img src="~/images/assets/tw-logo.png" />
+                        Tweet
+                    </a>
+                </div>
+                <div id="ln-share-wrap" class="share-wrap">
+                    Share Link: <a id="ln-share"></a>
+                </div>
+                <a id="ModalAddressHref" target="_blank"><div class="text-warning" id="ModalAddress"></div></a>
+                <span class="badge badge-success" id="OpportunityModalCategory"></span>
+                <span class="badge badge-warning" id="OpportunityModalCause"></span>
+                <span class="badge badge-info" id="OpportunityModalTime"></span>
+                <span class="badge badge-danger" id="OpportunityModalSpotsRemaining"></span>
+                <br />
+                <div id="ModalDescription" class="div-description"></div>
+                <input asp-for="@Model.ApplyModel.OpportunityId" type="hidden" class="form-control" id="OpportunityId" />
+                <div>
+                    Have a question before applying?
+                    <a asp-controller="Home" asp-action="Contact">Contact Volly</a>
+                </div>
+                <div id="apply-now"> Apply Now:</div>
+                <a id="OpportunityModalExternalSignUpUrlHref">
+                    <div id="OpportunityModalExternalSignUpUrl"></div>
+                </a>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <div class="modal fade" id="OpportunityModal" tabindex="-1" role="dialog" aria-labelledby="OpportunityModalTitle" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
@@ -133,7 +182,7 @@
                     <div id="ln-share-wrap" class="share-wrap">
                         Share Link: <a id="ln-share"></a>
                     </div>
-                    <div class="text-warning" id="ModalAddress"></div>
+                    <a id="ModalAddressHref" target="_blank"><div class="text-warning" id="ModalAddress"></div></a>
                     <span class="badge badge-success" id="OpportunityModalCategory"></span>
                     <span class="badge badge-warning" id="OpportunityModalCause"></span>
                     <span class="badge badge-info" id="OpportunityModalTime"></span>
