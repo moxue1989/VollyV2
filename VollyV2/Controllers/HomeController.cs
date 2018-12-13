@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using IdentityServer4.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -130,7 +131,6 @@ namespace VollyV2.Controllers
                 ApplyModel applyModel = mapModel.ApplyModel;
                 var user = await GetUser(applyModel.Email);
                 ApplicationView application = await applyModel.GetApplication(_dbContext, user);
-                await _dbContext.SaveChangesAsync();
                 await _emailSender.SendApplicationConfirmAsync(application);
                 return Ok();
             }
@@ -140,8 +140,9 @@ namespace VollyV2.Controllers
 
         private async Task<ApplicationUser> GetUser(string email)
         {
+            bool isLoggedin = User.IsAuthenticated();
             return _dbContext.Users.FirstOrDefault(user => user.Email == email) ??
-                   await new UserCreator(_userManager, _signInManager, _emailSender).CreateUser(email, null);
+                   await new UserCreator(_userManager, _signInManager, _emailSender).CreateUser(email, null, !isLoggedin);
         }
 
         public IActionResult Contact()

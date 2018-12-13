@@ -25,12 +25,12 @@ namespace VollyV2.Services
             _emailSender = emailSender;
         }
 
-        public async Task<ApplicationUser> CreateUser(string email, Company company)
+        public async Task<ApplicationUser> CreateUser(string email, Company company, bool loginAfterCreation)
         {
-            return await CreateUser(email, GetRandomPassword(DefaultPasswordLength), company);
+            return await CreateUser(email, GetRandomPassword(DefaultPasswordLength), company, loginAfterCreation);
         }
 
-        public async Task<ApplicationUser> CreateUser(string email, string password, Company company)
+        public async Task<ApplicationUser> CreateUser(string email, string password, Company company, bool loginAfterCreation)
         {
             ApplicationUser user = new ApplicationUser() {Email = email, UserName = email, Company = company};
             var result = await _userManager.CreateAsync(user, password);
@@ -38,8 +38,10 @@ namespace VollyV2.Services
             {
                 await _userManager.AddToRoleAsync(user, "User");
                 await _emailSender.SendAccountCreatedConfirm(email, password);
-
-                await _signInManager.SignInAsync(user, isPersistent: false);
+                if (loginAfterCreation)
+                {
+                    await _signInManager.SignInAsync(user, isPersistent: false);
+                }
             }
             return user;
         }
