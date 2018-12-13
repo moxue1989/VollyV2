@@ -22,17 +22,19 @@ namespace VollyV2.Controllers
         private readonly ApplicationDbContext _dbContext;
         private readonly IEmailSender _emailSender;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly SignInManager<ApplicationUser> _signInManager;
 
-        [TempData]
-        public string Message { get; set; }
+        [TempData] public string Message { get; set; }
 
         public HomeController(ApplicationDbContext dbContext,
             IEmailSender emailSender,
-            UserManager<ApplicationUser> userManager)
+            UserManager<ApplicationUser> userManager,
+            SignInManager<ApplicationUser> signInManager)
         {
             _dbContext = dbContext;
             _emailSender = emailSender;
             _userManager = userManager;
+            _signInManager = signInManager;
         }
 
         public IActionResult About()
@@ -47,7 +49,7 @@ namespace VollyV2.Controllers
                 .OrderByDescending(o => o.Id)
                 .Take(10)
                 .ToList();
-            CarouselModel model = new CarouselModel() { opportunityImages = images };
+            CarouselModel model = new CarouselModel() {opportunityImages = images};
             return View(model);
         }
 
@@ -70,14 +72,53 @@ namespace VollyV2.Controllers
                     .ToList(), "Id", "Name"),
 
                 CommunityList = new SelectList(_dbContext.Communities
-                .OrderBy(c => c.Name)
-                .ToList(), "Id", "Name"),
+                    .OrderBy(c => c.Name)
+                    .ToList(), "Id", "Name"),
 
                 ApplyModel = new ApplyModel()
             };
 
-           ViewData["OpportunityId"] = Id;
+            ViewData["OpportunityId"] = Id;
             return View(mapModel);
+        }
+
+        public IActionResult Track()
+        {
+            ViewData["Message"] = Message;
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Track([Bind("Email,OpportunityName,OrganizationName,Date,Hours")]
+            TrackHoursModel trackHoursModel)
+        {
+            if (ModelState.IsValid)
+            {
+                ApplicationUser user = _userManager.Users.FirstOrDefault(u => u.Email == trackHoursModel.Email);
+                if (user == null)
+                {
+                    ModelState.AddModelError(string.Empty,
+                        "No profile found with email, please check the email or register!");
+                }
+                else
+                {
+                    VolunteerHours volunteerHours = new VolunteerHours()
+                    {
+                        User = user,
+                        OpportunityName = trackHoursModel.OpportunityName,
+                        OrganizationName = trackHoursModel.OrganizationName,
+                        DateTime = trackHoursModel.Date,
+                        Hours = trackHoursModel.Hours
+                    };
+                    _dbContext.VolunteerHours.Add(volunteerHours);
+                    await _dbContext.SaveChangesAsync();
+                    Message = "Hours successfully submitted! Thank you!";
+                    return RedirectToAction("Track");
+                }
+            }
+
+            return View(trackHoursModel);
         }
 
         [HttpPost]
@@ -87,12 +128,20 @@ namespace VollyV2.Controllers
             if (ModelState.IsValid)
             {
                 ApplyModel applyModel = mapModel.ApplyModel;
-                ApplicationUser user = User.Identity.IsAuthenticated ? await _userManager.GetUserAsync(User) : null;
+                var user = await GetUser(applyModel.Email);
                 ApplicationView application = await applyModel.GetApplication(_dbContext, user);
+                await _dbContext.SaveChangesAsync();
                 await _emailSender.SendApplicationConfirmAsync(application);
                 return Ok();
             }
+
             return Error();
+        }
+
+        private async Task<ApplicationUser> GetUser(string email)
+        {
+            return _dbContext.Users.FirstOrDefault(user => user.Email == email) ??
+                   await new UserCreator(_userManager, _signInManager, _emailSender).CreateUser(email, null);
         }
 
         public IActionResult Contact()
@@ -107,10 +156,12 @@ namespace VollyV2.Controllers
         {
             if (ModelState.IsValid)
             {
-                await _emailSender.SendEmailsAsync(VollyConstants.AllEmails, "Message From: " + contactUsModel.Name, contactUsModel.GetEmailMessage());
+                await _emailSender.SendEmailsAsync(VollyConstants.AllEmails, "Message From: " + contactUsModel.Name,
+                    contactUsModel.GetEmailMessage());
                 Message = "Thank you, your message has been sent!";
                 return RedirectToAction("Contact");
             }
+
             return View(contactUsModel);
         }
 
@@ -132,6 +183,7 @@ namespace VollyV2.Controllers
                 Message = "Thank you, your message has been sent!";
                 return RedirectToAction("Suggestion");
             }
+
             return View(suggestionModel);
         }
 
@@ -154,7 +206,7 @@ namespace VollyV2.Controllers
 
         public IActionResult Error()
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            return View(new ErrorViewModel {RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier});
         }
     }
 }

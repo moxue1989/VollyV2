@@ -1,28 +1,25 @@
-﻿@using VollyV2.Data.Volly
-@model VolunteerHours
+﻿@using VollyV2.Models.Volly
+@model VolunteerHoursModel
 
 @{
     ViewData["Title"] = "Hours";
-    var models = (IEnumerable<VolunteerHours>) ViewData["VolunteerHours"];
+    var models = (IEnumerable<VolunteerHoursModel>) ViewData["VolunteerHours"];
+    var userList = (SelectList) ViewData["Users"];
 }
 
+<h2>Log hours</h2>
 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-
-<input class="form-control" id="searchInput" type="text" placeholder="Search..">
-<table class="table table-bordered table-text" id="VolunteerHoursTable">
+<table class="table table-bordered table-text">
     <thead>
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.User.Email)
+            @Html.DisplayNameFor(model => model.User)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Application.Opportunity.Name)
+            @Html.DisplayNameFor(model => model.OpportunityName)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.OrganizationName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Application.User.Company)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.DateTime)
@@ -30,42 +27,78 @@
         <th>
             @Html.DisplayNameFor(model => model.Hours)
         </th>
+        <th></th>
     </tr>
     </thead>
     <tbody>
     @foreach (var item in models)
     {
         <tr>
-            <th>
-                @Html.DisplayFor(modelItem => item.User.Email)
-            </th>
-            <th>
-                @Html.DisplayFor(modelItem => item.Application.Opportunity.Name)
-            </th>
-            <th>
-                @Html.DisplayFor(modelItem => item.OrganizationName)
-            </th>
-            <th>
-                @Html.DisplayFor(modelItem => item.User.Company.Name)
-            </th>
-            <th>
-                @Html.DisplayFor(modelItem => item.DateTime)
-            </th>
-            <th>
-                @Html.DisplayFor(modelItem => item.Hours)
-            </th>
+            <form asp-action="Admin">
+                <input type="hidden" name="Id" value="@item.Id"/>
+                <td>
+                    <input name="User" value="@item.User" disabled/>
+                </td>
+                <td>
+                    <input name="OpportunityName" value="@item.OpportunityName"/>
+                </td>
+                <td>
+                    <input name="OrganizationName" value="@item.OrganizationName"/>
+                </td>
+                <td>
+                    <input name="DateTime" type="date" value=@item.DateTime/>
+                </td>
+                <td>
+                    <input name="Hours" value="@item.Hours"/>
+                </td>
+                <td>
+                    <input type="submit" value="Save"/>
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </form>
         </tr>
     }
     </tbody>
 </table>
 
-<script>
-    $(document).ready(function () {
-        $("#searchInput").on("keyup", function () {
-            var value = $(this).val().toLowerCase();
-            $("#VolunteerHoursTable tbody tr").filter(function () {
-                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
-            });
-        });
-    });
-</script>
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addModal">
+    Add
+</button>
+
+<div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addModalLabel">Add new hours</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form asp-action="Index">
+                <div class="modal-body">
+                    <label asp-for="User" class="col-form-label"></label>
+                    <select asp-for="UserId" class="form-control"
+                            asp-items="@userList">
+                        <option value="">-- Select User --</option>
+                    </select>
+                    <label asp-for="OpportunityName" class="col-form-label"></label>
+                    <input asp-for="OpportunityName" class="form-control" />
+                    <label asp-for="OrganizationName" class="col-form-label"></label>
+                    <input asp-for="OrganizationName" class="form-control" />
+                    <label asp-for="DateTime" class="col-form-label"></label>
+                    <input asp-for="DateTime" type="date" class="form-control" />
+                    <label asp-for="Hours" class="col-form-label"></label>
+                    <input asp-for="Hours" class="form-control" />
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+}

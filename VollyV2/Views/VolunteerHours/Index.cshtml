@@ -13,7 +13,7 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.ApplicationDescription)
+                @Html.DisplayNameFor(model => model.OpportunityName)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.OrganizationName)
@@ -33,9 +33,8 @@
             <tr>
                 <form asp-action="Index">
                     <input type="hidden" name="Id" value="@item.Id" />
-                    <input type="hidden" name="ApplicationId" value="@item.ApplicationId" />
                     <td>
-                        @Html.DisplayFor(modelItem => item.ApplicationDescription)
+                        @Html.DisplayFor(modelItem => item.OpportunityName)
                     </td>
                     <td>
                         <input name="OrganizationName" value="@item.OrganizationName" />

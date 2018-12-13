@@ -18,7 +18,16 @@ namespace VollyV2.Data.Volly
         public string OrganizationName { get; set; }
         [DisplayName("Date/Time")]
         public DateTime DateTime { get; set; }
-        public Application Application { get; set; }
+        public string OpportunityName { get; set; }
         public double Hours { get; set; }
+//
+//        private static double GetApplicationHours(Application application)
+//        {
+//            TimeSpan timeSpans = application.Occurrences
+//                .Select(occ => occ.Occurrence.EndTime - occ.Occurrence.StartTime)
+//                .Aggregate(new TimeSpan(0), (p, v) => p.Add(v));
+//
+//            return timeSpans.TotalHours;
+//        }
     }
 }

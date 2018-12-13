@@ -1,0 +1,51 @@
+﻿@model VollyV2.Models.Volly.TrackHoursModel
+
+@{
+    ViewData["Title"] = "Track Hours";
+    ViewData["DarkNav"] = true;
+    ViewData["BodyClass"] = "class=blend";
+}
+<div class="container vollytron">
+    <div class="row">
+        <div class="col-md-6">
+            <form asp-action="Track">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="Email" class="col-form-label"></label>
+                    <input asp-for="Email" class="form-control"/>
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="OrganizationName" class="col-form-label"></label>
+                    <input asp-for="OrganizationName" class="form-control"/>
+                    <span asp-validation-for="OrganizationName" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="OpportunityName" class="col-form-label"></label>
+                    <textarea asp-for="OpportunityName" class="form-control" rows="2"></textarea>
+                    <span asp-validation-for="OpportunityName" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Date" class="col-form-label"></label>
+                    <input asp-for="Date" type="date" class="form-control"/>
+                    <span asp-validation-for="Date" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Hours" class="col-form-label"></label>
+                    <input asp-for="Hours" class="form-control"/>
+                    <span asp-validation-for="Hours" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Submit Hours" class="btn btn-default"/>
+                </div>
+            </form>
+        </div>
+        <div class="col-md-6">
+            <h3>@ViewData["Message"]</h3>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+}

@@ -119,22 +119,6 @@ namespace VollyV2.Controllers.Mvc
             return View(applyModel);
         }
 
-        [AllowAnonymous]
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Details(ApplyModel model)
-        {
-            if (!ModelState.IsValid)
-            {
-                return await Details(model.OpportunityId);
-            }
-            ApplicationUser user = User.Identity.IsAuthenticated ? await _userManager.GetUserAsync(User) : null;
-            ApplicationView application = await model.GetApplication(_context, user);
-            await _emailSender.SendApplicationConfirmAsync(application);
-            Message = "Thank you for applying! Expect an email confirmation soon!";
-            return await Details(model.OpportunityId);
-        }
-
         // GET: Opportunities/Create
         public IActionResult Create()
         {

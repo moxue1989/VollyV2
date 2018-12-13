@@ -56,6 +56,7 @@ namespace VollyV2.Services
             };
             sendGridMessage.AddTo(new EmailAddress(application.Email, application.Name));
             sendGridMessage.AddCc(new EmailAddress(VollyConstants.AliceEmail, "Alice"));
+            sendGridMessage.AddCc(new EmailAddress(VollyConstants.VollyAdminEmail, "VollyAdmin"));
 
             List<string> occurrenceStrings = application.OccurrenceViews
                 .Select(o => ToOccurrenceTimeString().Invoke(o))
@@ -102,6 +103,26 @@ namespace VollyV2.Services
             sendGridMessage.AddTo(VollyConstants.AliceEmail);
 
             Response response = await client.SendEmailAsync(sendGridMessage);
+        }
+
+        public async Task SendAccountCreatedConfirm(string email, string password)
+        {
+            var client = new SendGridClient(SendgridApiKey);
+
+            string messageText = "Welcome to volly!<br/>" +
+                                 "An account has been created for you automatically!<br/>" +
+                                 "Login with your Email and temporary password:<br/><br/>" +
+                                 $"Email: {email}<br/>" +
+                                 $"Password: {password}";
+
+            SendGridMessage sendGridMessage = new SendGridMessage()
+            {
+                From = new EmailAddress(FromEmail, "Volly Team"),
+                Subject = "Volly: Account auto created",
+                HtmlContent = messageText,
+                PlainTextContent = messageText
+            };
+            await client.SendEmailAsync(sendGridMessage);
         }
 
         private static Func<OccurrenceView, string> ToOccurrenceTimeString()

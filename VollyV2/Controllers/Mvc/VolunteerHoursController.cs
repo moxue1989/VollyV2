@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using VollyV2.Data;
 using VollyV2.Data.Volly;
@@ -31,46 +32,14 @@ namespace VollyV2.Controllers.Mvc
         {
             string userId = _userManager.GetUserId(User);
 
-            List<Application> applications = await _context
-                .Applications
-                .Include(a => a.Opportunity)
-                .ThenInclude(o => o.Organization)
-                .Include(a => a.VolunteerHours)
-                .Include(a => a.Occurrences)
-                .ThenInclude(ao => ao.Occurrence)
-                .AsNoTracking()
-                .Where(a => a.UserId == userId)
-                .ToListAsync();
-
-            List<VolunteerHoursModel> otherVolunteerHours = _context.VolunteerHours
-                .Where(v => v.Application == null && v.UserId == userId)
+            List<VolunteerHoursModel> models = _context.VolunteerHours
+                .Include(a => a.User)
+                .Where(v => v.UserId == userId)
                 .AsNoTracking().AsEnumerable()
                 .Select(VolunteerHoursModel.FromVolunteerHours)
                 .ToList();
 
-            List<VolunteerHoursModel> models = applications
-                .Select(VolunteerHoursModel.FromApplication)
-                .ToList();
-
-
-            models.AddRange(otherVolunteerHours);
-
             ViewData["VolunteerHours"] = models;
-            return View();
-        }
-
-        [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Admin()
-        {
-            List<VolunteerHours> hours = await _context.VolunteerHours
-                .AsNoTracking()
-                .Include(a => a.User)
-                .ThenInclude(u => u.Company)
-                .Include(h => h.Application)
-                .ThenInclude(a => a.Opportunity)
-                .ToListAsync();
-
-            ViewData["VolunteerHours"] = hours;
             return View();
         }
 
@@ -84,6 +53,34 @@ namespace VollyV2.Controllers.Mvc
             return RedirectToAction("Index");
         }
 
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> Admin()
+        {
+            List<VolunteerHoursModel> hours = _context.VolunteerHours
+                .AsNoTracking()
+                .Include(a => a.User)
+                .ThenInclude(u => u.Company)
+                .AsNoTracking().AsEnumerable()
+                .Select(VolunteerHoursModel.FromVolunteerHours)
+                .ToList();
+
+            ViewData["VolunteerHours"] = hours;
+            ViewData["Users"] = new SelectList(_context.ApplicationUser.ToList(),
+                "Id", "Email");
+            return View();
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Admin")]
+        public IActionResult Admin(VolunteerHoursModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                model.CreateOrUpdate(_context, model.UserId);
+            }
+            return RedirectToAction("Admin");
+        }
+
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -92,9 +89,8 @@ namespace VollyV2.Controllers.Mvc
             }
 
             var volunteerHours = await _context.VolunteerHours
-                .Include(o => o.Application)
-                .ThenInclude(o => o.Opportunity)
                 .SingleOrDefaultAsync(m => m.Id == id);
+
             if (volunteerHours == null)
             {
                 return NotFound();
