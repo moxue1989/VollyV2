@@ -99,8 +99,7 @@ namespace VollyV2.Controllers
                 ApplicationUser user = _userManager.Users.FirstOrDefault(u => u.Email == trackHoursModel.Email);
                 if (user == null)
                 {
-                    ModelState.AddModelError(string.Empty,
-                        "No profile found with email, please check the email or register!");
+                    ViewData["Error"] = "No Email Found";
                 }
                 else
                 {

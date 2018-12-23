@@ -9,6 +9,16 @@
     <div class="row">
         <div class="col-md-6">
             <form asp-action="Track">
+                @{
+                    if ((string)ViewData["Error"] != "")
+                    {
+                        var registerUrl = Url.Action("Register", "Account");
+                        <div class="text-danger">
+                            No profile found with email, please check the spelling of your email or
+                            <a href="@registerUrl">register</a> to create a profile!
+                        </div>
+                    }
+                }
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <div class="form-group">
                     <label asp-for="Email" class="col-form-label"></label>

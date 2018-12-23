@@ -28,7 +28,11 @@
             </div>
             <div class="form-group">
                 <label asp-for="CompanyCode"></label>
+                @{
+                    string contactLink = Url.Action("Contact", "Home");
+                }
                 <input asp-for="CompanyCode" class="form-control" />
+                Don't remember your code? <a href="@contactLink">Contact us</a>!
                 <span asp-validation-for="CompanyCode" class="text-danger"></span>
             </div>
             <button type="submit" class="btn btn-default">Register</button>

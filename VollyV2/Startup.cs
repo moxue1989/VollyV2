@@ -84,7 +84,7 @@ namespace VollyV2
         {
             if (CurrentEnvironment.IsDevelopment())
             {
-                return Configuration.GetConnectionString("Develop");
+                return Configuration.GetConnectionString("Local");
             }
 
             return ConnectionString;

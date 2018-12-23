@@ -225,18 +225,19 @@ namespace VollyV2.Controllers
             ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser {UserName = model.Email, Email = model.Email};
+                Company company = null;
                 if (model.CompanyCode != null)
                 {
-                    Company company = _dbContext.Companies
+                    company = _dbContext.Companies
                         .FirstOrDefault(c => c.CompanyCode == model.CompanyCode);
                     if (company == null)
                     {
                         ModelState.AddModelError("CompanyCode", "Cannot find company with this code");
                         return View(model);
                     }
-                    user.Company = company;
                 }
+                var user = new ApplicationUser {UserName = model.Email, Email = model.Email, Company = company};
+                
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
