@@ -10,7 +10,7 @@
         <div class="col-md-6">
             <form asp-action="Track">
                 @{
-                    if ((string)ViewData["Error"] != "")
+                    if ((string)ViewData["Error"] == "No Email Found")
                     {
                         var registerUrl = Url.Action("Register", "Account");
                         <div class="text-danger">
