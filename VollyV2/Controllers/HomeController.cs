@@ -1,15 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
+﻿using System.Diagnostics;
+using System.IO;
 using System.Linq;
-using System.Security.Claims;
+using System.Net;
 using System.Threading.Tasks;
 using IdentityServer4.Extensions;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json.Linq;
 using VollyV2.Data;
 using VollyV2.Data.Volly;
 using VollyV2.Models;
@@ -50,7 +49,7 @@ namespace VollyV2.Controllers
                 .OrderByDescending(o => o.Id)
                 .Take(10)
                 .ToList();
-            CarouselModel model = new CarouselModel() {opportunityImages = images};
+            CarouselModel model = new CarouselModel() { opportunityImages = images };
             return View(model);
         }
 
@@ -150,16 +149,46 @@ namespace VollyV2.Controllers
             return View();
         }
 
+        private bool IsRecaptchaValid()
+        {
+            var result = false;
+            var requestUri = string.Format(
+                VollyConstants.RecaptchaPOSTUrl,
+                VollyConstants.RecaptchaSecret,
+                Request.Form["g-recaptcha-response"]
+                );
+            var request = (HttpWebRequest)WebRequest.Create(requestUri);
+
+            using (WebResponse response = request.GetResponse())
+            {
+                using (StreamReader stream = new StreamReader(response.GetResponseStream()))
+                {
+                    JObject jResponse = JObject.Parse(stream.ReadToEnd());
+                    var isSuccess = jResponse.Value<bool>("success");
+                    result = (isSuccess) ? true : false;
+                }
+            }
+            return result;
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Contact([Bind("Name,Email,Message")] ContactUsModel contactUsModel)
         {
             if (ModelState.IsValid)
             {
-                await _emailSender.SendEmailsAsync(VollyConstants.AllEmails, "Message From: " + contactUsModel.Name,
+                if (IsRecaptchaValid())
+                {
+                    await _emailSender.SendEmailsAsync(VollyConstants.AllEmails, "Message From: " + contactUsModel.Name,
                     contactUsModel.GetEmailMessage());
-                Message = "Thank you, your message has been sent!";
-                return RedirectToAction("Contact");
+                    Message = "Thank you, your message has been sent!";
+                    return RedirectToAction("Contact");
+                }
+                else
+                {
+                    return RedirectToAction("Index");
+                }
+
             }
 
             return View(contactUsModel);
@@ -206,7 +235,7 @@ namespace VollyV2.Controllers
 
         public IActionResult Error()
         {
-            return View(new ErrorViewModel {RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier});
+            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
     }
 }
