@@ -1,5 +1,6 @@
 ﻿var map;
 var markers = [];
+var causesList = [];
 
 function addOpportunityMarker(opportunity) {
     var marker = map.addMarker({
@@ -258,4 +259,9 @@ $("#toggle-map").click(function () {
 (function () {
     $("#map").css("opacity", 0);
     $('#map').css('height', 0);
+    $(".filter-cause").each(function () {
+        $("#" + this.id).click(function () {
+            console.log('test');
+        });
+    });
 })();
