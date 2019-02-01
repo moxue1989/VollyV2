@@ -176,6 +176,7 @@ nav img.img-brand {
 
 #map {
     overflow: hidden;
+    height: 85vh;
 }
 
 #ln-share {
