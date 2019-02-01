@@ -258,8 +258,10 @@ function toggleFilterVisibility(filterid) {
                 $("#wrap-main").removeClass('col-md-12');
                 $("#wrap-main").addClass('col-md-8');
                 $("#searchNearMe").css('bottom', 0);
+                $("#searchNearMe").css('display', 'unset');
             } else {
                 $("#searchNearMe").css('bottom', 'unset');
+                $("#searchNearMe").css('display', 'none');
                 $("#toggleMap").attr('value', 'Show Map');
                 $("#toggleMap").attr('data-show', '1');
                 $("#wrap-main").removeClass('col-lg-8');
