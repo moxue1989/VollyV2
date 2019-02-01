@@ -17,7 +17,7 @@ namespace VollyV2.Models.Volly
         [DisplayName("What did you do? (Example: Art with Seniors, Community Clean up, Computer tutoring)")]
         public string OpportunityName { get; set; }
         [Required]
-        [DisplayName("Who did you volunteer with? (Example: Art with Seniors, Community Clean up, Computer tutoring)")]
+        [DisplayName("Who did you volunteer with? (Example: Calgary Marathon, Drop in Centre, YMCA, Calgary Immigrant Women's Association)")]
         public string OrganizationName { get; set; }
         [Required]
         [DisplayName("Date you volunteered")]

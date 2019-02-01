@@ -31,18 +31,18 @@ function openOpportunityModal(opportunity) {
     $("#tw-share").attr("href", "https://twitter.com/share?url=" + baseUrl + opportunity.id + "&text=Volly - " + opportunity.name);
     $("#ln-share").attr("href", baseUrl + opportunity.id);
     document.getElementById("ln-share").innerHTML = baseUrl + opportunity.id;
-//    if (opportunity.externalSignUpUrl) {
-//        $("#OpportunityModalExternalSignUpUrlHref").attr("href", opportunity.externalSignUpUrl);
-//        $("#OpportunityModalExternalSignUpUrl").html(opportunity.externalSignUpUrl);
-//        $("#OpportunityModalExternalSignUp").modal('show');
-//    } else {
-        $("#OpportunityModal").modal('show');
-//    }
+    //    if (opportunity.externalSignUpUrl) {
+    //        $("#OpportunityModalExternalSignUpUrlHref").attr("href", opportunity.externalSignUpUrl);
+    //        $("#OpportunityModalExternalSignUpUrl").html(opportunity.externalSignUpUrl);
+    //        $("#OpportunityModalExternalSignUp").modal('show');
+    //    } else {
+    $("#OpportunityModal").modal('show');
+    //    }
 };
 
 function prettyFormatDateTimes(d1, d2, breakline) {
-    var dateTime = new Date(d1 + (moment(d1).isDST()?"-06:00":"-07:00"));
-    var endDateTime = new Date(d2 + (moment(d2).isDST()?"-06:00":"-07:00"));
+    var dateTime = new Date(d1 + (moment(d1).isDST() ? "-06:00" : "-07:00"));
+    var endDateTime = new Date(d2 + (moment(d2).isDST() ? "-06:00" : "-07:00"));
     var dateTimeString = "Coming soon!";
     if (dateTime.getFullYear() >= 1970) {
         if (endDateTime.getFullYear() >= 1970) {
@@ -84,7 +84,7 @@ function appendOpportunityPanel(opportunity, marker) {
             marker.setAnimation(null);
         });
 
-    if ($("#InitialOpportunity").html() == opportunity.id) {
+    if ($("#InitialOpportunity").html() === opportunity.id) {
         openOpportunityModal(opportunity);
     }
 };
@@ -108,6 +108,19 @@ function initMap() {
         zoom: 10
     });
     $('#nothingFoundAlert').hide();
+    $('#searchNearMe').click(function () {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                function (p) {
+                    map.panTo(new google.maps.LatLng(p.coords.latitude, p.coords.longitude));
+                }, function (e) {
+                    alert(e.message);
+                }, { timeout: 10000 }
+            );
+        } else {
+            alert('Geolocation services must be enabled.')
+        }
+    })
     getAllOpportunities();
     enableDatePicker();
 };
@@ -202,16 +215,16 @@ function filterOpportunities() {
         }
     });
 }
-$("#causes-a").click(function(e){
+$("#causes-a").click(function (e) {
     toggleFilterVisibility(e.target.id);
 });
-$("#categories-a").click(function(e){
+$("#categories-a").click(function (e) {
     toggleFilterVisibility(e.target.id);
 });
-$("#organizations-a").click(function(e){
+$("#organizations-a").click(function (e) {
     toggleFilterVisibility(e.target.id);
 });
-$("#communities-a").click(function(e){
+$("#communities-a").click(function (e) {
     toggleFilterVisibility(e.target.id);
 });
 function toggleFilterVisibility(filterid) {
@@ -228,34 +241,33 @@ function toggleFilterVisibility(filterid) {
         $("#filter-wrapper").addClass("filter-wrapper-show")
     }
 }
-$("#toggle-map").click(function () {
-    var dataShow = parseInt($('#toggle-map').attr('data-show'));
-    if (dataShow === 1) {
-        $('#map').css('height', '85vh');
-    }
-    $("#map").animate({
-        opacity: dataShow
-    }, 500, function () {
-        if (dataShow === 1) {
-            $("#toggle-map").attr('value', 'Hide Map');
-            $("#toggle-map").attr('data-show', '0');
-            $("#wrap-main").removeClass('col-lg-12');
-            $("#wrap-main").addClass('col-lg-8');
-            $("#wrap-main").removeClass('col-md-12');
-            $("#wrap-main").addClass('col-md-8');
-        } else {
-            $("#toggle-map").attr('value', 'Show Map');
-            $("#toggle-map").attr('data-show', '1');
-            $("#wrap-main").removeClass('col-lg-8');
-            $("#wrap-main").addClass('col-lg-12');
-            $("#wrap-main").removeClass('col-md-8');
-            $("#wrap-main").addClass('col-md-12');
-            $('#map').css('height', 0);
-        }
-    });
-});
-
 (function () {
-    $("#map").css("opacity", 0);
-    $('#map').css('height', 0);
+    $("#toggleMap").click(function () {
+        var dataShow = parseInt($('#toggleMap').attr('data-show'));
+        if (dataShow === 1) {
+            $('#map').css('height', '85vh');
+        }
+        $("#map").animate({
+            opacity: dataShow
+        }, 500, function () {
+            if (dataShow === 1) {
+                $("#toggleMap").attr('value', 'Hide Map');
+                $("#toggleMap").attr('data-show', '0');
+                $("#wrap-main").removeClass('col-lg-12');
+                $("#wrap-main").addClass('col-lg-8');
+                $("#wrap-main").removeClass('col-md-12');
+                $("#wrap-main").addClass('col-md-8');
+                $("#searchNearMe").css('bottom', 0);
+            } else {
+                $("#searchNearMe").css('bottom', 'unset');
+                $("#toggleMap").attr('value', 'Show Map');
+                $("#toggleMap").attr('data-show', '1');
+                $("#wrap-main").removeClass('col-lg-8');
+                $("#wrap-main").addClass('col-lg-12');
+                $("#wrap-main").removeClass('col-md-8');
+                $("#wrap-main").addClass('col-md-12');
+                $('#map').css('height', 0);
+            }
+        });
+    });
 })();
