@@ -84,7 +84,7 @@ function appendOpportunityPanel(opportunity, marker) {
             marker.setAnimation(null);
         });
 
-    if ($("#InitialOpportunity").html() == opportunity.id) {
+    if ($("#InitialOpportunity").html() === opportunity.id) {
         openOpportunityModal(opportunity);
     }
 };
@@ -242,4 +242,32 @@ function toggleFilterVisibility(filterid) {
     }
 }
 (function () {
+    $("#toggleMap").click(function () {
+        var dataShow = parseInt($('#toggleMap').attr('data-show'));
+        if (dataShow === 1) {
+            $('#map').css('height', '85vh');
+        }
+        $("#map").animate({
+            opacity: dataShow
+        }, 500, function () {
+            if (dataShow === 1) {
+                $("#toggleMap").attr('value', 'Hide Map');
+                $("#toggleMap").attr('data-show', '0');
+                $("#wrap-main").removeClass('col-lg-12');
+                $("#wrap-main").addClass('col-lg-8');
+                $("#wrap-main").removeClass('col-md-12');
+                $("#wrap-main").addClass('col-md-8');
+                $("#searchNearMe").css('bottom', 0);
+            } else {
+                $("#searchNearMe").css('bottom', 'unset');
+                $("#toggleMap").attr('value', 'Show Map');
+                $("#toggleMap").attr('data-show', '1');
+                $("#wrap-main").removeClass('col-lg-8');
+                $("#wrap-main").addClass('col-lg-12');
+                $("#wrap-main").removeClass('col-md-8');
+                $("#wrap-main").addClass('col-md-12');
+                $('#map').css('height', 0);
+            }
+        });
+    });
 })();
