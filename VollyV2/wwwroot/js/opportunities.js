@@ -84,7 +84,7 @@ function appendOpportunityPanel(opportunity, marker) {
             marker.setAnimation(null);
         });
 
-    if ($("#InitialOpportunity").html() === opportunity.id) {
+    if ($("#InitialOpportunity").html() == opportunity.id) {
         openOpportunityModal(opportunity);
     }
 };
