@@ -181,6 +181,7 @@ function filterOpportunities() {
         "CauseIds": causeIds,
         "OrganizationIds": organizationIds,
         "CommunityIds": communityIds,
+        "OpportunityType": 0,
         "Dates": dates,
         "Sort": sortBy
     };

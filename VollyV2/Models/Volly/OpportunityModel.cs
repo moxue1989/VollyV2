@@ -31,6 +31,7 @@ namespace VollyV2.Models.Volly
         public IFormFile ImageFile { get; set; }
         [Display(Name = "External Sign Up Url")]
         public string ExternalSignUpUrl { get; set; }
+        public OpportunityType OpportunityType { get; set; }
 
         public static OpportunityModel FromOpportunity(ApplicationDbContext dbContext, Opportunity opportunity)
         {
@@ -45,6 +46,7 @@ namespace VollyV2.Models.Volly
                 CommunityId = opportunity.Community?.Id ?? 0,
                 ImageUrl = opportunity.ImageUrl,
                 ExternalSignUpUrl = opportunity.ExternalSignUpUrl,
+                OpportunityType = opportunity.OpportunityType,
                 Categories = new SelectList(dbContext.Categories
                     .OrderBy(c => c.Name)
                     .ToList(), "Id", "Name"),
@@ -74,6 +76,7 @@ namespace VollyV2.Models.Volly
             opportunity.Category = context.Categories.Find(CategoryId);
             opportunity.Community = context.Communities.Find(CommunityId);
             opportunity.Location = GoogleLocator.GetLocationFromAddress(Address);
+            opportunity.OpportunityType = OpportunityType;
 
             return opportunity;
         }
