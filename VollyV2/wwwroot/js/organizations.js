@@ -53,9 +53,6 @@ function appendOrganizationPanel(organization) {
 }
 
 function initMap() {
-    var geoOptions = {
-        timeout: 10000,
-    };
     map = new GMaps({
         div: '#map',
         lat: 51.044308,
@@ -65,11 +62,15 @@ function initMap() {
     getAllOrganizations();
     $('#searchNearMe').click(function () {
         if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(function (p) {
-                map.panTo(new google.maps.LatLng(p.coords.latitude, p.coords.longitude));
-            }, function (e) {
-                alert(e.message);
-            }, geoOptions);
+            navigator.geolocation.getCurrentPosition(
+                function (p) {
+                    map.panTo(new google.maps.LatLng(p.coords.latitude, p.coords.longitude));
+                }, function (e) {
+                    alert(e.message);
+                }, {
+                    timeout: 10000,
+                }
+            );
         } else {
             alert('Geolocation services must be enabled.')
         }

@@ -13,14 +13,17 @@ namespace VollyV2.Controllers
         public const string AliceEmail = "alicelam22@gmail.com";
         public const string VollyAdminEmail = "admin@vollyapp.com";
         public const string MoEmail = "moxue2017@gmail.com";
+        public const string MarkEmail = "maillet.mark@gmail.com";
         public const string BearerSecret = "randomsecret12345678";
-
+        public const string RecaptchaPOSTUrl = "https://www.google.com/recaptcha/api/siteverify?secret={0}&response={1}";
+        public const string RecaptchaSecret = "6Lf7z4gUAAAAALLkw0Q8DNI_-yZ2Dkesvd8t-kni";
 
         public static readonly List<string> AllEmails = new List<String>()
         {
             AliceEmail,
             VollyAdminEmail,
-            MoEmail
+            MoEmail,
+            MarkEmail
         };
 
         public static DateTime ConvertFromUtc(DateTime dateTime)

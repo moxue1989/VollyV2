@@ -176,6 +176,7 @@ nav img.img-brand {
 
 #map {
     overflow: hidden;
+    height: 85vh;
 }
 
 #ln-share {
@@ -306,7 +307,21 @@ nav img.img-brand {
     right: 0;
 }
 
+#toggleMap {
+    display: none;
+}
+
 @media (max-width:768px) {
+    #toggleMap {
+        display: unset;
+    }
+
+    #searchNearMe {
+        position: absolute;
+        left: 0;
+        display: none;
+    }
+
     .wrap-map {
         position: relative !important;
     }
@@ -320,10 +335,16 @@ nav img.img-brand {
         left: 0;
         position: absolute !important;
         margin-bottom: 15px;
+        height: 100%;
     }
 
     #wrap-main {
         margin-top: 15px;
+    }
+
+    #map {
+        opacity: 0;
+        height: 0;
     }
 }
 
