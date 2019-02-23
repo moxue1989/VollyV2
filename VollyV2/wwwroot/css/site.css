@@ -317,8 +317,6 @@ nav img.img-brand {
     }
 
     #searchNearMe {
-        position: absolute;
-        left: 0;
         display: none;
     }
 
