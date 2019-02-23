@@ -181,6 +181,40 @@ $("#ClearFilters").click(function () {
 
 $("#FilterOpportunities").click(filterOpportunities);
 
+$(".opportunityType").click(function () {
+    var opportunityType = parseInt($(this).attr('value'));
+    filter(opportunityType);
+});
+
+function filter(opportunityType) {
+    var data = {
+        "CategoryIds": null,
+        "CauseIds": null,
+        "OrganizationIds": null,
+        "CommunityIds": null,
+        "OpportunityType": opportunityType,
+        "Dates": null,
+        "Sort": 1
+    };
+
+    $.ajax({
+        type: "POST",
+        contentType: "application/json",
+        url: '/api/Opportunities/Search',
+        data: JSON.stringify(data),
+        dataType: "json",
+        success: function (opportunities) {
+            clearOpportunities();
+            if (opportunities.length === 0) {
+                $('#nothingFoundAlert').show();
+            } else {
+                $('#nothingFoundAlert').hide();
+                addOpportunityMarkers(opportunities);
+            }
+        }
+    });
+}
+
 function filterOpportunities() {
     var categoryIds = $("#CategoryList").val();
     var causeIds = $("#CausesList").val();
@@ -194,6 +228,7 @@ function filterOpportunities() {
         "CauseIds": causeIds,
         "OrganizationIds": organizationIds,
         "CommunityIds": communityIds,
+        "OpportunityType": 0,
         "Dates": dates,
         "Sort": sortBy
     };

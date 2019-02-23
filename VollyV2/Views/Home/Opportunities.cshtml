@@ -1,4 +1,6 @@
-﻿@model VollyV2.Models.Volly.MapModel
+﻿@using Remotion.Linq.Parsing.Structure.IntermediateModel
+@using VollyV2.Data.Volly
+@model VollyV2.Models.Volly.MapModel
 
 @{
     ViewData["Title"] = "Opportunities";
@@ -15,6 +17,18 @@
                 <hr>
                 <p class="mb-0">If you see nothing that you like, please <a href="/Home/Contact">Contact Us</a> and make a suggestion. Thank you!</p>
             </div>
+            <ul class="nav nav-tabs">
+                @{
+                    foreach (OpportunityType opportunityType in Enum.GetValues(typeof(OpportunityType)))
+                    {
+
+                        int type = (int) opportunityType;
+                        <li class="nav-item">
+                            <a class="nav-link opportunityType" id="@opportunityType" value="@type" data-toggle="tab" href="#home">@opportunityType</a>
+                        </li>
+                    }
+                }
+            </ul>
             <div class="row" id="opportunityList">
             </div>
         </div>

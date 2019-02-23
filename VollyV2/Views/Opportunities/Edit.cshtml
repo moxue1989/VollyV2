@@ -1,4 +1,5 @@
-﻿@model VollyV2.Models.Volly.OpportunityModel
+﻿@using VollyV2.Data.Volly
+@model VollyV2.Models.Volly.OpportunityModel
 
 @{
     ViewData["Title"] = "Edit";
@@ -53,6 +54,12 @@
                 <select asp-for="CommunityId" class="form-control"
                         asp-items="@Model?.Communities"></select>
                 <span asp-validation-for="CommunityId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="OpportunityType" class="col-form-label"></label>
+                <select asp-for="OpportunityType" class="form-control"
+                        asp-items="Html.GetEnumSelectList<OpportunityType>()"></select>
+                <span asp-validation-for="OpportunityType" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="ImageFile" class="col-form-label"></label>

@@ -30,6 +30,9 @@
             @Html.DisplayNameFor(model => model.ImageUrl)
         </th>
         <th>
+            @Html.DisplayNameFor(model => model.OpportunityType)
+        </th>
+        <th>
             Actions
         </th>
     </tr>
@@ -50,7 +53,10 @@
                 @Html.DisplayFor(modelItem => item.Community.Name)
             </td>
             <td>
-                <img class="img-fluid thumbnail-img" src="@item.ImageUrl"/>
+                <img class="img-fluid thumbnail-img" src="@item.ImageUrl" />
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.OpportunityType)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |

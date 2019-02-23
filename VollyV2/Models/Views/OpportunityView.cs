@@ -24,11 +24,6 @@ namespace VollyV2.Models.Views
 
         public static OpportunityView FromOpportunity(Opportunity opportunity)
         {
-            return FromOpportunity(opportunity, new List<DateTime>());
-        }
-
-        public static OpportunityView FromOpportunity(Opportunity opportunity, List<DateTime> valiDateTimes)
-        {
             return new OpportunityView()
             {
                 Id = opportunity.Id,
@@ -46,8 +41,7 @@ namespace VollyV2.Models.Views
                 ExternalSignUpUrl = opportunity.ExternalSignUpUrl,
                 OccurrenceViews = opportunity.Occurrences
                     .Where(oc => oc.ApplicationDeadline > DateTime.Now &&
-                    oc.Openings > oc.Applications.Count &&
-                    (valiDateTimes.Count == 0 || valiDateTimes.Contains(oc.StartTime.Date)))
+                    oc.Openings > oc.Applications.Count)
                     .OrderBy(o => o.StartTime)
                     .Select(OccurrenceView.FromOccurrence)
                     .ToList()

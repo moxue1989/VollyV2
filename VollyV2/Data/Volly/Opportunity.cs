@@ -14,6 +14,14 @@ using VollyV2.Services;
 
 namespace VollyV2.Data.Volly
 {
+    public enum OpportunityType
+    {
+        All,
+        Episodic,
+        Ongoing,
+        Group,
+        Donation
+    }
     public class Opportunity
     {
         public int Id { get; set; }
@@ -27,10 +35,11 @@ namespace VollyV2.Data.Volly
         public string ImageUrl { get; set; }
         public string ExternalSignUpUrl { get; set; }
         public string CreatedByUserId { get; set; }
+        public OpportunityType OpportunityType { get; set; }
         public ApplicationUser CreatedByUser { get; set; }
         public List<OpportunityImage> OpportunityImages { get; set; }
         public List<Occurrence> Occurrences { get; set; }
-
+        
         public Opportunity Clone()
         {
             return new Opportunity()
@@ -47,7 +56,8 @@ namespace VollyV2.Data.Volly
                 },
                 Community = Community,
                 ImageUrl = ImageUrl,
-                ExternalSignUpUrl = ExternalSignUpUrl
+                ExternalSignUpUrl = ExternalSignUpUrl,
+                OpportunityType = OpportunityType
             };
         }
 

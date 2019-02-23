@@ -68,14 +68,10 @@ namespace VollyV2.Controllers.Api
                 return BadRequest(ModelState);
             }
 
-            List<DateTime> dates = opportunitySearch
-                .Dates
-                .Select(datetime => datetime.Date)
-                .ToList();
-
             List<Opportunity> opportunities = await VollyMemoryCache.GetAllOpportunities(_memoryCache, _context);
-            List<OpportunityView> opportunityViews = opportunities.Where(GetEligibleOpportunityPredicate(opportunitySearch))
-                .Select(o => OpportunityView.FromOpportunity(o, dates))
+            List<OpportunityView> opportunityViews = opportunities
+                .Where(GetEligibleOpportunityPredicate(opportunitySearch))
+                .Select(OpportunityView.FromOpportunity)
                 .Where(o => o.OccurrenceViews.Count > 0)
                 .ToList();
 
@@ -91,8 +87,9 @@ namespace VollyV2.Controllers.Api
                  opportunitySearch.CategoryIds.Contains(o.Category.Id)) &&
                 (opportunitySearch.OrganizationIds == null ||
                  opportunitySearch.OrganizationIds.Contains(o.Organization.Id)) &&
-                 (opportunitySearch.CommunityIds == null || o.Community != null &&
-                 opportunitySearch.CommunityIds.Contains(o.Community.Id));
+                (opportunitySearch.CommunityIds == null || o.Community != null &&
+                 opportunitySearch.CommunityIds.Contains(o.Community.Id)) &&
+                (opportunitySearch.OpportunityType == OpportunityType.All || opportunitySearch.OpportunityType == o.OpportunityType);
         }
 
         private List<OpportunityView> Sort(List<OpportunityView> opportunitieViews, int sort)
@@ -119,6 +116,5 @@ namespace VollyV2.Controllers.Api
                     return opportunitieViews;
             }
         }
-
     }
 }
