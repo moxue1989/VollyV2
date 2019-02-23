@@ -16,6 +16,7 @@ namespace VollyV2.Data.Volly
 {
     public enum OpportunityType
     {
+        All,
         Episodic,
         Ongoing,
         Group,
