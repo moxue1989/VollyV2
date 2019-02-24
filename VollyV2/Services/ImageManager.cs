@@ -11,7 +11,7 @@ namespace VollyV2.Services
 {
     public class ImageManager : IImageManager
     {
-        private static readonly string StorageName = "mogeneral";
+        private static readonly string StorageName = Environment.GetEnvironmentVariable("storage_name");
         private static readonly string StorageApiKey = Environment.GetEnvironmentVariable("storage_api");
         private static readonly string ImageContainer = Environment.GetEnvironmentVariable("images_container");
 
