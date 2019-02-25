@@ -3,7 +3,6 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
-using IdentityServer4.Extensions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -138,7 +137,7 @@ namespace VollyV2.Controllers
 
         private async Task<ApplicationUser> GetUser(string email)
         {
-            bool isLoggedin = User.IsAuthenticated();
+            bool isLoggedin = User.Identity.IsAuthenticated;
             return _dbContext.Users.FirstOrDefault(user => user.Email == email) ??
                    await new UserCreator(_userManager, _signInManager, _emailSender).CreateUser(email, null, !isLoggedin);
         }
