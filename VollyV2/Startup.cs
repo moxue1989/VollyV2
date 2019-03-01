@@ -58,8 +58,7 @@ namespace VollyV2
                     {
                         ValidateIssuer = false,
                         ValidateAudience = false,
-                        IssuerSigningKey =
-                            new SymmetricSecurityKey(Encoding.UTF8.GetBytes(VollyConstants.BearerSecret)),
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(VollyConstants.BearerSecret)),
                         ClockSkew = TimeSpan.Zero
                     };
                 });
@@ -104,11 +103,16 @@ namespace VollyV2
                 }
             }
 
-
-            app.UseBrowserLink();
-            app.UseDeveloperExceptionPage();
-            app.UseDatabaseErrorPage();
-
+            if (env.IsDevelopment())
+            {
+                app.UseBrowserLink();
+                app.UseDeveloperExceptionPage();
+                app.UseDatabaseErrorPage();
+            }
+            else
+            {
+                app.UseExceptionHandler("/Home/Error");
+            }
 
             var options = new RewriteOptions()
                 .AddRedirectToHttpsPermanent();
