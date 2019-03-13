@@ -54,7 +54,7 @@ function appendOrganizationPanel(organization) {
 
 function initMap() {
     map = new GMaps({
-        div: '#map2',
+        div: '#map',
         lat: 51.044308,
         lng: -114.0652801,
         zoom: 14
