@@ -26,18 +26,21 @@ function openOpportunityModal(opportunity) {
     $("#ModalAddressHref").attr("href", "https://www.google.com/maps/search/?api=1&query=" + opportunity.address);
     $("#ModalAddress").html(opportunity.address);
     $("#ModalDescription").html(opportunity.description);
+    var opportunityType = opportunity.opportunityType;
+    if (opportunityType === 1 || opportunityType === 3) {
+        $("#occurrencesSelect").css("visibility", "visible");
+        $("#occurrencesSelect").css("position", "relative");
+    } else {
+        $("#occurrencesSelect").css("visibility", "hidden");
+        $("#occurrencesSelect").css("position", "absolute");
+    }
     $("#occurrencesInput").html(getOccurrenceSelectors(opportunity.occurrenceViews));
+
     $("#fb-share").attr("href", "https://www.facebook.com/sharer/sharer.php?u=" + baseUrl + opportunity.id);
     $("#tw-share").attr("href", "https://twitter.com/share?url=" + baseUrl + opportunity.id + "&text=Volly - " + opportunity.name);
     $("#ln-share").attr("href", baseUrl + opportunity.id);
     document.getElementById("ln-share").innerHTML = baseUrl + opportunity.id;
-    //    if (opportunity.externalSignUpUrl) {
-    //        $("#OpportunityModalExternalSignUpUrlHref").attr("href", opportunity.externalSignUpUrl);
-    //        $("#OpportunityModalExternalSignUpUrl").html(opportunity.externalSignUpUrl);
-    //        $("#OpportunityModalExternalSignUp").modal('show');
-    //    } else {
     $("#OpportunityModal").modal('show');
-    //    }
 };
 
 function prettyFormatDateTimes(d1, d2, breakline) {
@@ -92,10 +95,15 @@ function appendOpportunityPanel(opportunity, marker) {
 function getOccurrenceSelectors(occurrences) {
     var element = "";
     for (var i = 0; i < occurrences.length; i++) {
+        var selected = "";
+        if (i === 0) {
+            selected = "selected";
+        }
         var occurrence = occurrences[i];
         element = element + "<option value='" + occurrence.id +
-            "'>" + prettyFormatDateTimes(occurrence.startTime, occurrence.endTime, false) +
-            " (" + occurrence.openings + " spots remaining)</option>";
+            "'" + selected +
+            ">" + prettyFormatDateTimes(occurrence.startTime, occurrence.endTime, false) +
+            " (" + occurrence.openings + " spots remaining) </option>";
     }
     return element;
 }

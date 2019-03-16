@@ -20,6 +20,8 @@ namespace VollyV2.Models.Views
         public string CommunityName { get; set; }
         public string ImageUrl { get; set; }
         public string ExternalSignUpUrl { get; set; }
+        public OpportunityType OpportunityType { get; set; }
+
         public List<OccurrenceView> OccurrenceViews { get; set; }
 
         public static OpportunityView FromOpportunity(Opportunity opportunity)
@@ -39,6 +41,7 @@ namespace VollyV2.Models.Views
                 CommunityName = opportunity.Community?.Name,
                 ImageUrl = opportunity.ImageUrl,
                 ExternalSignUpUrl = opportunity.ExternalSignUpUrl,
+                OpportunityType = opportunity.OpportunityType,
                 OccurrenceViews = opportunity.Occurrences
                     .Where(oc => oc.ApplicationDeadline > DateTime.Now &&
                     oc.Openings > oc.Applications.Count)
