@@ -15,7 +15,6 @@ using VollyV2.Services;
 
 namespace VollyV2.Chat
 {
-    [Authorize]
     public class ChatHub : Hub
     {
         private const string Vollybot = "VollyBot";
@@ -31,7 +30,7 @@ namespace VollyV2.Chat
 
         public async Task SendMessage(string message)
         {
-            string name = Context.User.Identity.Name;
+            string name = Context.User.Identity.Name ?? "Guest User";
             await Clients.Caller.SendAsync("ReceiveMessage", name, message);
             await ProcessMessage(message);
         }
