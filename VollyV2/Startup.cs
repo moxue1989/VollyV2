@@ -103,16 +103,16 @@ namespace VollyV2
                 }
             }
 
-            if (env.IsDevelopment())
-            {
+//            if (env.IsDevelopment())
+//            {
                 app.UseBrowserLink();
                 app.UseDeveloperExceptionPage();
                 app.UseDatabaseErrorPage();
-            }
-            else
-            {
-                app.UseExceptionHandler("/Home/Error");
-            }
+//            }
+//            else
+//            {
+//                app.UseExceptionHandler("/Home/Error");
+//            }
 
             var options = new RewriteOptions()
                 .AddRedirectToHttpsPermanent();
