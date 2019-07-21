@@ -9,6 +9,6 @@ namespace VollyV2.Data.Volly
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public List<UserCause> Users { get; set; }
+        public virtual List<UserCause> Users { get; set; }
     }
 }

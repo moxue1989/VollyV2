@@ -32,6 +32,7 @@ namespace VollyV2.Models.Volly
         [Display(Name = "External Sign Up Url")]
         public string ExternalSignUpUrl { get; set; }
         public OpportunityType OpportunityType { get; set; }
+        public bool Approved { get; set; }
 
         public static OpportunityModel FromOpportunity(ApplicationDbContext dbContext, Opportunity opportunity)
         {
@@ -55,7 +56,8 @@ namespace VollyV2.Models.Volly
                     .ToList(), "Id", "Name"),
                 Communities = new SelectList(dbContext.Communities
                     .OrderBy(o => o.Name)
-                    .ToList(), "Id", "Name")
+                    .ToList(), "Id", "Name"),
+                Approved = opportunity.Approved
             };
         }
 
@@ -77,7 +79,6 @@ namespace VollyV2.Models.Volly
             opportunity.Community = context.Communities.Find(CommunityId);
             opportunity.Location = GoogleLocator.GetLocationFromAddress(Address);
             opportunity.OpportunityType = OpportunityType;
-
             return opportunity;
         }
     }

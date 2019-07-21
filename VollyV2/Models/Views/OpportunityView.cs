@@ -21,6 +21,7 @@ namespace VollyV2.Models.Views
         public string ImageUrl { get; set; }
         public string ExternalSignUpUrl { get; set; }
         public OpportunityType OpportunityType { get; set; }
+        public bool Approved { get; set; }
 
         public List<OccurrenceView> OccurrenceViews { get; set; }
 
@@ -47,7 +48,8 @@ namespace VollyV2.Models.Views
                     oc.Openings > oc.Applications.Count)
                     .OrderBy(o => o.StartTime)
                     .Select(OccurrenceView.FromOccurrence)
-                    .ToList()
+                    .ToList(),
+                Approved = opportunity.Approved
             };
         }
     }

@@ -27,9 +27,9 @@ namespace VollyV2.Data.Volly
         [Required]
         public int OpportunityId { get; set; }
         [JsonIgnore]
-        public Opportunity Opportunity { get; set; }
+        public virtual Opportunity Opportunity { get; set; }
         [JsonIgnore]
-        public List<ApplicationOccurrence> Applications { get; set; }
+        public virtual List<ApplicationOccurrence> Applications { get; set; }
 
         public override string ToString()
         {

@@ -35,7 +35,8 @@ namespace VollyV2
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<ApplicationDbContext>(options => { options.UseSqlServer(GetConnectionString()); });
+            services.AddDbContext<ApplicationDbContext>(options => { options
+                .UseSqlServer(GetConnectionString()); });
 
             services.AddIdentity<ApplicationUser, IdentityRole>(options =>
                 {
@@ -84,7 +85,7 @@ namespace VollyV2
         {
             if (CurrentEnvironment.IsDevelopment())
             {
-                return Configuration.GetConnectionString("Local");
+                return Configuration.GetConnectionString("Develop");
             }
 
             return ConnectionString;
@@ -103,16 +104,16 @@ namespace VollyV2
                 }
             }
 
-//            if (env.IsDevelopment())
-//            {
+            if (env.IsDevelopment())
+            {
                 app.UseBrowserLink();
                 app.UseDeveloperExceptionPage();
                 app.UseDatabaseErrorPage();
-//            }
-//            else
-//            {
-//                app.UseExceptionHandler("/Home/Error");
-//            }
+            }
+            else
+            {
+                app.UseExceptionHandler("/Home/Error");
+            }
 
             var options = new RewriteOptions()
                 .AddRedirectToHttpsPermanent();

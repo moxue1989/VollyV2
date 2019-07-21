@@ -17,6 +17,7 @@ namespace VollyV2.Data
             : base(options)
         {
         }
+       
 
         public DbSet<Opportunity> Opportunities { get; set; }
         public DbSet<Organization> Organizations { get; set; }

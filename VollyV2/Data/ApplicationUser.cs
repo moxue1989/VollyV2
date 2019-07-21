@@ -10,10 +10,10 @@ namespace VollyV2.Models
     // Add profile data for application users by adding properties to the ApplicationUser class
     public class ApplicationUser : IdentityUser
     {
-        public List<Application> Applications { get; set; }
+        public virtual List<Application> Applications { get; set; }
         public string ProfileImage { get; set; }
-        public List<VolunteerHours> VolunteerHours { get; set; }
-        public Company Company { get; set; }
-        public List<UserCause> Causes { get; set; }
+        public virtual List<VolunteerHours> VolunteerHours { get; set; }
+        public virtual Company Company { get; set; }
+        public virtual List<UserCause> Causes { get; set; }
     }
 }

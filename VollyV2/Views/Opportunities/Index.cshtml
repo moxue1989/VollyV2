@@ -32,6 +32,9 @@
         <th>
             @Html.DisplayNameFor(model => model.OpportunityType)
         </th>
+        <td>
+            @Html.DisplayNameFor(model => model.Approved)
+        </td>
         <th>
             Actions
         </th>
@@ -57,6 +60,9 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.OpportunityType)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Approved)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |

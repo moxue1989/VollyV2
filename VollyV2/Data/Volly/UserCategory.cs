@@ -9,8 +9,8 @@ namespace VollyV2.Data.Volly
     public class UserCause
     {
         public string UserId { get; set; }
-        public ApplicationUser User { get; set; }
+        public virtual ApplicationUser User { get; set; }
         public int CauseId { get; set; }
-        public Cause Cause { get; set; }
+        public virtual Cause Cause { get; set; }
     }
 }

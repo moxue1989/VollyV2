@@ -22,23 +22,36 @@ namespace VollyV2.Data.Volly
         Group,
         Donation
     }
+
+    public class OpportunityName
+    {
+        public static Dictionary<OpportunityType, string> MapDictionary = new Dictionary<OpportunityType, string>()
+        {
+            { OpportunityType.All, "All" },
+            { OpportunityType.Episodic, "Episodic" },
+            { OpportunityType.Ongoing, "Ongoing" },
+            { OpportunityType.Group, "Group" },
+            { OpportunityType.Donation, "Donation" }
+        };
+    }
     public class Opportunity
     {
         public int Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
         public string Address { get; set; }
-        public Organization Organization { get; set; }
-        public Category Category { get; set; }
-        public Location Location { get; set; }
-        public Community Community { get; set; }
+        public virtual Organization Organization { get; set; }
+        public virtual Category Category { get; set; }
+        public virtual Location Location { get; set; }
+        public virtual Community Community { get; set; }
         public string ImageUrl { get; set; }
         public string ExternalSignUpUrl { get; set; }
         public string CreatedByUserId { get; set; }
         public OpportunityType OpportunityType { get; set; }
-        public ApplicationUser CreatedByUser { get; set; }
-        public List<OpportunityImage> OpportunityImages { get; set; }
-        public List<Occurrence> Occurrences { get; set; }
+        public virtual ApplicationUser CreatedByUser { get; set; }
+        public virtual List<OpportunityImage> OpportunityImages { get; set; }
+        public virtual List<Occurrence> Occurrences { get; set; }
+        public bool Approved { get; set; }
         
         public Opportunity Clone()
         {

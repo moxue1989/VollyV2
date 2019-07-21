@@ -13,7 +13,7 @@ namespace VollyV2.Data.Volly
         public int Id { get; set; }
         [Required]
         public string UserId { get; set; }
-        public ApplicationUser User { get; set; }
+        public virtual ApplicationUser User { get; set; }
         [DisplayName("Organization Name")]
         public string OrganizationName { get; set; }
         [DisplayName("Date/Time")]

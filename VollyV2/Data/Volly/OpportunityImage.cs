@@ -14,6 +14,6 @@ namespace VollyV2.Data.Volly
         public string ImageUrl { get; set; }
         [Required]
         public int OpportunityId { get; set; }
-        public Opportunity Opportunity { get; set; }
+        public virtual Opportunity Opportunity { get; set; }
     }
 }

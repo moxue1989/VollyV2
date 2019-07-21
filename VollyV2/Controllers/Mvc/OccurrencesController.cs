@@ -12,7 +12,7 @@ using VollyV2.Data.Volly;
 
 namespace VollyV2.Controllers.Mvc
 {
-    [Authorize(Roles = "Admin")]
+//    [Authorize(Roles = "Admin")]
     public class OccurrencesController : Controller
     {
         private readonly ApplicationDbContext _context;

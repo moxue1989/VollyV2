@@ -89,31 +89,32 @@ namespace VollyV2.Controllers.Api
                  opportunitySearch.OrganizationIds.Contains(o.Organization.Id)) &&
                 (opportunitySearch.CommunityIds == null || o.Community != null &&
                  opportunitySearch.CommunityIds.Contains(o.Community.Id)) &&
-                (opportunitySearch.OpportunityType == OpportunityType.All || opportunitySearch.OpportunityType == o.OpportunityType);
+                (opportunitySearch.OpportunityType == OpportunityType.All || opportunitySearch.OpportunityType == o.OpportunityType) &&
+                o.Approved;
         }
 
-        private List<OpportunityView> Sort(List<OpportunityView> opportunitieViews, int sort)
+        private List<OpportunityView> Sort(List<OpportunityView> opportunityViews, int sort)
         {
             switch (sort)
             {
                 case 1:
-                    return opportunitieViews.OrderBy(o =>
+                    return opportunityViews.OrderBy(o =>
                     {
                         OccurrenceView firstOcc = o.OccurrenceViews[0];
                         return firstOcc.StartTime;
                     }).ToList();
                 case 2:
-                    return opportunitieViews.OrderBy(o => o.OrganizationName).ToList();
+                    return opportunityViews.OrderBy(o => o.OrganizationName).ToList();
                 case 3:
-                    return opportunitieViews.OrderBy(o => o.OccurrenceViews.Sum(occ => occ.Openings)).ToList();
+                    return opportunityViews.OrderBy(o => o.OccurrenceViews.Sum(occ => occ.Openings)).ToList();
                 case 4:
-                    return opportunitieViews.OrderBy(o =>
+                    return opportunityViews.OrderBy(o =>
                     {
                         OccurrenceView firstOcc = o.OccurrenceViews[0];
                         return firstOcc.EndTime - firstOcc.StartTime;
                     }).ToList();
                 default:
-                    return opportunitieViews;
+                    return opportunityViews;
             }
         }
     }

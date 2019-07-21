@@ -16,10 +16,10 @@ namespace VollyV2.Data.Volly
         public string WebsiteLink { get; set; }
         public string MissionStatement { get; set; }
         public string FullDescription { get; set; }
-        public Cause Cause { get; set; }
-        public Location Location { get; set; }
+        public virtual Cause Cause { get; set; }
+        public virtual Location Location { get; set; }
         public string ImageUrl { get; set; }
         [JsonIgnore]
-        public List<Opportunity> Opportunities { get; set; }
+        public virtual List<Opportunity> Opportunities { get; set; }
     }
 }
