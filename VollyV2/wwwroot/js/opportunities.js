@@ -116,20 +116,23 @@ function initMap() {
         zoom: 10
     });
     $('#nothingFoundAlert').hide();
-    $('#searchNearMe').click(function () {
+    $('#searchNearMe').click(function() {
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(
-                function (p) {
+                function(p) {
                     map.panTo(new google.maps.LatLng(p.coords.latitude, p.coords.longitude));
-                }, function (e) {
+                },
+                function(e) {
                     alert(e.message);
-                }, { timeout: 10000 }
+                },
+                { timeout: 10000 }
             );
         } else {
             alert('Geolocation services must be enabled.')
         }
-    })
-    getAllOpportunities();
+    });
+
+    $('#All').click();
     enableDatePicker();
 };
 
@@ -140,14 +143,6 @@ function enableDatePicker() {
         todayHighlight: true
     });
 }
-
-function getAllOpportunities() {
-    $.getJSON(
-        '/api/Opportunities',
-        function (opportunities) {
-            addOpportunityMarkers(opportunities);
-        });
-};
 
 function clearOpportunities() {
     deleteMarkers();

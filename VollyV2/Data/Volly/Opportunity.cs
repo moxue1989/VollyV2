@@ -28,7 +28,7 @@ namespace VollyV2.Data.Volly
         public static Dictionary<OpportunityType, string> MapDictionary = new Dictionary<OpportunityType, string>()
         {
             { OpportunityType.All, "All" },
-            { OpportunityType.Episodic, "Episodic" },
+            { OpportunityType.Episodic, "Events" },
             { OpportunityType.Ongoing, "Ongoing" },
             { OpportunityType.Group, "Group" },
             { OpportunityType.Donation, "Donation" }
