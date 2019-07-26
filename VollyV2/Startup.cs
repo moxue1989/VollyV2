@@ -73,6 +73,8 @@ namespace VollyV2
 
             services.AddMvc();
 
+            services.AddProgressiveWebApp();
+
             services.AddSignalR();
 
             services.AddScoped<IAuthorizationHandler, OpportunityAuthorizationHandler>();
