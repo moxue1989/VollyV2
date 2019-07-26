@@ -71,12 +71,17 @@ function getSplit(breakline) {
 }
 
 function appendOpportunityPanel(opportunity, marker) {
-    $("#opportunityList").append('<div id="opportunity-' + opportunity.id + '" class="col-xl-3 col-lg-4 col-md-6 col-sm-12 result-card"><div class="result-card-inner">' +
+    $("#opportunityList").append('<div id="opportunity-' + opportunity.id + '" class="col-xl-3 col-lg-4 col-md-6 col-sm-12 result-card hide"><div class="result-card-inner">' +
         '<div class="img-opp"><img src="' + opportunity.imageUrl + '" /></div>' +
         '<div class="result-details"><div class="result-address">' + opportunity.address + '</div>' +
         '<div class="result-org-name">' + opportunity.organizationName + '</div>' +
         '<div class="result-name">' + opportunity.name + '</div>' +
         '</div></div></div>');
+    var imagesTimer = setTimeout("$('#opportunity-"+opportunity.id+"').removeClass('hide')", 5000);
+    $("#opportunity-" + opportunity.id + " img").on("load", function () {
+        clearTimeout(imagesTimer);
+        $("#opportunity-" + opportunity.id).removeClass("hide");
+    });
     $("#opportunity-" + opportunity.id).click(function (e) {
         openOpportunityModal(opportunity);
     });
