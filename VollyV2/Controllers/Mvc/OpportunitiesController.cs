@@ -150,7 +150,7 @@ namespace VollyV2.Controllers.Mvc
                 opportunity.CreatedByUser = await GetCurrentUser();
                 _context.Add(opportunity);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Create), "Occurrences", new { opportunityId = opportunity.Id });
             }
             return View(model);
         }
@@ -199,7 +199,7 @@ namespace VollyV2.Controllers.Mvc
                 }
             }
 
-            return RedirectToAction("Details", new {id});
+            return RedirectToAction("Details", new { id });
         }
 
         // GET: Opportunities/Edit/5
