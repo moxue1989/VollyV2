@@ -12,7 +12,7 @@ using VollyV2.Data.Volly;
 
 namespace VollyV2.Controllers.Mvc
 {
-//    [Authorize(Roles = "Admin")]
+    //    [Authorize(Roles = "Admin")]
     public class OccurrencesController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -32,9 +32,10 @@ namespace VollyV2.Controllers.Mvc
         }
 
         // GET: Occurrences/Create
-        public IActionResult Create()
+        public IActionResult Create(int? opportunityId)
         {
-            ViewData["OpportunityId"] = new SelectList(_context.Opportunities, "Id", "Name");
+            ViewData["SelectedOpportunity"] = opportunityId;
+            ViewData["Opportunities"] = new SelectList(_context.Opportunities, "Id", "Name");
             return View();
         }
 

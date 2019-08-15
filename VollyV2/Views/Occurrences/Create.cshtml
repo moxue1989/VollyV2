@@ -35,7 +35,16 @@
             </div>
             <div class="form-group">
                 <label asp-for="OpportunityId" class="col-form-label"></label>
-                <select asp-for="OpportunityId" class ="form-control" asp-items="ViewBag.OpportunityId"></select>
+                <select asp-for="OpportunityId"
+                        class="form-control">
+                    <option disabled selected>-- Select an opportunity --</option>
+                    @foreach (SelectListItem opportunity in ViewBag.Opportunities)
+                    {
+                        <option value="@opportunity.Value">
+                            @opportunity.Text
+                        </option>
+                    }
+                </select>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-default" />
@@ -48,3 +57,11 @@
     <a asp-action="Index">Back to List</a>
 </div>
 
+@if (ViewBag.SelectedOpportunity != null)
+{
+    <script>
+        (function () {
+            $('#OpportunityId').val("@ViewBag.SelectedOpportunity");
+        })();
+    </script>
+}
