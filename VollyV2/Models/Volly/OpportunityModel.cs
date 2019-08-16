@@ -12,15 +12,18 @@ namespace VollyV2.Models.Volly
     {
         public int Id { get; set; }
         [Required]
+        [Display(Name = "Title of Event")]
         public string Name { get; set; }
+        [Display(Name = "Describe the volunteer opportunity. Please include minimum age to volunteer and perks of volunteering.")]
         public string Description { get; set; }
         [Required]
+        [Display(Name = "Where does the volunteering occur? Enter Address or simply write the city name if there are multiple locations.")]
         public string Address { get; set; }
         [Required]
-        [Display(Name = "Organization")]
+        [Display(Name = "Non Profit Name")]
         public int OrganizationId { get; set; }
         [Required]
-        [Display(Name = "Category")]
+        [Display(Name = "What type of volunteering is this?")]
         public int CategoryId { get; set; }
         [Display(Name = "Community")]
         public int CommunityId { get; set; }
@@ -28,9 +31,11 @@ namespace VollyV2.Models.Volly
         public SelectList Categories { get; set; }
         public SelectList Communities { get; set; }
         public string ImageUrl { get; set; }
+        [Display(Name = "Upload an image for this event")]
         public IFormFile ImageFile { get; set; }
-        [Display(Name = "External Sign Up Url")]
+        [Display(Name = "Enter the URL of the application form or sign up sheet. Ex: volunteersignup.org or signupgenius")]
         public string ExternalSignUpUrl { get; set; }
+        [Display(Name = "Opportunity Type")]
         public OpportunityType OpportunityType { get; set; }
         public bool Approved { get; set; }
 

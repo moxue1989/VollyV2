@@ -58,6 +58,12 @@
                 <select asp-for="OpportunityType" class="form-control"
                         asp-items="Html.GetEnumSelectList<OpportunityType>()"></select>
                 <span asp-validation-for="OpportunityType" class="text-danger"></span>
+                <h5>
+                    Events Based: Volunteer Opportunities that have a set date<br />
+                    On-going: Opportunities that need a volunteer to commit on a consistent basis<br />
+                    Group: Opportunities that require a large group of people typically from a single company<br />
+                    Donations: Seek out non-monetary donations such as food/supplies/etc.
+                </h5>
             </div>
             <div class="form-group">
                 <label asp-for="ImageFile" class="col-form-label"></label>
