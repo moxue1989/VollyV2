@@ -17,7 +17,6 @@ using VollyV2.Services;
 
 namespace VollyV2.Controllers.Mvc
 {
-    [Authorize(Roles = "Admin")]
     public class OpportunitiesController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -43,6 +42,7 @@ namespace VollyV2.Controllers.Mvc
         }
 
         // GET: Opportunities
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Index()
         {
             ApplicationUser user = await GetCurrentUser();
@@ -120,6 +120,7 @@ namespace VollyV2.Controllers.Mvc
         }
 
         // GET: Opportunities/Create
+        [Authorize(Roles = "Admin,NonProfit")]
         public IActionResult Create()
         {
             OpportunityModel model = new OpportunityModel
@@ -142,6 +143,7 @@ namespace VollyV2.Controllers.Mvc
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin,NonProfit")]
         public async Task<IActionResult> Create([Bind("Id,Name,Description,Address,DateTime,EndDateTime,ApplicationDeadline,Openings,CategoryId,OrganizationId,CommunityId,ImageFile,ExternalSignUpUrl,OpportunityType")] OpportunityModel model)
         {
             if (ModelState.IsValid)
@@ -203,6 +205,7 @@ namespace VollyV2.Controllers.Mvc
         }
 
         // GET: Opportunities/Edit/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -237,6 +240,7 @@ namespace VollyV2.Controllers.Mvc
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Description,Address,DateTime,EndDateTime,ApplicationDeadline,Openings,CategoryId,OrganizationId,CommunityId,ImageFile,ExternalSignUpUrl,OpportunityType")] OpportunityModel opportunityModel)
         {
             if (id != opportunityModel.Id)
@@ -273,6 +277,7 @@ namespace VollyV2.Controllers.Mvc
         }
 
         // GET: Opportunities/Delete/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -303,6 +308,7 @@ namespace VollyV2.Controllers.Mvc
         // POST: Opportunities/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var opportunity = await _context.Opportunities.SingleOrDefaultAsync(m => m.Id == id);

@@ -12,7 +12,6 @@ using VollyV2.Data.Volly;
 
 namespace VollyV2.Controllers.Mvc
 {
-    //    [Authorize(Roles = "Admin")]
     public class OccurrencesController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -23,6 +22,7 @@ namespace VollyV2.Controllers.Mvc
         }
 
         // GET: Occurrences
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Index()
         {
             List<Occurrence> occurrences = await _context.Occurrences
@@ -32,6 +32,7 @@ namespace VollyV2.Controllers.Mvc
         }
 
         // GET: Occurrences/Create
+        [Authorize(Roles = "Admin,NonProfit")]
         public IActionResult Create(int? opportunityId)
         {
             ViewData["SelectedOpportunity"] = opportunityId;
@@ -44,6 +45,7 @@ namespace VollyV2.Controllers.Mvc
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin,NonProfit")]
         public async Task<IActionResult> Create([Bind("Id,StartTime,EndTime,ApplicationDeadline,Openings,OpportunityId")] Occurrence occurrence)
         {
             if (ModelState.IsValid)
@@ -57,6 +59,7 @@ namespace VollyV2.Controllers.Mvc
         }
 
         // GET: Occurrences/Edit/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -78,6 +81,7 @@ namespace VollyV2.Controllers.Mvc
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int id, [Bind("Id,StartTime,EndTime,ApplicationDeadline,Openings,OpportunityId")] Occurrence occurrence)
         {
             if (id != occurrence.Id)
@@ -110,6 +114,7 @@ namespace VollyV2.Controllers.Mvc
         }
 
         // GET: Occurrences/Delete/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -131,6 +136,7 @@ namespace VollyV2.Controllers.Mvc
         // POST: Occurrences/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var occurrence = await _context.Occurrences.SingleOrDefaultAsync(m => m.Id == id);
