@@ -52,7 +52,7 @@
             </li>
             <li class="dropdown-divider"></li>
         }
-        @if (User.IsInRole("Company"))
+        @if (User.IsInRole("NonProfit"))
         {
             <li class="nav-item">
                 <a class="btn btn-outline-success my-1" asp-area="" asp-controller="Opportunities" asp-action="Create">Create Opportunity</a>&nbsp;
