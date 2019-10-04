@@ -71,13 +71,26 @@ function getSplit(breakline) {
 }
 
 function appendOpportunityPanel(opportunity, marker) {
+    var dateTimeStringWrapper = "";
+    if (opportunity.opportunityType == 1) {
+        var dateTimeString = "Multiple Shifts";
+        if (opportunity.occurrenceViews.length === 1) {
+            var firstOccurrence = opportunity.occurrenceViews[0];
+            dateTimeString = prettyFormatDateTimes(firstOccurrence.startTime, firstOccurrence.endtime, true);
+        } else if (opportunity.occurrenceViews.length === 0) {
+            dateTimeString = "Ongoing";
+        }
+        dateTimeStringWrapper = '<div class="wrap-center"><div class="result-datetime">' + dateTimeString + '</div></div>';
+    }
+
     $("#opportunityList").append('<div id="opportunity-' + opportunity.id + '" class="col-xl-3 col-lg-4 col-md-6 col-sm-12 result-card hide"><div class="result-card-inner">' +
+        dateTimeStringWrapper +
         '<div class="img-opp"><img src="' + opportunity.imageUrl + '" /></div>' +
         '<div class="result-details"><div class="result-address">' + opportunity.address + '</div>' +
         '<div class="result-org-name">' + opportunity.organizationName + '</div>' +
         '<div class="result-name">' + opportunity.name + '</div>' +
         '</div></div></div>');
-    var imagesTimer = setTimeout("$('#opportunity-"+opportunity.id+"').removeClass('hide')", 5000);
+    var imagesTimer = setTimeout("$('#opportunity-" + opportunity.id + "').removeClass('hide')", 5000);
     $("#opportunity-" + opportunity.id + " img").on("load", function () {
         clearTimeout(imagesTimer);
         $("#opportunity-" + opportunity.id).removeClass("hide");
@@ -121,13 +134,13 @@ function initMap() {
         zoom: 10
     });
     $('#nothingFoundAlert').hide();
-    $('#searchNearMe').click(function() {
+    $('#searchNearMe').click(function () {
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(
-                function(p) {
+                function (p) {
                     map.panTo(new google.maps.LatLng(p.coords.latitude, p.coords.longitude));
                 },
-                function(e) {
+                function (e) {
                     alert(e.message);
                 },
                 { timeout: 10000 }
@@ -177,18 +190,6 @@ function setMapOnAll(map) {
     }
 };
 
-$("#ClearFilters").click(function () {
-    $("#CategoryList").val("");
-    $("#CausesList").val("");
-    $("#OrganizationList").val("");
-    $("#CommunityList").val("");
-    $("#EventSort").prop("checked", true);
-    $('#dateSelect').val("").datepicker("update");
-    filterOpportunities();
-});
-
-$("#FilterOpportunities").click(filterOpportunities);
-
 $(".opportunityType").click(function () {
     var opportunityType = parseInt($(this).attr('value'));
     filter(opportunityType);
@@ -223,41 +224,6 @@ function filter(opportunityType) {
     });
 }
 
-function filterOpportunities() {
-    var categoryIds = $("#CategoryList").val();
-    var causeIds = $("#CausesList").val();
-    var organizationIds = $("#OrganizationList").val();
-    var communityIds = $("#CommunityList").val();
-    var dates = $('#dateSelect').datepicker("getDates");
-    var sortBy = $('input[name="sortRadio"]:checked').val();
-
-    var data = {
-        "CategoryIds": categoryIds,
-        "CauseIds": causeIds,
-        "OrganizationIds": organizationIds,
-        "CommunityIds": communityIds,
-        "OpportunityType": 0,
-        "Dates": dates,
-        "Sort": sortBy
-    };
-
-    $.ajax({
-        type: "POST",
-        contentType: "application/json",
-        url: '/api/Opportunities/Search',
-        data: JSON.stringify(data),
-        dataType: "json",
-        success: function (opportunities) {
-            clearOpportunities();
-            if (opportunities.length === 0) {
-                $('#nothingFoundAlert').show();
-            } else {
-                $('#nothingFoundAlert').hide();
-                addOpportunityMarkers(opportunities);
-            }
-        }
-    });
-}
 $("#causes-a").click(function (e) {
     toggleFilterVisibility(e.target.id);
 });
