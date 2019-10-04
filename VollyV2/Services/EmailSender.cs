@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using MailChimp.Net;
+using MailChimp.Net.Core;
+using MailChimp.Net.Models;
 using SendGrid;
 using SendGrid.Helpers.Mail;
 using VollyV2.Controllers;
@@ -74,10 +77,10 @@ namespace VollyV2.Services
         public async Task SendRemindersAsync(List<string> emailList, Occurrence occurrence)
         {
             Opportunity opportunity = occurrence.Opportunity;
-//            string messageText = "Hey There! This is a reminder for your upcoming volunteer gig. " +
-//                         "Please reply to this email if you can no longer make the event.";
+            //            string messageText = "Hey There! This is a reminder for your upcoming volunteer gig. " +
+            //                         "Please reply to this email if you can no longer make the event.";
 
-            string messageText = "Volunteers: " +  String.Join("\n", emailList);
+            string messageText = "Volunteers: " + String.Join("\n", emailList);
 
             SendGridMessage sendGridMessage = new SendGridMessage()
             {
