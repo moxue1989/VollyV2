@@ -9,16 +9,10 @@
     ]
   },
   {
-    "outputFileName": "wwwroot/js/site.min.js",
+    "outputFileName": "wwwroot/js/opportunities.min.js",
     "inputFiles": [
-      "wwwroot/js/site.js"
+      "wwwroot/js/opportunities.js"
     ],
-    // Optionally specify minification options
-    "minify": {
-      "enabled": true,
-      "renameLocals": true
-    },
-    // Optionally generate .map file
-    "sourceMap": false
+    "minify": { "enabled": true }
   }
 ]
