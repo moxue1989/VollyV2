@@ -9,7 +9,6 @@ using Microsoft.AspNetCore.Mvc.ViewEngines;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
-using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -42,7 +41,6 @@ namespace VollyV2.Controllers.Api
 
         private readonly ApplicationDbContext _context;
         private readonly IEmailSender _emailSender;
-        private readonly ILogger _logger;
 
         private Setting _campaignSettings = new Setting
         {
@@ -54,25 +52,20 @@ namespace VollyV2.Controllers.Api
 
         public NewsletterApiController(
             ApplicationDbContext context,
-            IEmailSender emailSender,
-            ILogger logger)
+            IEmailSender emailSender)
         {
             _context = context;
             _emailSender = emailSender;
-            _logger = logger;
         }
 
         [HttpGet]
         public async Task<IActionResult> CreateAndSendNewslettersAsync()
         {
-            _logger.LogInformation("API Hit");
             ViewData["SteetAdress"] = StreetAddress;
             ViewData["UnsubscribeUrl"] = UnsubscribeUrl;
-            _logger.LogInformation("ViewData Set");
             List<Opportunity> opportunities = await GetRandomRecentOpportunities();
-            _logger.LogInformation("Opportunities Got");
             //await CreateAndSendMailChimpNewsletterAsync(opportunities);
-            //await CreateAndSendSendGridNewsletterAsync(opportunities);
+            await CreateAndSendSendGridNewsletterAsync(opportunities);
             return Ok();
         }
 

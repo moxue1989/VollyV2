@@ -25,12 +25,7 @@ namespace VollyV2
 
         public static IWebHost BuildWebHost(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
-            .ConfigureLogging(logging =>
-            {
-                logging.ClearProviders();
-                logging.AddConsole();
-            })
-            .UseStartup<Startup>()
-            .Build();
+                .UseStartup<Startup>()
+                .Build();
     }
 }
