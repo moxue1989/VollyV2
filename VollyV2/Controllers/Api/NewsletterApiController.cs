@@ -65,7 +65,7 @@ namespace VollyV2.Controllers.Api
             ViewData["UnsubscribeUrl"] = UnsubscribeUrl;
             List<Opportunity> opportunities = await GetRandomRecentOpportunities();
             //await CreateAndSendMailChimpNewsletterAsync(opportunities);
-            await CreateAndSendSendGridNewsletterAsync(opportunities);
+            //await CreateAndSendSendGridNewsletterAsync(opportunities);
             return Ok();
         }
 
