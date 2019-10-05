@@ -10,32 +10,18 @@ using System.Threading.Tasks;
 
 namespace VollyV2.Extensions
 {
-    public static class ControllerExtensions
+    public static class NewsletterControllerExtensions
     {
         public static async Task<string> RenderViewAsync(
             this Controller controller,
-            Controllers.EmailTemplateController emailTemplateController,
-            string viewName, 
-            //TModel model, 
-            bool partial = false)
+            string viewName)
         {
-            if (string.IsNullOrEmpty(viewName))
-            {
-                viewName = emailTemplateController.ControllerContext.ActionDescriptor.ActionName;
-            }
-
-            //controller.ViewData.Model = model;
-
+            //controller.ViewData.Model;
             using (var writer = new StringWriter())
             {
-                string ViewLocation = "~/Views/EmailTemplate/Newsletter.cshtml";
+                string ViewLocation = $"~/Views/EmailTemplate/{viewName}.cshtml";
                 IViewEngine viewEngine = controller.HttpContext.RequestServices.GetService(typeof(ICompositeViewEngine)) as ICompositeViewEngine;
                 ViewEngineResult viewResult = viewEngine.GetView(ViewLocation, ViewLocation, false);
-
-                if (viewResult.Success == false)
-                {
-                    return $"A view with the name {viewName} could not be found";
-                }
 
                 ViewContext viewContext = new ViewContext(
                     controller.ControllerContext,

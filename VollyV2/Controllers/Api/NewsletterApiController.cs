@@ -2,6 +2,7 @@
 using MailChimp.Net.Core;
 using MailChimp.Net.Interfaces;
 using MailChimp.Net.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewEngines;
@@ -22,31 +23,55 @@ namespace VollyV2.Controllers.Api
 {
     [Produces("application/json")]
     [Route("api/NewsletterApi")]
+    [Authorize(Roles = "Admin")]
     public class NewsletterApiController : Controller
     {
+        private static readonly string ReplyToEmail = VollyConstants.MarkEmail;
+        private static readonly string NewsletterFrom = "Volly Newsletter";
+        private static readonly string NewsletterSubject = "Volly Opportunities";
+        private static readonly string StreetAddress = "123 Fake St.";
+
+        private static readonly string UnsubscribeUrl = "https://volly.app/Unsubscribe";
+
+        private static readonly int TakeFromTopCount = 20;
+        private static readonly int NumberOfOpportunitiesToInclude = 8;
+
         private static readonly string MailChimpApiKey = Environment.GetEnvironmentVariable("mailchimp_api");
         private static readonly string ListId = "100b8d1f2d";
-        private Setting _campaignSettings = new Setting
-        {
-            ReplyTo = "maillet.mark@gmail.com",
-            FromName = "From name",
-            Title = "Your campaign title",
-            SubjectLine = "The email subject",
-        };
 
         private readonly ApplicationDbContext _context;
+        private readonly IEmailSender _emailSender;
 
-        public NewsletterApiController(ApplicationDbContext context)
+        private Setting _campaignSettings = new Setting
+        {
+            ReplyTo = ReplyToEmail,
+            FromName = NewsletterFrom,
+            Title = NewsletterSubject,
+            SubjectLine = NewsletterSubject,
+        };
+
+        public NewsletterApiController(
+            ApplicationDbContext context,
+            IEmailSender emailSender)
         {
             _context = context;
+            _emailSender = emailSender;
         }
 
         [HttpGet]
-        public async Task<IActionResult> CreateAndSendCampaignAsync()
+        public async Task<IActionResult> CreateAndSendNewslettersAsync()
+        {
+            ViewData["SteetAdress"] = StreetAddress;
+            ViewData["UnsubscribeUrl"] = UnsubscribeUrl;
+            List<Opportunity> opportunities = await GetRandomRecentOpportunities();
+            await CreateAndSendMailChimpNewsletterAsync(opportunities);
+            await CreateAndSendSendGridNewsletterAsync(opportunities);
+            return Ok();
+        }
+
+        private async Task<IActionResult> CreateAndSendMailChimpNewsletterAsync(List<Opportunity> opportunities)
         {
             var mailChimpManager = new MailChimpManager(MailChimpApiKey);
-
-            List<Opportunity> opportunities = await GetRandomRecentOpportunities(10, 5);
 
             var campaign = mailChimpManager.Campaigns.AddAsync(new Campaign
             {
@@ -54,12 +79,12 @@ namespace VollyV2.Controllers.Api
                 Recipients = new Recipient { ListId = ListId },
                 Type = CampaignType.Regular
             }).Result;
-            var timeStr = DateTime.Now.ToString();
+
             var content = mailChimpManager.Content.AddOrUpdateAsync(
              campaign.Id,
              new ContentRequest()
              {
-                 Html = await GenerateHtmlFromOpportunitiesAsync(opportunities)
+                 Html = await GenerateMailChimpHtmlFromOpportunitiesAsync(opportunities)
                  //Template = new ContentTemplate
                  //{
                  //    Id = TemplateId,
@@ -69,11 +94,20 @@ namespace VollyV2.Controllers.Api
                  //         }
                  //}
              }).Result;
+
             mailChimpManager.Campaigns.SendAsync(campaign.Id).Wait();
 
             return Ok();
         }
 
+        private async Task<IActionResult> CreateAndSendSendGridNewsletterAsync(List<Opportunity> opportunities)
+        {
+            var html = await GenerateSendGridHtmlFromOpportunitiesAsync(opportunities);
+
+            await _emailSender.SendEmailAsync(VollyConstants.MarkEmail, NewsletterSubject, html);
+
+            return Ok();
+        }
 
         public async Task<IActionResult> RunJob()
         {
@@ -94,31 +128,86 @@ namespace VollyV2.Controllers.Api
             return Ok();
         }
 
-        private async Task<string> GenerateHtmlFromOpportunitiesAsync(List<Opportunity> opportunities)
+        private async Task<string> GenerateMailChimpHtmlFromOpportunitiesAsync(List<Opportunity> opportunities)
         {
+            ViewData["OpportunitiesHtml"] = GetOpportunitiesHtml(opportunities);
+            return await this.RenderViewAsync("NewsletterMailChimp");
+        }
 
-            string test = await this.RenderViewAsync(new EmailTemplateController(), "Newsletter", false);
+        private async Task<string> GenerateSendGridHtmlFromOpportunitiesAsync(List<Opportunity> opportunities)
+        {
+            ViewData["OpportunitiesHtml"] = GetOpportunitiesHtml(opportunities);
+            return await this.RenderViewAsync("NewsletterSendGrid");
+        }
 
-            string html =
-                "<p>Hi Everyone!</p>" +
-                "<p>Please find below some new volunteer opportunities!</p>" +
-                "If you need help finding something specific to do, please email " +
-                "<a href='mailto:" + VollyConstants.VollyAdminEmail + "'>" + VollyConstants.VollyAdminEmail + "</a><br/>" +
-                "Upcoming Volunteer Opportunities<br/>" +
-                "<ul>";
-            foreach (Opportunity opportunity in opportunities)
+
+        private string GetOpportunitiesHtml(List<Opportunity> opportunities)
+        {
+            string html = "";
+            for (var i = 0; i < opportunities.Count; i++)
             {
-                html += "<li>" + opportunity.Name + "</li>";
+                html += GetTemplateForOpportunity(opportunities[i], i % 2 == 0);
             }
-            html += "</ul>";
-            html +=
-                "<a href='https://volly.app/Home/Opportunities'>Browse All Opportunities</a><br/>" +
-                "Feel free to share with your friends and family!<br/>" +
-                "Team Volly";
             return html;
         }
 
-        private async Task<List<Opportunity>> GetRandomRecentOpportunities(int takeFromTopCount, int count)
+        private string GetTemplateForOpportunity(Opportunity opportunity, bool IsTextLeft)
+        {
+            return "<table border='0' cellpadding='0' cellspacing='0' width='100%'>" +
+                "<tbody>" +
+                "<tr>" +
+                "<td valign='top' style='padding:9px;'>" +
+                "<table border='0' cellpadding='0' cellspacing='0' width='100%'>" +
+                "<tbody>" +
+                "<tr>" +
+                "<td valign ='top' style='padding:0 9px ;'>" +
+                 GetTextForTile(opportunity, IsTextLeft) +
+                 GetImageForTile(opportunity, !IsTextLeft) +
+                "</td>" +
+                "</tr>" +
+                "</tbody>" +
+                "</table>" +
+                "</td>" +
+                "</tr>" +
+                "</tbody>" +
+                "</table>";
+        }
+
+        private string GetTextForTile(Opportunity opportunity, bool IsLeft)
+        {
+            return "<table align='" + (IsLeft ? "left" : "right") + "' border='0' cellpadding='0' cellspacing='0' width='264'>" +
+            "<tbody>" +
+            "<tr>" +
+            "<td valign='top'>" +
+            "<h3>" +
+            "<font color='#ffffff'>" + opportunity.Name + "<br/>" + "</font>" +
+            "</h3>" +
+            "<p><span style='color:#FFFFFF'>" + opportunity.Description + "</span><br />" +
+            "<a href='https://volly.app/Home/Opportunities/" + opportunity.Id + "' target='_blank'>" +
+            "<span style='color:#EE82EE'>Sign up</span>" +
+            "</a>" +
+            "</p>" +
+            "</td>" +
+            "</tr>" +
+            "</tbody>" +
+            "</table>";
+
+        }
+
+        private string GetImageForTile(Opportunity opportunity, bool IsLeft)
+        {
+            return "<table align='" + (IsLeft ? "left" : "right") + "' border='0' cellpadding='0' cellspacing='0' width='264'>" +
+                "<tbody>" +
+                "<tr>" +
+                "<td align='center' valign='top'>" +
+                "<img alt='' src='" + opportunity.ImageUrl + "' width='264' style='max-width:564px;'>" +
+                "</td>" +
+                "</tr>" +
+                "</tbody>" +
+                "</table>";
+        }
+
+        private async Task<List<Opportunity>> GetRandomRecentOpportunities()
         {
             List<int> opportunityIds = await _context.Occurrences
                 .Where(o => o.ApplicationDeadline > DateTime.Now && o.Applications.Count < o.Openings)
@@ -136,14 +225,14 @@ namespace VollyV2.Controllers.Api
             opportunityIds.Sort();
             opportunityIds.Reverse();
 
-            if (opportunityIds.Count > takeFromTopCount)
+            if (opportunityIds.Count > TakeFromTopCount)
             {
-                opportunityIds = opportunityIds.Take(takeFromTopCount).ToList();
+                opportunityIds = opportunityIds.Take(TakeFromTopCount).ToList();
             }
 
             List<int> filteredOpportunityIds;
 
-            if (opportunityIds.Count <= count)
+            if (opportunityIds.Count <= NumberOfOpportunitiesToInclude)
             {
                 filteredOpportunityIds = opportunityIds;
             }
@@ -151,7 +240,7 @@ namespace VollyV2.Controllers.Api
             {
                 filteredOpportunityIds = new List<int>();
                 Random random = new Random();
-                while (filteredOpportunityIds.Count < count)
+                while (filteredOpportunityIds.Count < NumberOfOpportunitiesToInclude)
                 {
                     int opportunityId = opportunityIds[random.Next(opportunityIds.Count)];
                     if (!filteredOpportunityIds.Contains(opportunityId))
