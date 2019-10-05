@@ -15,7 +15,6 @@
       "environmentVariables": {
         "email_address": "admin@vollyapp.com",
         "sendgrid_api": "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",
-        "mailchimp_api": "ad78f0a4e28df2f2546136040da5f621-us20",
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },

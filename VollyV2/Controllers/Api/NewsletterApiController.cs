@@ -23,7 +23,7 @@ namespace VollyV2.Controllers.Api
 {
     [Produces("application/json")]
     [Route("api/NewsletterApi")]
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "PowerUser")]
     public class NewsletterApiController : Controller
     {
         private static readonly string ReplyToEmail = VollyConstants.MarkEmail;
@@ -64,7 +64,7 @@ namespace VollyV2.Controllers.Api
             ViewData["SteetAdress"] = StreetAddress;
             ViewData["UnsubscribeUrl"] = UnsubscribeUrl;
             List<Opportunity> opportunities = await GetRandomRecentOpportunities();
-            await CreateAndSendMailChimpNewsletterAsync(opportunities);
+            //await CreateAndSendMailChimpNewsletterAsync(opportunities);
             await CreateAndSendSendGridNewsletterAsync(opportunities);
             return Ok();
         }
