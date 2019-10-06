@@ -33,7 +33,7 @@ namespace VollyV2.Controllers.Api
 
         private static readonly string UnsubscribeUrl = "https://volly.app/Unsubscribe";
 
-        private static readonly int TakeFromTopCount = 20;
+        private static readonly int TakeFromTopCount = 8;
         private static readonly int NumberOfOpportunitiesToInclude = 8;
 
         private static readonly string MailChimpApiKey = Environment.GetEnvironmentVariable("mailchimp_api");
@@ -231,28 +231,31 @@ namespace VollyV2.Controllers.Api
                 opportunityIds = opportunityIds.Take(TakeFromTopCount).ToList();
             }
 
-            List<int> filteredOpportunityIds;
+            //List<int> filteredOpportunityIds;
 
-            if (opportunityIds.Count <= NumberOfOpportunitiesToInclude)
-            {
-                filteredOpportunityIds = opportunityIds;
-            }
-            else
-            {
-                filteredOpportunityIds = new List<int>();
-                Random random = new Random();
-                while (filteredOpportunityIds.Count < NumberOfOpportunitiesToInclude)
-                {
-                    int opportunityId = opportunityIds[random.Next(opportunityIds.Count)];
-                    if (!filteredOpportunityIds.Contains(opportunityId))
-                    {
-                        filteredOpportunityIds.Append(opportunityId);
-                    }
-                }
-            }
+            //if (opportunityIds.Count <= NumberOfOpportunitiesToInclude)
+            //{
+            //    filteredOpportunityIds = opportunityIds;
+            //}
+            //else
+            //{
+            //    filteredOpportunityIds = new List<int>();
+            //    Random random = new Random();
+            //    while (filteredOpportunityIds.Count < NumberOfOpportunitiesToInclude)
+            //    {
+            //        int opportunityId = opportunityIds[random.Next(opportunityIds.Count)];
+            //        if (!filteredOpportunityIds.Contains(opportunityId))
+            //        {
+            //            filteredOpportunityIds.Append(opportunityId);
+            //        }
+            //    }
+            //}
 
             List<Opportunity> opportunities = await _context.Opportunities
-                .Where(o => filteredOpportunityIds.Contains(o.Id))
+                .Where(o => opportunityIds.Contains(o.Id)
+                && o.Approved
+                && o.OpportunityType == OpportunityType.Episodic
+                )
                 .Include(o => o.Category)
                 .Include(o => o.Community)
                 .Include(o => o.Organization)
