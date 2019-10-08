@@ -16,7 +16,6 @@ namespace VollyV2.Extensions
             this Controller controller,
             string viewName)
         {
-            //controller.ViewData.Model;
             using (var writer = new StringWriter())
             {
                 string ViewLocation = $"~/Views/EmailTemplate/{viewName}.cshtml";

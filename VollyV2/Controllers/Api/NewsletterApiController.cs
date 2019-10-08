@@ -102,9 +102,8 @@ namespace VollyV2.Controllers.Api
 
         private async Task<IActionResult> CreateAndSendSendGridNewsletterAsync(List<Opportunity> opportunities)
         {
-            //var html = await GenerateSendGridHtmlFromOpportunitiesAsync(opportunities);
+            var html = await GenerateSendGridHtmlFromOpportunitiesAsync(opportunities);
 
-            var html = "testing";
             await _emailSender.SendEmailAsync(VollyConstants.MarkEmail, NewsletterSubject, html);
 
             return Ok();
