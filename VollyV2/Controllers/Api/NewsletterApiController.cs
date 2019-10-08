@@ -64,8 +64,8 @@ namespace VollyV2.Controllers.Api
             ViewData["SteetAdress"] = StreetAddress;
             ViewData["UnsubscribeUrl"] = UnsubscribeUrl;
             List<Opportunity> opportunities = await GetRandomRecentOpportunities();
-            //await CreateAndSendMailChimpNewsletterAsync(opportunities);
-            await CreateAndSendSendGridNewsletterAsync(opportunities);
+            await CreateAndSendMailChimpNewsletterAsync(opportunities);
+            //await CreateAndSendSendGridNewsletterAsync(opportunities);
             return Ok();
         }
 
