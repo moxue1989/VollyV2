@@ -34,7 +34,7 @@ namespace VollyV2.Controllers.Api
         private static readonly string UnsubscribeUrl = "https://volly.app/Unsubscribe";
 
         private static readonly int TakeFromTopCount = 20;
-        private static readonly int NumberOfOpportunitiesToInclude = 8;
+        private static readonly int NumberOfOpportunitiesToInclude = 4;
 
         private static readonly string MailChimpApiKey = Environment.GetEnvironmentVariable("mailchimp_api");
         private static readonly string ListId = "100b8d1f2d";
@@ -65,7 +65,7 @@ namespace VollyV2.Controllers.Api
             ViewData["UnsubscribeUrl"] = UnsubscribeUrl;
             List<Opportunity> opportunities = await GetRandomRecentOpportunities();
             await CreateAndSendMailChimpNewsletterAsync(opportunities);
-            //await CreateAndSendSendGridNewsletterAsync(opportunities);
+            await CreateAndSendSendGridNewsletterAsync(opportunities);
             return Ok();
         }
 
