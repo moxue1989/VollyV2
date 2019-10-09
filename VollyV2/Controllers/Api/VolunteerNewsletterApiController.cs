@@ -22,19 +22,19 @@ using VollyV2.Services;
 namespace VollyV2.Controllers.Api
 {
     [Produces("application/json")]
-    [Route("api/NewsletterApi")]
+    [Route("api/VolunteerNewsletterApi")]
     [Authorize(Roles = "PowerUser")]
-    public class NewsletterApiController : Controller
+    public class VolunteerNewsletterApiController : Controller
     {
         private static readonly string ReplyToEmail = VollyConstants.VollyAdminEmail;
         private static readonly string NewsletterFrom = "Volly Newsletter";
         private static readonly string NewsletterSubject = "Volly Opportunities";
-        private static readonly string StreetAddress = "123 Fake St.";
+        private static readonly string StreetAddress = "Calgary, AB";
 
         private static readonly string UnsubscribeUrl = "https://volly.app/Unsubscribe";
 
-        private static readonly int TakeFromTopCount = 20;
-        private static readonly int NumberOfOpportunitiesToInclude = 4;
+        private static readonly int TakeFromTopCount = 10;
+        private static readonly int NumberOfOpportunitiesForTypeToInclude = 4;
 
         private static readonly string MailChimpApiKey = Environment.GetEnvironmentVariable("mailchimp_api");
         private static readonly string ListId = "100b8d1f2d";
@@ -42,15 +42,7 @@ namespace VollyV2.Controllers.Api
         private readonly ApplicationDbContext _context;
         private readonly IEmailSender _emailSender;
 
-        private Setting _campaignSettings = new Setting
-        {
-            ReplyTo = ReplyToEmail,
-            FromName = NewsletterFrom,
-            Title = NewsletterSubject,
-            SubjectLine = NewsletterSubject,
-        };
-
-        public NewsletterApiController(
+        public VolunteerNewsletterApiController(
             ApplicationDbContext context,
             IEmailSender emailSender)
         {
@@ -61,52 +53,34 @@ namespace VollyV2.Controllers.Api
         [HttpGet]
         public async Task<IActionResult> CreateAndSendNewslettersAsync()
         {
-            ViewData["SteetAdress"] = StreetAddress;
+            ViewData["StreetAddress"] = StreetAddress;
             ViewData["UnsubscribeUrl"] = UnsubscribeUrl;
-            List<Opportunity> opportunities = await GetRandomRecentOpportunities();
-            //await CreateAndSendMailChimpNewsletterAsync(opportunities);
-            await CreateAndSendSendGridNewsletterAsync(opportunities);
+            await CreateAndSendSendGridNewsletterAsync(
+                await GetRandomRecentOpportunitiesForType(OpportunityType.Episodic),
+                await GetRandomRecentOpportunitiesForType(OpportunityType.Ongoing),
+                await GetRandomRecentOpportunitiesForType(OpportunityType.Donation));
             return Ok();
         }
 
-        private async Task<IActionResult> CreateAndSendMailChimpNewsletterAsync(List<Opportunity> opportunities)
+        private async Task<IActionResult> CreateAndSendSendGridNewsletterAsync(
+            List<Opportunity> episodicOpportunities,
+            List<Opportunity> ongoingOpportunities,
+            List<Opportunity> donationOpportunities)
         {
             var mailChimpManager = new MailChimpManager(MailChimpApiKey);
 
-            var test = await mailChimpManager.Members.GetAllAsync(ListId).ConfigureAwait(false);
+            var members = await mailChimpManager.Members.GetAllAsync(ListId).ConfigureAwait(false);
 
-            //var campaign = mailChimpManager.Campaigns.AddAsync(new Campaign
-            //{
-            //    Settings = _campaignSettings,
-            //    Recipients = new Recipient { ListId = ListId },
-            //    Type = CampaignType.Regular
-            //}).Result;
+            var html = await GenerateSendGridHtmlFromOpportunitiesAsync(
+                episodicOpportunities,
+                ongoingOpportunities,
+                donationOpportunities);
 
-            //var content = mailChimpManager.Content.AddOrUpdateAsync(
-            // campaign.Id,
-            // new ContentRequest()
-            // {
-            //     Html = await GenerateMailChimpHtmlFromOpportunitiesAsync(opportunities)
-            //     //Template = new ContentTemplate
-            //     //{
-            //     //    Id = TemplateId,
-            //     //    Sections = new Dictionary<string, object>()
-            //     //         {
-            //     //           { "body", "hello world" },
-            //     //         }
-            //     //}
-            // }).Result;
 
-            //mailChimpManager.Campaigns.SendAsync(campaign.Id).Wait();
-
-            return Ok();
-        }
-
-        private async Task<IActionResult> CreateAndSendSendGridNewsletterAsync(List<Opportunity> opportunities)
-        {
-            var html = await GenerateSendGridHtmlFromOpportunitiesAsync(opportunities);
-
-            await _emailSender.SendEmailAsync(VollyConstants.MarkEmail, NewsletterSubject, html);
+            await _emailSender.SendEmailsAsync(
+                members.Select(member => member.EmailAddress).ToList(),
+                NewsletterSubject,
+                html);
 
             return Ok();
         }
@@ -130,15 +104,17 @@ namespace VollyV2.Controllers.Api
             return Ok();
         }
 
-        private async Task<string> GenerateMailChimpHtmlFromOpportunitiesAsync(List<Opportunity> opportunities)
+        private async Task<string> GenerateSendGridHtmlFromOpportunitiesAsync(
+            List<Opportunity> episodicOpportunities,
+            List<Opportunity> ongoingOpportunities,
+            List<Opportunity> donationOpportunities)
         {
-            ViewData["OpportunitiesHtml"] = GetOpportunitiesHtml(opportunities);
-            return await this.RenderViewAsync("NewsletterMailChimp");
-        }
-
-        private async Task<string> GenerateSendGridHtmlFromOpportunitiesAsync(List<Opportunity> opportunities)
-        {
-            ViewData["OpportunitiesHtml"] = GetOpportunitiesHtml(opportunities);
+            ViewData["OpportunitiesHtml"] = "<br/><div style='display:block;text-align:center;color:#fff;'>Episodic Opportunities</div><br/>";
+            ViewData["OpportunitiesHtml"] += GetOpportunitiesHtml(episodicOpportunities);
+            ViewData["OpportunitiesHtml"] += "<br/><div style='display:block;text-align:center;color:#fff;'>Ongoing Opportunities</div><br/>";
+            ViewData["OpportunitiesHtml"] += GetOpportunitiesHtml(ongoingOpportunities);
+            ViewData["OpportunitiesHtml"] += "<br/><div style='display:block;text-align:center;color:#fff;'>Accepting Donations</div><br/>";
+            ViewData["OpportunitiesHtml"] += GetOpportunitiesHtml(donationOpportunities);
             return await this.RenderViewAsync("NewsletterSendGrid");
         }
 
@@ -209,7 +185,7 @@ namespace VollyV2.Controllers.Api
                 "</table>";
         }
 
-        private async Task<List<Opportunity>> GetRandomRecentOpportunities()
+        private async Task<List<Opportunity>> GetRandomRecentOpportunitiesForType(OpportunityType opportunityType)
         {
             List<int> opportunityIds = await _context.Occurrences
                 .Where(o => o.ApplicationDeadline > DateTime.Now && o.Applications.Count < o.Openings)
@@ -219,7 +195,7 @@ namespace VollyV2.Controllers.Api
             opportunityIds = await _context.Opportunities
                 .Where(o =>
                 o.Approved
-                && o.OpportunityType == OpportunityType.Episodic
+                && o.OpportunityType == opportunityType
                 && opportunityIds.Contains(o.Id))
                 .Select(o => o.Id)
                 .ToListAsync();
@@ -234,11 +210,11 @@ namespace VollyV2.Controllers.Api
 
             List<int> filteredOpportunityIds = opportunityIds;
 
-            if (opportunityIds.Count > NumberOfOpportunitiesToInclude)
+            if (opportunityIds.Count > NumberOfOpportunitiesForTypeToInclude)
             {
                 filteredOpportunityIds = new List<int>();
                 Random random = new Random();
-                while (filteredOpportunityIds.Count < NumberOfOpportunitiesToInclude)
+                while (filteredOpportunityIds.Count < NumberOfOpportunitiesForTypeToInclude)
                 {
                     int opportunityId = opportunityIds[random.Next(opportunityIds.Count)];
                     if (!filteredOpportunityIds.Contains(opportunityId))
@@ -251,7 +227,7 @@ namespace VollyV2.Controllers.Api
             List<Opportunity> opportunities = await _context.Opportunities
                 .Where(o => filteredOpportunityIds.Contains(o.Id)
                 && o.Approved
-                && o.OpportunityType == OpportunityType.Episodic
+                && o.OpportunityType == opportunityType
                 )
                 .Include(o => o.Category)
                 .Include(o => o.Community)
