@@ -63,11 +63,18 @@ namespace VollyV2.Controllers.Api
                 .Include(o => o.Organization)
                 .ThenInclude(o => o.Cause)
                 .Include(o => o.Location)
-                .Include(o => o.Occurrences.Where(oc => oc.ApplicationDeadline > DateTime.Now && oc.Openings > oc.Applications.Count))
+                .Include(o => o.Occurrences)
                 .ThenInclude(o => o.Applications)
                 .OrderByDescending(o => o.Id)
                 .ToListAsync();
 
+            foreach (Opportunity opportunity in opportunities)
+            {
+                opportunity.Occurrences = opportunity.Occurrences
+                    .Where(oc => oc.ApplicationDeadline > DateTime.Now && oc.Openings > oc.Applications.Count)
+                    .ToList();
+            }
+            
             var episodic = PickRandom(
                 GetFilteredOpportunities(opportunities, OpportunityType.Episodic));
             var ongoing = PickRandom(
