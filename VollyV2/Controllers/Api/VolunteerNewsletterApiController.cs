@@ -55,11 +55,39 @@ namespace VollyV2.Controllers.Api
         {
             ViewData["StreetAddress"] = StreetAddress;
             ViewData["UnsubscribeUrl"] = UnsubscribeUrl;
+
+            var opportunities = await _context.Opportunities
+                .Where(o => o.Approved)
+                .Include(o => o.Category)
+                .Include(o => o.Community)
+                .Include(o => o.Organization)
+                .ThenInclude(o => o.Cause)
+                .Include(o => o.Location)
+                .Include(o => o.Occurrences.Where(oc => oc.ApplicationDeadline > DateTime.Now && oc.Openings > oc.Applications.Count))
+                .ThenInclude(o => o.Applications)
+                .OrderByDescending(o => o.Id)
+                .ToListAsync();
+
+            var episodic = PickRandom(
+                GetFilteredOpportunities(opportunities, OpportunityType.Episodic));
+            var ongoing = PickRandom(
+                GetFilteredOpportunities(opportunities, OpportunityType.Ongoing));
+            var donation = PickRandom(
+                GetFilteredOpportunities(opportunities, OpportunityType.Donation));
+
             await CreateAndSendSendGridNewsletterAsync(
-                await GetRandomRecentOpportunitiesForType(OpportunityType.Episodic),
-                await GetRandomRecentOpportunitiesForType(OpportunityType.Ongoing),
-                await GetRandomRecentOpportunitiesForType(OpportunityType.Donation));
+                episodic,
+                ongoing,
+                donation);
             return Ok();
+        }
+
+        private List<Opportunity> GetFilteredOpportunities(IEnumerable<Opportunity> opportunities, OpportunityType opportunityType)
+        {
+            return opportunities
+                .Where(o => o.OpportunityType == opportunityType)
+                .ToList();
+
         }
 
         private async Task<IActionResult> CreateAndSendSendGridNewsletterAsync(
@@ -185,68 +213,29 @@ namespace VollyV2.Controllers.Api
                 "</table>";
         }
 
-        private async Task<List<Opportunity>> GetRandomRecentOpportunitiesForType(OpportunityType opportunityType)
+        private List<Opportunity> PickRandom(List<Opportunity> opportunities)
         {
-            List<int> opportunityIds = await _context.Occurrences
-                .Where(o => o.ApplicationDeadline > DateTime.Now && o.Applications.Count < o.Openings)
-                .Select(o => o.OpportunityId)
-                .ToListAsync();
+            var selected = new List<Opportunity>();
+            var tracker = new List<int>();
 
-            opportunityIds = await _context.Opportunities
-                .Where(o =>
-                o.Approved
-                && o.OpportunityType == opportunityType
-                && opportunityIds.Contains(o.Id))
-                .Select(o => o.Id)
-                .ToListAsync();
+            Random random = new Random();
 
-            opportunityIds.Sort();
-            opportunityIds.Reverse();
-
-            if (opportunityIds.Count > TakeFromTopCount)
+            if (opportunities.Count < NumberOfOpportunitiesForTypeToInclude)
             {
-                opportunityIds = opportunityIds.Take(TakeFromTopCount).ToList();
+                return opportunities;
             }
 
-            List<int> filteredOpportunityIds = opportunityIds;
-
-            if (opportunityIds.Count > NumberOfOpportunitiesForTypeToInclude)
+            while (selected.Count < NumberOfOpportunitiesForTypeToInclude)
             {
-                filteredOpportunityIds = new List<int>();
-                Random random = new Random();
-                while (filteredOpportunityIds.Count < NumberOfOpportunitiesForTypeToInclude)
+                var chosen = opportunities[random.Next(opportunities.Count)];
+                if (!tracker.Contains(chosen.Id))
                 {
-                    int opportunityId = opportunityIds[random.Next(opportunityIds.Count)];
-                    if (!filteredOpportunityIds.Contains(opportunityId))
-                    {
-                        filteredOpportunityIds.Append(opportunityId);
-                    }
+                    selected.Append(chosen);
+                    tracker.Append(chosen.Id);
                 }
             }
 
-            List<Opportunity> opportunities = await _context.Opportunities
-                .Where(o => filteredOpportunityIds.Contains(o.Id)
-                && o.Approved
-                && o.OpportunityType == opportunityType
-                )
-                .Include(o => o.Category)
-                .Include(o => o.Community)
-                .Include(o => o.Organization)
-                .ThenInclude(o => o.Cause)
-                .Include(o => o.Location)
-                .Include(o => o.Occurrences)
-                .ThenInclude(o => o.Applications)
-                .AsNoTracking()
-                .ToListAsync();
-
-            foreach (Opportunity opportunity in opportunities)
-            {
-                opportunity.Occurrences = opportunity.Occurrences
-                    .Where(oc => oc.ApplicationDeadline > DateTime.Now && oc.Openings > oc.Applications.Count)
-                    .ToList();
-            }
-
-            return opportunities;
+            return selected;
         }
     }
 }
