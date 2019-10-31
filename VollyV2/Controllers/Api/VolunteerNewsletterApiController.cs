@@ -77,10 +77,10 @@ namespace VollyV2.Controllers.Api
                 donationOpportunities);
 
 
-            await _emailSender.SendEmailsAsync(
-                members.Select(member => member.EmailAddress).ToList(),
-                NewsletterSubject,
-                html);
+            //await _emailSender.SendEmailsAsync(
+            //    members.Select(member => member.EmailAddress).ToList(),
+            //    NewsletterSubject,
+            //    html);
 
             return Ok();
         }
