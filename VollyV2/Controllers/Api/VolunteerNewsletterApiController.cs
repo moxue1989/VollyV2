@@ -75,10 +75,10 @@ namespace VollyV2.Controllers.Api
             var donation = PickRandom(
                 GetFilteredOpportunities(opportunities, OpportunityType.Donation));
 
-            await CreateAndSendSendGridNewsletterAsync(
-                episodic,
-                ongoing,
-                donation);
+            //await CreateAndSendSendGridNewsletterAsync(
+            //    episodic,
+            //    ongoing,
+            //    donation);
             return Ok();
         }
 
