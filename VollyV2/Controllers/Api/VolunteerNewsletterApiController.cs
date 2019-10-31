@@ -74,7 +74,7 @@ namespace VollyV2.Controllers.Api
                     .Where(oc => oc.ApplicationDeadline > DateTime.Now && oc.Openings > oc.Applications.Count)
                     .ToList();
             }
-            
+
             var episodic = PickRandom(
                 GetFilteredOpportunities(opportunities, OpportunityType.Episodic));
             var ongoing = PickRandom(
@@ -82,10 +82,10 @@ namespace VollyV2.Controllers.Api
             var donation = PickRandom(
                 GetFilteredOpportunities(opportunities, OpportunityType.Donation));
 
-            //await CreateAndSendSendGridNewsletterAsync(
-            //    episodic,
-            //    ongoing,
-            //    donation);
+            await CreateAndSendSendGridNewsletterAsync(
+               episodic,
+               ongoing,
+               donation);
             return Ok();
         }
 
@@ -106,10 +106,10 @@ namespace VollyV2.Controllers.Api
 
             var members = await mailChimpManager.Members.GetAllAsync(ListId).ConfigureAwait(false);
 
-            //var html = await GenerateSendGridHtmlFromOpportunitiesAsync(
-            //    episodicOpportunities,
-            //    ongoingOpportunities,
-            //    donationOpportunities);
+            var html = await GenerateSendGridHtmlFromOpportunitiesAsync(
+               episodicOpportunities,
+               ongoingOpportunities,
+               donationOpportunities);
 
 
             //await _emailSender.SendEmailsAsync(
