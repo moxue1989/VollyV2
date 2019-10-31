@@ -71,10 +71,10 @@ namespace VollyV2.Controllers.Api
 
             var members = await mailChimpManager.Members.GetAllAsync(ListId).ConfigureAwait(false);
 
-            var html = await GenerateSendGridHtmlFromOpportunitiesAsync(
-                episodicOpportunities,
-                ongoingOpportunities,
-                donationOpportunities);
+            //var html = await GenerateSendGridHtmlFromOpportunitiesAsync(
+            //    episodicOpportunities,
+            //    ongoingOpportunities,
+            //    donationOpportunities);
 
 
             //await _emailSender.SendEmailsAsync(
