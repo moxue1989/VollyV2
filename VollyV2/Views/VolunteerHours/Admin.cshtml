@@ -3,61 +3,65 @@
 
 @{
     ViewData["Title"] = "Hours";
-    var models = (IEnumerable<VolunteerHoursModel>) ViewData["VolunteerHours"];
-    var userList = (SelectList) ViewData["Users"];
+    var models = (IEnumerable<VolunteerHoursModel>)ViewData["VolunteerHours"];
+    var userList = (SelectList)ViewData["Users"];
 }
-
-<h2>Log hours</h2>
+<br />
+<a class="btn btn-primary"
+   role="button"
+   asp-action="Export">Export CSV</a>
+<br />
+<br />
 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 <table class="table table-bordered table-text">
     <thead>
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.User)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.OpportunityName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.OrganizationName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.DateTime)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Hours)
-        </th>
-        <th></th>
-    </tr>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.User)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.OpportunityName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.OrganizationName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DateTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Hours)
+            </th>
+            <th></th>
+        </tr>
     </thead>
     <tbody>
-    @foreach (var item in models)
-    {
-        <tr>
-            <form asp-action="Admin">
-                <input type="hidden" name="Id" value="@item.Id"/>
-                <td>
-                    <input name="User" value="@item.User" disabled/>
-                </td>
-                <td>
-                    <input name="OpportunityName" value="@item.OpportunityName"/>
-                </td>
-                <td>
-                    <input name="OrganizationName" value="@item.OrganizationName"/>
-                </td>
-                <td>
-                    <input name="DateTime" type="date" value="@item.DateTime.ToString("yyyy-MM-dd")" />
-                </td>
-                <td>
-                    <input name="Hours" value="@item.Hours"/>
-                </td>
-                <td>
-                    <input type="submit" value="Save"/>
-                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-                </td>
-            </form>
-        </tr>
-    }
+        @foreach (var item in models)
+        {
+            <tr>
+                <form asp-action="Admin">
+                    <input type="hidden" name="Id" value="@item.Id" />
+                    <td>
+                        <input name="User" value="@item.User" disabled />
+                    </td>
+                    <td>
+                        <input name="OpportunityName" value="@item.OpportunityName" />
+                    </td>
+                    <td>
+                        <input name="OrganizationName" value="@item.OrganizationName" />
+                    </td>
+                    <td>
+                        <input name="DateTime" type="date" value="@item.DateTime.ToString("yyyy-MM-dd")" />
+                    </td>
+                    <td>
+                        <input name="Hours" value="@item.Hours" />
+                    </td>
+                    <td>
+                        <input type="submit" value="Save" />
+                        <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    </td>
+                </form>
+            </tr>
+        }
     </tbody>
 </table>
 

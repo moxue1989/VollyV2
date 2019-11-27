@@ -1,7 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
+using CsvHelper;
+using CsvHelper.Configuration;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -10,6 +14,7 @@ using Microsoft.EntityFrameworkCore;
 using VollyV2.Data;
 using VollyV2.Data.Volly;
 using VollyV2.Models;
+using VollyV2.Models.CSVModels;
 using VollyV2.Models.Volly;
 
 namespace VollyV2.Controllers.Mvc
@@ -28,7 +33,7 @@ namespace VollyV2.Controllers.Mvc
             _userManager = userManager;
         }
 
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
             string userId = _userManager.GetUserId(User);
 
@@ -42,6 +47,43 @@ namespace VollyV2.Controllers.Mvc
             ViewData["VolunteerHours"] = models;
             return View();
         }
+        public class FooMap : ClassMap<Foo>
+        {
+            public FooMap()
+            {
+                Map(m => m.Id).Index(0).Name("id");
+                Map(m => m.Name).Index(1).Name("name");
+            }
+        }
+        public class Foo
+        {
+            public int Id { get; set; }
+            public string Name { get; set; }
+        }
+        [Authorize(Roles = "Admin")]
+        public IActionResult Export()
+        {
+            List<VolunteerHoursCSVModel> hours = _context.VolunteerHours
+                .AsNoTracking()
+                .Include(a => a.User)
+                .ThenInclude(u => u.Company)
+                .AsNoTracking().AsEnumerable()
+                .Select(VolunteerHoursCSVModel.FromVolunteerHours)
+                .ToList();
+
+            MemoryStream stream = new MemoryStream();
+            StreamWriter writer = new StreamWriter(stream);
+            CsvWriter csvWriter = new CsvWriter(writer);
+
+            csvWriter.Configuration.RegisterClassMap<VolunteerHoursCSVModelMap>();
+            csvWriter.WriteRecords(hours);
+            writer.Flush();
+            stream.Seek(0, SeekOrigin.Begin);
+            return File(
+                stream,
+                "application/octet-stream",
+                String.Format("VolunteerHours_{0}.csv", DateTime.Today.ToShortDateString()));
+        }
 
         [HttpPost]
         public IActionResult Index(VolunteerHoursModel model)
@@ -54,7 +96,7 @@ namespace VollyV2.Controllers.Mvc
         }
 
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Admin()
+        public IActionResult Admin()
         {
             List<VolunteerHoursModel> hours = _context.VolunteerHours
                 .AsNoTracking()
