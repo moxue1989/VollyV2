@@ -47,19 +47,7 @@ namespace VollyV2.Controllers.Mvc
             ViewData["VolunteerHours"] = models;
             return View();
         }
-        public class FooMap : ClassMap<Foo>
-        {
-            public FooMap()
-            {
-                Map(m => m.Id).Index(0).Name("id");
-                Map(m => m.Name).Index(1).Name("name");
-            }
-        }
-        public class Foo
-        {
-            public int Id { get; set; }
-            public string Name { get; set; }
-        }
+       
         [Authorize(Roles = "Admin")]
         public IActionResult Export()
         {
