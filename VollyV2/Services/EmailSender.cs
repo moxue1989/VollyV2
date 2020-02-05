@@ -86,7 +86,7 @@ namespace VollyV2.Services
             {
                 From = new EmailAddress(FromEmail, "Volly Team"),
                 Subject = "Volly Reminder: " + opportunity.Name,
-                TemplateId = "44e14ea7-dd4e-4a6b-bb2c-0bb0d8bf0f99",
+                TemplateId = "d-70aba37e40834a89b8afe3a1a9567bcd",
                 HtmlContent = messageText,
                 PlainTextContent = messageText
             };
