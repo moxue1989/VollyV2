@@ -164,7 +164,7 @@ namespace VollyV2.Controllers
                 {
                     JObject jResponse = JObject.Parse(stream.ReadToEnd());
                     var isSuccess = jResponse.Value<bool>("success");
-                    result = (isSuccess) ? true : false;
+                    result = isSuccess ? true : false;
                 }
             }
             return result;
@@ -172,20 +172,23 @@ namespace VollyV2.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Contact([Bind("Name,Email,Message")] ContactUsModel contactUsModel)
+        public async Task<IActionResult> Contact(ContactUsModel contactUsModel)
         {
             if (ModelState.IsValid)
             {
-                if (IsRecaptchaValid())
+                if (IsRecaptchaValid() && !contactUsModel.TripCheck)
                 {
-                    await _emailSender.SendEmailsAsync(VollyConstants.AllEmails, "Message From: " + contactUsModel.Name,
-                    contactUsModel.GetEmailMessage());
-                    Message = "Thank you, your message has been sent!";
-                    return RedirectToAction("Contact");
+                    var ip = Request.HttpContext.Connection.RemoteIpAddress.ToString();
+                    await _emailSender.SendEmailsAsync(
+                        VollyConstants.AllEmails,
+                        "Message From: " + contactUsModel.Name,
+                        contactUsModel.GetEmailMessage(ip));
+                    TempData["Message"] = "Thank you, your message has been sent!";
+                    return RedirectToAction(nameof(Contact));
                 }
                 else
                 {
-                    return RedirectToAction("Index");
+                    return RedirectToAction(nameof(Index));
                 }
 
             }

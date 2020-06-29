@@ -6,6 +6,10 @@
     ViewData["BodyClass"] = "class=blend";
 }
 <div class="container vollytron">
+    <div class="text-danger">
+        @TempData["Message"]
+    </div>
+    <br />
     <div class="row">
         <div class="col-md-4">
             <img src="~/images/assets/teamvolly.png" />
@@ -61,6 +65,8 @@
                     <textarea asp-for="Message" class="form-control" rows="4"></textarea>
                     <span asp-validation-for="Message" class="text-danger"></span>
                 </div>
+                <input style="display:none;"
+                       asp-for="TripCheck" />
                 <div class="form-group">
                     <input type="submit" value="Send Message" class="btn btn-default" />
                 </div>
