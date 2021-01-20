@@ -19,6 +19,7 @@ namespace VollyV2.Services
     public class EmailSender : IEmailSender
     {
         private static readonly string FromEmail = Environment.GetEnvironmentVariable("email_address");
+        private static readonly string AlternateSendgridApiKey = Environment.GetEnvironmentVariable("alternate_sendgrid_api");
         private static readonly string SendgridApiKey = Environment.GetEnvironmentVariable("sendgrid_api");
 
         public async Task SendEmailAsync(string email, string subject, string message)
@@ -47,29 +48,27 @@ namespace VollyV2.Services
 
         public async Task SendApplicationConfirmAsync(ApplicationView application)
         {
-            var client = new SendGridClient(SendgridApiKey);
-
-            SendGridMessage sendGridMessage = new SendGridMessage()
-            {
-                From = new EmailAddress(FromEmail, "Volly Team"),
-                Subject = "Application For: " + application.OpportunityName,
-                TemplateId = "26a2626e-03c6-48c1-9f78-03339787de2d",
-                HtmlContent = application.GetEmailMessage(),
-                PlainTextContent = application.GetEmailMessage()
-            };
-            sendGridMessage.AddTo(new EmailAddress(application.Email, application.Name));
-            sendGridMessage.AddCc(new EmailAddress(VollyConstants.AliceEmail, "Alice"));
-            sendGridMessage.AddCc(new EmailAddress(VollyConstants.VollyAdminEmail, "VollyAdmin"));
+            var client = new SendGridClient(AlternateSendgridApiKey);
 
             List<string> occurrenceStrings = application.OccurrenceViews
                 .Select(o => ToOccurrenceTimeString().Invoke(o))
                 .ToList();
 
-            sendGridMessage.AddSubstitution(":time", string.Join("<br/>", occurrenceStrings));
-            sendGridMessage.AddSubstitution(":description", application.OpportunityDescription);
-            sendGridMessage.AddSubstitution(":address", application.OpportunityAddress);
-            sendGridMessage.AddSubstitution(":name", application.OpportunityName);
-            sendGridMessage.AddSubstitution(":image", application.OpportunityImageUrl);
+            var content = $"<p>Received application: {application.GetEmailMessage()}</p>" +
+                $"<p>{application.OpportunityDescription}</p>" +
+                $"<p><b>Address: {application.OpportunityAddress}</b></p>" +
+                $"<p><b>Times: <p>{string.Join("</p><p>", occurrenceStrings)}</p></b></p>" +
+                $"";
+            SendGridMessage sendGridMessage = new SendGridMessage()
+            {
+                From = new EmailAddress(FromEmail, "Volly Team"),
+                Subject = "Application For: " + application.OpportunityName,
+                HtmlContent = content,
+                PlainTextContent = content
+            };
+            sendGridMessage.AddTo(new EmailAddress(application.Email, application.Name));
+            sendGridMessage.AddCc(new EmailAddress(VollyConstants.AliceEmail, "Alice"));
+            sendGridMessage.AddCc(new EmailAddress(VollyConstants.VollyAdminEmail, "VollyAdmin"));
 
             await client.SendEmailAsync(sendGridMessage);
         }
