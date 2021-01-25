@@ -38,53 +38,22 @@ namespace VollyV2.Controllers
 
         public IActionResult About()
         {
-            return View();
+            return RedirectToAction("UnderConstruction");
         }
 
         public IActionResult Index()
         {
-            var images = _dbContext.OpportunityImages
-                .AsNoTracking()
-                .OrderByDescending(o => o.Id)
-                .Take(10)
-                .ToList();
-            CarouselModel model = new CarouselModel() { opportunityImages = images };
-            return View(model);
+            return RedirectToAction("UnderConstruction");
         }
 
         public IActionResult Opportunities(int Id = 1)
         {
-            MapModel mapModel = new MapModel
-            {
-                CategoriesList = new SelectList(_dbContext.Categories
-                    .OrderBy(c => c.Name)
-                    .ToList(), "Id", "Name"),
-
-                CausesList = new SelectList(_dbContext.Causes
-                    .OrderBy(c => c.Name)
-                    .ToList(), "Id", "Name"),
-
-                OrganizationList = new SelectList(_dbContext.Organizations
-                    .Where(o => o.Opportunities.Count > 0)
-                    .OrderBy(c => c.Name)
-                    .AsNoTracking()
-                    .ToList(), "Id", "Name"),
-
-                CommunityList = new SelectList(_dbContext.Communities
-                    .OrderBy(c => c.Name)
-                    .ToList(), "Id", "Name"),
-
-                ApplyModel = new ApplyModel()
-            };
-
-            ViewData["OpportunityId"] = Id;
-            return View(mapModel);
+            return RedirectToAction("UnderConstruction");
         }
 
         public IActionResult Track()
         {
-            ViewData["Message"] = Message;
-            return View();
+            return RedirectToAction("UnderConstruction");
         }
 
         [HttpPost]
@@ -92,47 +61,14 @@ namespace VollyV2.Controllers
         public async Task<IActionResult> Track([Bind("Email,OpportunityName,OrganizationName,Date,Hours")]
             TrackHoursModel trackHoursModel)
         {
-            if (ModelState.IsValid)
-            {
-                ApplicationUser user = _userManager.Users.FirstOrDefault(u => u.Email == trackHoursModel.Email);
-                if (user == null)
-                {
-                    ViewData["Error"] = "No Email Found";
-                }
-                else
-                {
-                    VolunteerHours volunteerHours = new VolunteerHours()
-                    {
-                        User = user,
-                        OpportunityName = trackHoursModel.OpportunityName,
-                        OrganizationName = trackHoursModel.OrganizationName,
-                        DateTime = trackHoursModel.Date,
-                        Hours = trackHoursModel.Hours
-                    };
-                    _dbContext.VolunteerHours.Add(volunteerHours);
-                    await _dbContext.SaveChangesAsync();
-                    Message = "Hours successfully submitted! Thank you!";
-                    return RedirectToAction("Track");
-                }
-            }
-
-            return View(trackHoursModel);
+            return RedirectToAction("UnderConstruction");
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Apply([Bind("ApplyModel")] MapModel mapModel)
         {
-            if (ModelState.IsValid)
-            {
-                ApplyModel applyModel = mapModel.ApplyModel;
-                var user = await GetUser(applyModel.Email);
-                ApplicationView application = await applyModel.GetApplication(_dbContext, user);
-                await _emailSender.SendApplicationConfirmAsync(application);
-                return Ok();
-            }
-
-            return Error();
+            return RedirectToAction("UnderConstruction");
         }
 
         private async Task<ApplicationUser> GetUser(string email)
@@ -144,8 +80,7 @@ namespace VollyV2.Controllers
 
         public IActionResult Contact()
         {
-            ViewData["Message"] = Message;
-            return View();
+            return RedirectToAction("UnderConstruction");
         }
 
         private bool IsRecaptchaValid()
@@ -174,26 +109,7 @@ namespace VollyV2.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Contact(ContactUsModel contactUsModel)
         {
-            if (ModelState.IsValid)
-            {
-                if (IsRecaptchaValid() && !contactUsModel.TripCheck)
-                {
-                    var ip = Request.HttpContext.Connection.RemoteIpAddress.ToString();
-                    await _emailSender.SendEmailsAsync(
-                        VollyConstants.AllEmails,
-                        "Message From: " + contactUsModel.Name,
-                        contactUsModel.GetEmailMessage(ip));
-                    TempData["Message"] = "Thank you, your message has been sent!";
-                    return RedirectToAction(nameof(Contact));
-                }
-                else
-                {
-                    return RedirectToAction(nameof(Index));
-                }
-
-            }
-
-            return View(contactUsModel);
+            return RedirectToAction("UnderConstruction");
         }
 
         public IActionResult Suggestion()
@@ -206,32 +122,17 @@ namespace VollyV2.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Suggestion([Bind("Name,Message")] SuggestionModel suggestionModel)
         {
-            if (ModelState.IsValid)
-            {
-                var suggestionModelName = suggestionModel.Name ?? "annonomous";
-                await _emailSender.SendEmailsAsync(VollyConstants.AllEmails, "Suggestion from " + suggestionModelName,
-                    suggestionModel.GetEmailMessage());
-                Message = "Thank you, your message has been sent!";
-                return RedirectToAction("Suggestion");
-            }
-
-            return View(suggestionModel);
+            return RedirectToAction("UnderConstruction");
         }
 
         public IActionResult Organizations()
         {
-            MapModel mapModel = new MapModel
-            {
-                CausesList = new SelectList(_dbContext.Causes
-                    .OrderBy(c => c.Name)
-                    .ToList(), "Id", "Name")
-            };
-            return View(mapModel);
+            return RedirectToAction("UnderConstruction");
         }
 
         public IActionResult Chat()
         {
-            return View();
+            return RedirectToAction("UnderConstruction");
         }
 
 
