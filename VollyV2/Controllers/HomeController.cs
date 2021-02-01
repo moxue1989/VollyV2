@@ -135,10 +135,7 @@ namespace VollyV2.Controllers
             return RedirectToAction("UnderConstruction");
         }
 
-        public IActionResult UnderConstruction()
-        {
-            return View();
-        }
+
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
